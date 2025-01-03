@@ -1,0 +1,15 @@
+﻿[PropertyInfo]
+bestIndividual,Individual,false,false, , ,true,<default>
+command,int,false,false, , ,true,<default>
+fitness,FitnessAlgorithm,false,false, , ,false,<default>
+reporter,GeneticReportable,false,false, , ,true,<default>
+search_method,int,false,false, , ,false,<default>
+searchMethod,int,false,false, , ,true,<default>
+searchStatus,int,false,false, , ,true,<default>
+status,int,false,false, , ,false,<default>
+superior,List,false,false, , ,false,<default>
+[IconNames]
+
+
+
+

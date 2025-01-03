@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>jp.co.tmdgroup.common</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="geneticalgorithm\GeneticStatus.jbx" />
+  </ItemGroup>
+
+</Project>
