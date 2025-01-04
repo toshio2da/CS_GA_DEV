@@ -13,5 +13,6 @@ public class IllegalElementException : TmdSearchException
 {
 
 	public IllegalElementException(String information) : base(information) { }
+	public IllegalElementException(String information, Exception innerException) : base(information, innerException) { }
 
 }

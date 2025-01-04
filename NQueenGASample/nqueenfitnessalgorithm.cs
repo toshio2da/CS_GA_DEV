@@ -20,7 +20,7 @@ using jp.co.tmdgroup.common.geneticalgorithm.exception;
  * @author 森本寛
  * @version 1.0
  */
-public class NQueenFitnessAlgorithm : FitnessAlgorithm
+public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 {
 
 
@@ -125,7 +125,7 @@ public class NQueenFitnessAlgorithm : FitnessAlgorithm
 			GeneticStatus status = new GeneticStatus();
 			GeneticAlgorithm GeneticAlgorithm = new GeneticAlgorithm(model, status, 200);
 
-			Individual bestIndividual = (Individual)GeneticAlgorithm.search(5000);
+			Individual bestIndividual = (Individual)GeneticAlgorithm.Search(5000);
 
 
 			int[] bestIndividualArray = DataTools.createUniqElementArray((int[])(bestIndividual.getGene().getBase()));

@@ -19,7 +19,7 @@ using jp.co.tmdgroup.common.geneticalgorithm.model;
  * @version 1.0 (2002/10/30)
  */
 
-public interface CrossoverAlgorithm
+public interface ICrossoverAlgorithm
 {
 
 
@@ -34,5 +34,5 @@ public interface CrossoverAlgorithm
      * @return 生成された子集団
      * @throws IllegalIndividualException perentCandidatesの中にindividualクラスでないオブジェクトが入っています
      */
-    public List<Individual> crossover(List<Individual> perentCandidates, int childrenNumber); //throws IllegalIndividualException;
+    public List<Individual> Crossover(List<Individual> perentCandidates, int childrenNumber); //throws IllegalIndividualException;
 }

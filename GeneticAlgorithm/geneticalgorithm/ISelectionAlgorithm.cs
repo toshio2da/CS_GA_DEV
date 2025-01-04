@@ -28,7 +28,7 @@ using jp.co.tmdgroup.common.geneticalgorithm.exception;
  * @author 森本寛
  * @version 1.0 (2002/10/29)
  */
-public interface SelectionAlgorithm
+public interface ISelectionAlgorithm
 {
 
 	/**

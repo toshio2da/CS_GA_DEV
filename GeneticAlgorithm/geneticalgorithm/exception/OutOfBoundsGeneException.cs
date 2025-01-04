@@ -25,7 +25,7 @@ public class OutOfBoundsGeneException : GeneticAlgorithmException
      *
      * 最終更新バージョン：1.0
      */
-	public OutOfBoundsGeneException()
-	{
-	}
+	public OutOfBoundsGeneException() { }
+
+	public OutOfBoundsGeneException(Exception innerException) : base(innerException) { }
 }

@@ -17,7 +17,7 @@ public class NQueenToHtml {
     }
 
 
-    public static String toHtml(int[]  gene) {
+    public static String ToHtml(int[]  gene) {
 
         StringBuilder  buffer = new StringBuilder();
         buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"80%\">  <tbody>");

@@ -35,7 +35,7 @@ public class Individual : IComparable
 	//====================================================//
 
 	/** 自己を表現する遺伝子。様々な塩基タイプがあります。*/
-	protected IGene? gene = null;
+	protected IGene gene = null!;
 
 
 	/** 自己遺伝子の適応度。Fitnessクラスによって評価されます。*/
@@ -43,7 +43,7 @@ public class Individual : IComparable
 
 
 	/** 個体の遺伝子モデルを決定するモデルクラスです。*/
-	protected IIndividual? individualModel;
+	protected IIndividual individualModel;
 
 
 

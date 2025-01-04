@@ -32,30 +32,30 @@ public class GeneticStatus
 	//====================================================//
 
 	/** 検索続行命令。検索中は通常この命令が格納されています。 */
-	public static int GO_AHEAD_SEARCH = 0;
+	public const int GO_AHEAD_SEARCH = 0;
 
 	/** 検索終了命令。検索を終了させるときに格納します。世代交代時にチェックされます。 */
-	public static int STOP_SEARCH = 1;
+	public const int STOP_SEARCH = 1;
 
 
 	/** 状態変数。現在検索中であることを示します。 */
-	public static int SEARCHING = 100;
+	public const int SEARCHING = 100;
 
 	/** 状態変数。検索が完了したことを示します。*/
-	public static int DONE_SEARCH = 101;
+	public const int DONE_SEARCH = 101;
 
 	/** 状態変数。検索を待っていることを示します。デフォルト値です。*/
-	public static int WAIT_FOR_SEARCH = 102;
+	public const int WAIT_FOR_SEARCH = 102;
 
 
 	/** 検索の種類。指定世代数まで世代交代を行います。デフォルト値です。 */
-	public static int LIMIT_NUMBER = 200;
+	public const int LIMIT_NUMBER = 200;
 
 	/** 検索の種類。指定時間まで延々と世代交代を行います。*/
-	public static int LIMIT_TIME = 201;
+	public const int LIMIT_TIME = 201;
 
 	/** 検索の種類.指定世代数の検索を指定時間まで繰り返します。広範囲に渡る検索が可能です。*/
-	public static int LIMIT_NUMBER_UNTIL_TIME = 202;
+	public const int LIMIT_NUMBER_UNTIL_TIME = 202;
 
 
 
@@ -69,7 +69,7 @@ public class GeneticStatus
 	protected List<Individual> superior = new List<Individual>();
 
 	/** 全検索の中で生き残った最優秀個体 */
-	protected Individual bestIndividual = null;
+	protected Individual bestIndividual = null!;
 
 	/** 検索に対する命令格納場所。別スレッドで動くためこの変数を介して制御します。 */
 	protected int command = GeneticStatus.GO_AHEAD_SEARCH;
@@ -81,10 +81,10 @@ public class GeneticStatus
 	protected int search_method = GeneticStatus.LIMIT_NUMBER;
 
 	/** 適応度計算アルゴリズム。GeneticAlgorithmクラスに自動的に設定されます。 */
-	protected FitnessAlgorithm fitness;
+	protected IFitnessAlgorithm? fitness;
 
 	/** 途中経過の報告クラス。デフォルトでは標準出力に適応度を出力 */
-	public GeneticReportable reporter = new DefaultGeneticReporter();
+	public IGeneticReportable reporter = new DefaultGeneticReporter();
 
 
 
@@ -114,7 +114,7 @@ public class GeneticStatus
      *
      * @param fitness 設定する適応度計算アルゴリズム
      */
-	public void setFitnessAlgorithm(FitnessAlgorithm fitness)
+	public void setFitnessAlgorithm(IFitnessAlgorithm fitness)
 	{
 
 		//------ 適応度計算アルゴリズムを設定 ------//
@@ -137,7 +137,7 @@ public class GeneticStatus
      *
      * @return 保持され値得る途中経過報告クラス
      */
-	public GeneticReportable getReporter()
+	public IGeneticReportable getReporter()
 	{
 
 		//------ 現在の途中経過報告クラスを渡す ------//
@@ -150,7 +150,7 @@ public class GeneticStatus
      *
      * @param newReporter 新しい途中経過報告クラス
      */
-	public void setReporter(GeneticReportable newReporter)
+	public void setReporter(IGeneticReportable newReporter)
 	{
 
 		//------ 途中経過報告クラスを変更 ------//
@@ -330,8 +330,6 @@ public class GeneticStatus
 		return this.superior[generationIndex];
 	}
 
-
-
 	/**
      * <p>新しい世代の最優秀個体を登録します。</p>
      * 本メソッドはGeneticAlgorithmクラスによって呼ばれます。<br>
@@ -411,7 +409,7 @@ public class GeneticStatus
 			return;
 		}
 
-
+		if (this.fitness == null) throw new NullReferenceException("fitnessがNullです");
 
 		//------ 適応度が現在の最優秀候補よりも高いかチェック ------//
 		if (this.fitness.fitness(this.bestIndividual) < this.fitness.fitness(candidate))

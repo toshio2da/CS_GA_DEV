@@ -48,7 +48,7 @@ public interface IGeneticAlgorithmModel
      *
      * @return 使用する適応度計算アルゴリズムを実装するクラスのインスタンス
      */
-	public FitnessAlgorithm getFitnessAlgorithm();
+	public IFitnessAlgorithm getFitnessAlgorithm();
 
 
 
@@ -60,7 +60,7 @@ public interface IGeneticAlgorithmModel
      *
      * @return 使用する淘汰アルゴリズムを実装するクラスのインスタンス
      */
-	public SelectionAlgorithm getSelectionAlgorithm();
+	public ISelectionAlgorithm getSelectionAlgorithm();
 
 
 
@@ -73,7 +73,7 @@ public interface IGeneticAlgorithmModel
      *
      * @return 使用する生存アルゴリズムを実装するクラスのインスタンス
      */
-	public SurvivalAlgorithm getSurvivalAlgorithm();
+	public ISurvivalAlgorithm getSurvivalAlgorithm();
 
 
 
@@ -87,7 +87,7 @@ public interface IGeneticAlgorithmModel
      *
      * @return 使用する交叉アルゴリズムを実装するクラスのインスタンスを返します。
      */
-	public CrossoverAlgorithm getCrossoverAlgorithm();
+	public ICrossoverAlgorithm getCrossoverAlgorithm();
 
 
 

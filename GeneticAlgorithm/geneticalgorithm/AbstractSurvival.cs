@@ -18,7 +18,7 @@ using jp.co.tmdgroup.common.geneticalgorithm.exception;
  * @version 1.0 (2002/10/30)
  */
 
-public abstract class AbstractSurvival : SurvivalAlgorithm
+public abstract class AbstractSurvival : ISurvivalAlgorithm
 {
 
 
@@ -45,7 +45,6 @@ public abstract class AbstractSurvival : SurvivalAlgorithm
 	public AbstractSurvival()
 	{
 		this.generationGap = 1.0;
-		List<string> a;
 	}
 
 

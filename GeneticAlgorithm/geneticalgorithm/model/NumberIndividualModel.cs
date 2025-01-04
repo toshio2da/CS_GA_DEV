@@ -65,6 +65,12 @@ public class NumberIndividualModel : IIndividual
      */
 	public bool isLegalGenoType(IGene gene)
 	{
+
+		//------ 試しにキャストしてみる ------//
+		bool[]? test = gene.getBase() as bool[];
+		return (test != null);
+
+		/*
 		try
 		{
 			//------ 試しにキャストしてみる ------//
@@ -80,6 +86,7 @@ public class NumberIndividualModel : IIndividual
 			//------ 塩基タイプが整数型でないのでfalseを返す ------//
 			return false;
 		}
+		*/
 	}
 
 

@@ -32,7 +32,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class GeneticAlgorithm :
 	//Runnable, 
-	SearchAlgorithm
+	ISearchAlgorithm
 {
 
 
@@ -50,7 +50,7 @@ public class GeneticAlgorithm :
 	protected IGeneticAlgorithmModel model;
 
 	/** 検索状況の報告クラス。自動的に同期が取られます。 */
-	protected GeneticStatus status = null;
+	protected GeneticStatus status = null!;
 
 	/** 現在の世代交代数を保持します。 */
 	protected int nowGenerationNumber = 0;
@@ -264,7 +264,7 @@ public class GeneticAlgorithm :
      * @throws IllegalElementException 個体の中にIndividualクラス又はその派生クラスでないものが含まれています。
      * @throws ArgumentOutOfRangeException 保持世代数を越えた位置を指定しました。
      */
-	public Individual search(int maxIterationNumber)
+	public Individual Search(int maxIterationNumber)
 	{
 		//throws IllegalParameterTypeException, IllegalParameterSizeException, IllegalElementException, ArgumentOutOfRangeException {
 		try
@@ -361,19 +361,19 @@ public class GeneticAlgorithm :
 		}
 		catch (IllegalGenoTypeException exception)
 		{
-			throw new IllegalParameterTypeException("遺伝子内の塩基タイプが不正です。");
+			throw new IllegalParameterTypeException("遺伝子内の塩基タイプが不正です。", exception);
 		}
 		catch (IllegalGenoSizeException exception)
 		{
-			throw new IllegalParameterSizeException("遺伝子長が一致しません。");
+			throw new IllegalParameterSizeException("遺伝子長が一致しません。", exception);
 		}
 		catch (IllegalIndividualException exception)
 		{
-			throw new IllegalElementException("Individualクラスでない個体があります。");
+			throw new IllegalElementException("Individualクラスでない個体があります。", exception);
 		}
 		catch (OutOfBoundsGeneException exception)
 		{
-			throw new ArgumentOutOfRangeException("保持世代を越えたアクセスがありました。");
+			throw new ArgumentOutOfRangeException("保持世代を越えたアクセスがありました。", exception);
 		}
 	}
 
@@ -397,7 +397,7 @@ public class GeneticAlgorithm :
 		//throws IllegalGenoTypeException, IllegalGenoSizeException, IllegalIndividualException, OutOfBoundsGeneException {
 
 		//------ 既に究極の個体がいる場合にはその個体を即時に返す ------//
-		if (this.status.getBestIndividual() == null) ;
+		if (this.status.getBestIndividual() == null) { }
 		else if (this.status.getBestIndividual().getFitnessValue() == this.model.getFitnessAlgorithm().getBestFitnessValue())
 		{
 
@@ -414,7 +414,7 @@ public class GeneticAlgorithm :
 
 
 		//------ 交叉を行う。生存しなかった親は全て入れ替える ------//
-		List<Individual> children = this.model.getCrossoverAlgorithm().crossover(new_group, new_group.Count - survivors.Count);
+		List<Individual> children = this.model.getCrossoverAlgorithm().Crossover(new_group, new_group.Count - survivors.Count);
 
 
 
@@ -480,7 +480,7 @@ public class GeneticAlgorithm :
      * 各個体をランダムに生成し直します。<br>
      * これにより初めから探索をやり直すことができます。<br>
      */
-	public void reset()
+	public void Reset()
 	{
 
 		//------ 集団を一旦全削除 ------//
@@ -526,7 +526,7 @@ public class GeneticAlgorithm :
 			//------ 今回は必ず世代数指定 ------//
 			if (searchMethod == GeneticStatus.LIMIT_NUMBER)
 			{
-				this.search(this.getGenetationNumber());
+				this.Search(this.getGenetationNumber());
 			}
 
 

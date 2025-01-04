@@ -27,7 +27,7 @@ public class IllegalGenoTypeException : GeneticAlgorithmException
      *
      * 最終更新バージョン：1.0
      */
-	public IllegalGenoTypeException()
-	{
-	}
+	public IllegalGenoTypeException() { }
+
+	public IllegalGenoTypeException(Exception innerException) : base(innerException) { }
 }

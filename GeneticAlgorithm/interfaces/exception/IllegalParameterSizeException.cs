@@ -13,4 +13,7 @@ public class IllegalParameterSizeException : TmdSearchException
 {
 
 	public IllegalParameterSizeException(String information) : base(information) { }
+
+	public IllegalParameterSizeException(String information, Exception innerException) : base(information, innerException) { }
+
 }

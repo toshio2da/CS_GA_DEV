@@ -18,7 +18,7 @@ using jp.co.tmdgroup.common.interfaces.exception;
  * @version 1.0   2002/11/01
  */
 
-public interface SearchAlgorithm
+public interface ISearchAlgorithm
 {
 
 
@@ -27,12 +27,12 @@ public interface SearchAlgorithm
      *
      * @return 検索結果のオブジェクト
      */
-	public Individual search(int maxIterationNumber);
+	public Individual Search(int maxIterationNumber);
 	//throws IllegalParameterTypeException, IllegalParameterSizeException, IllegalElementException, ArgumentOutOfRangeException;
 
 
 	/**
      * <p>内部の状態を初期状態に戻します。</p>
      */
-	public void reset();
+	public void Reset();
 }

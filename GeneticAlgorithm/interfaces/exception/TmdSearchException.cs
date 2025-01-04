@@ -14,4 +14,7 @@ using jp.co.tmdgroup.common.tmdtools;
 public class TmdSearchException : TmdException
 {
 	public TmdSearchException(String information) : base(information) { }
+
+	public TmdSearchException(String information, Exception innerException) : base(information, innerException) { }
+
 }

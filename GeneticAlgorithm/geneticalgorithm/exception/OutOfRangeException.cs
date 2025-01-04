@@ -26,7 +26,8 @@ public class OutOfRangeException : GeneticAlgorithmException
      *
      * 最終更新バージョン：1.0
      */
-	public OutOfRangeException()
-	{
-	}
+	public OutOfRangeException() { }
+
+	public OutOfRangeException(Exception innerException) : base(innerException) { }
+
 }

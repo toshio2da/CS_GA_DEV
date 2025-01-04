@@ -15,4 +15,6 @@ public class IllegalParameterTypeException : TmdSearchException
 {
 
 	public IllegalParameterTypeException(String information) : base(information) { }
+
+	public IllegalParameterTypeException(String information, Exception innerException) : base(information, innerException) { }
 }

@@ -26,7 +26,8 @@ public class IllegalIndividualException : GeneticAlgorithmException
      *
      * 最終更新バージョン：1.0
      */
-	public IllegalIndividualException()
-	{
-	}
+	public IllegalIndividualException() { }
+
+	public IllegalIndividualException(Exception innerException) : base(innerException) { }
+
 }

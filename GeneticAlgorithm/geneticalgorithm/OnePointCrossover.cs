@@ -25,7 +25,7 @@ using jp.co.tmdgroup.common.geneticalgorithm.exception;
  * @version 1.0 (2002/10/30)
  */
 
-public class OnePointCrossover : CrossoverAlgorithm
+public class OnePointCrossover : ICrossoverAlgorithm
 {
 
 
@@ -66,7 +66,7 @@ public class OnePointCrossover : CrossoverAlgorithm
      * @return 生成された子集団
      * @throws IllegalIndividualException perentCandidatesの中にindividualクラスでないオブジェクトが入っています
      */
-	public List<Individual> crossover(List<Individual> perentCandidates, int childrenNumber)
+	public List<Individual> Crossover(List<Individual> perentCandidates, int childrenNumber)
 	{
 		try
 		{
@@ -152,6 +152,7 @@ public class OnePointCrossover : CrossoverAlgorithm
 		catch (Exception exception)
 		{
 			Console.WriteLine(exception.StackTrace);
+			return new List<Individual>();//null;
 		}
 		/*
 		catch (OutOfBoundsGeneException exception) {
@@ -189,6 +190,5 @@ public class OnePointCrossover : CrossoverAlgorithm
             Console.WriteLine(exception.StackTrace);
         }
         */
-		return null;
 	}
 }

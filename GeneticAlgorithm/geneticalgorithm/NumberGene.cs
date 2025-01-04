@@ -148,7 +148,7 @@ public class NumberGene : IGene
 		{
 
 			//------ 塩基タイプが一致しないので例外を送出 ------//
-			throw new IllegalGenoTypeException();
+			throw new IllegalGenoTypeException(exception);
 		}
 	}
 
@@ -178,7 +178,7 @@ public class NumberGene : IGene
 		}
 		catch (OutOfRangeException exception)
 		{
-			throw new OutOfBoundsGeneException();
+			throw new OutOfBoundsGeneException(exception);
 		}
 	}
 
@@ -221,7 +221,7 @@ public class NumberGene : IGene
 		}
 		catch (OutOfRangeException exception)
 		{
-			throw new OutOfBoundsGeneException();                               // 遺伝子長範囲外をアクセスしたため例外を送出
+			throw new OutOfBoundsGeneException(exception);                               // 遺伝子長範囲外をアクセスしたため例外を送出
 		}
 	}
 
@@ -281,7 +281,7 @@ public class NumberGene : IGene
 		}
 		catch (OutOfRangeException exception)
 		{
-			throw new OutOfBoundsGeneException();                               // 遺伝子長範囲外をアクセスしたため例外を送出
+			throw new OutOfBoundsGeneException(exception);                               // 遺伝子長範囲外をアクセスしたため例外を送出
 		}
 	}
 }

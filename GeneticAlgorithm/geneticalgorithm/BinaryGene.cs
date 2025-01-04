@@ -28,23 +28,23 @@ public class BinaryGene : IGene
 	//====================================================//
 
 	/** 塩基表現。2値遺伝子 */
-	protected bool[]          baseData;
+	protected bool[] baseData;
 
 
 
 
-    //===============================================//
-    //-------------------- 構築子 --------------------//
-    //===============================================//
+	//===============================================//
+	//-------------------- 構築子 --------------------//
+	//===============================================//
 
 
-    /**
+	/**
      * <p>サイズ指定構築子です。</p>
      * 遺伝子はランダムに作成されます<br>
      *
      * @param size  遺伝子の長さ
      */
-    public BinaryGene(int size)
+	public BinaryGene(int size)
 	{
 
 		//------ 遺伝子領域を確保 ------//
@@ -142,7 +142,7 @@ public class BinaryGene : IGene
 		{
 
 			//------ 塩基タイプが一致しないので例外を送出 ------//
-			throw new IllegalGenoTypeException();
+			throw new IllegalGenoTypeException(exception);
 		}
 	}
 
@@ -158,21 +158,24 @@ public class BinaryGene : IGene
      * @param genoIndex  突然変異を起こさせる塩基の場所を指定します。
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます。
      */
-	public void mutateOneGene(int genoIndex) { //throws OutOfBoundsGeneException {
-        try {
+	public void mutateOneGene(int genoIndex)
+	{ //throws OutOfBoundsGeneException {
+		try
+		{
 
-            //------ 指定塩基を反転 ------//
-            this.baseData[genoIndex] = !this.baseData[genoIndex];
-        }
-        catch (OutOfRangeException exception) {
-            throw new OutOfBoundsGeneException();                               // 遺伝子長範囲外をアクセスしたため例外を送出
-        }
-    }
+			//------ 指定塩基を反転 ------//
+			this.baseData[genoIndex] = !this.baseData[genoIndex];
+		}
+		catch (OutOfRangeException)
+		{
+			throw;// 遺伝子長範囲外をアクセスしたため例外を送出
+		}
+	}
 
 
 
 
-    /**
+	/**
      * <p>自己遺伝子の部分遺伝子断片を返します</p>
      * 部分遺伝子を返すことで交叉を行うことができます。<br>
      * 部分遺伝子は初端と終端を指定することで抜き出します。<br>
@@ -185,81 +188,84 @@ public class BinaryGene : IGene
      * @return  抜き出された部分遺伝子断片です
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
      */
-    public IGene getSubGene(int firstGenoIndex, int lastGenoIndex) { //throws OutOfBoundsGeneException {
+	public IGene getSubGene(int firstGenoIndex, int lastGenoIndex)
+	{ //throws OutOfBoundsGeneException {
 
 		try
-{
+		{
 
-	//------ 抜き出す部分遺伝子断片を作成 ------//
-	bool[] subGene = new bool[lastGenoIndex - firstGenoIndex + 1];
+			//------ 抜き出す部分遺伝子断片を作成 ------//
+			bool[] subGene = new bool[lastGenoIndex - firstGenoIndex + 1];
 
 
-	//------ 指定箇所をコピー ------//
-	for (int index = 0; index < subGene.Length; index++)
-	{
-		subGene[index] = this.baseData[firstGenoIndex + index];
+			//------ 指定箇所をコピー ------//
+			for (int index = 0; index < subGene.Length; index++)
+			{
+				subGene[index] = this.baseData[firstGenoIndex + index];
+			}
+
+
+			//------ 部分遺伝子断片を返す ------//
+			return new BinaryGene(subGene);
+
+		}
+		catch (OutOfRangeException)
+		{
+			throw;// 遺伝子長範囲外をアクセスしたため例外を送出
+		}
 	}
 
 
-	//------ 部分遺伝子断片を返す ------//
-	return new BinaryGene(subGene);
-
-}
-catch (OutOfRangeException exception)
-{
-	throw new OutOfBoundsGeneException();                               // 遺伝子長範囲外をアクセスしたため例外を送出
-}
-    }
 
 
-
-
-    /**
+	/**
      * <p>自己遺伝子を全てランダムなもので再構築します。</p>
      * 個体遺伝子の初期化などに用いられます。<br>
      */
-    public void randumReconstruct()
-{
+	public void randumReconstruct()
+	{
 
-	//------ 乱数を使って全塩基を再構築 ------//
-	for (int index = 0; index < this.baseData.Length; index++) {
+		//------ 乱数を使って全塩基を再構築 ------//
+		for (int index = 0; index < this.baseData.Length; index++)
+		{
 
-		this.baseData[index] = (GARandomGenerator.random() < 0.5);                         // 0.5未満だったら
+			this.baseData[index] = (GARandomGenerator.random() < 0.5);                         // 0.5未満だったら
+		}
 	}
-}
 
 
 
 
-/**
- * <p>指定した場所の遺伝子に逆位を行います。</p>
- * 逆位とは指定した場所の遺伝子の順番を反転させる操作を指します。<br>
- * あまり一般的に用いられるGAオペレーションではありません。
- *
- * @param firstGenoIndex  抜き出す遺伝子断片の初端を指定します
- * @param lastGenoIndex  抜き出す遺伝子断片の終端を指定します
- * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
- */
-public void InverseSubGene(int firstGenoIndex, int lastGenoIndex) { //throws OutOfBoundsGeneException {
+	/**
+	 * <p>指定した場所の遺伝子に逆位を行います。</p>
+	 * 逆位とは指定した場所の遺伝子の順番を反転させる操作を指します。<br>
+	 * あまり一般的に用いられるGAオペレーションではありません。
+	 *
+	 * @param firstGenoIndex  抜き出す遺伝子断片の初端を指定します
+	 * @param lastGenoIndex  抜き出す遺伝子断片の終端を指定します
+	 * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
+	 */
+	public void InverseSubGene(int firstGenoIndex, int lastGenoIndex)
+	{ //throws OutOfBoundsGeneException {
 
 		try
-{
+		{
 
-	//------ 逆位を行うために遺伝子断片を作成 ------//
-	IGene subGene = this.getSubGene(firstGenoIndex, lastGenoIndex);
-	bool[] gene = (bool[])subGene.getBase();
+			//------ 逆位を行うために遺伝子断片を作成 ------//
+			IGene subGene = this.getSubGene(firstGenoIndex, lastGenoIndex);
+			bool[] gene = (bool[])subGene.getBase();
 
 
-	//------ 逆順にコピー ------//
-	for (int index = 0; index < gene.Length; index++)
-	{
-		this.baseData[firstGenoIndex + index] = gene[gene.Length - index - 1];
+			//------ 逆順にコピー ------//
+			for (int index = 0; index < gene.Length; index++)
+			{
+				this.baseData[firstGenoIndex + index] = gene[gene.Length - index - 1];
+			}
+
+		}
+		catch (OutOfRangeException)
+		{
+			throw;// 遺伝子長範囲外をアクセスしたため例外を送出
+		}
 	}
-
-}
-catch (OutOfRangeException exception)
-{
-	throw new OutOfBoundsGeneException();                               // 遺伝子長範囲外をアクセスしたため例外を送出
-}
-    }
 }

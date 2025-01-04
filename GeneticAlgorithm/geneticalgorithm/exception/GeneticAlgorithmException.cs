@@ -26,7 +26,8 @@ public class GeneticAlgorithmException : Exception
      *
      * 最終更新バージョン：1.0
      */
-	public GeneticAlgorithmException()
-	{
-	}
+	public GeneticAlgorithmException() { }
+
+	public GeneticAlgorithmException(Exception innerException) : base(innerException.Message, innerException) { }
+
 }

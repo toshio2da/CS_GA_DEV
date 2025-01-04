@@ -63,6 +63,12 @@ public class BinaryIndividualModel : IIndividual
      */
 	public bool isLegalGenoType(IGene gene)
 	{
+
+		//------ 試しにキャストしてみる ------//
+		bool[]? test = gene.getBase() as bool[];
+		return (test != null);
+
+		/*
 		try
 		{
 			//------ 試しにキャストしてみる ------//
@@ -71,12 +77,13 @@ public class BinaryIndividualModel : IIndividual
 			//------ キャスト可能なのでtrueを返す ------//
 			return true;
 		}
-		catch (InvalidCastException exception)
+		catch (InvalidCastException)
 		{
 
 			//------ 塩基タイプが2値でないのでfalseを返す ------//
 			return false;
 		}
+		*/
 	}
 
 

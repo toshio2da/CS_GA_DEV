@@ -12,7 +12,7 @@
  * @version 1.0 (2002/12/07)
  */
 
-public class DefaultGeneticReporter : GeneticReportable
+public class DefaultGeneticReporter : IGeneticReportable
 {
 
 	/**

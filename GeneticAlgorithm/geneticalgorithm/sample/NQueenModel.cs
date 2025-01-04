@@ -58,16 +58,16 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
 	protected IIndividual individualModel;
 
 	/** 適応度計算アルゴリズム。専用のアルゴリズムを用意。 */
-	protected FitnessAlgorithm fitnessAlgorithm;
+	protected IFitnessAlgorithm fitnessAlgorithm;
 
 	/** 淘汰アルゴリズム。トーナメント方式を採用。*/
-	protected SelectionAlgorithm selectionAlgorithm;
+	protected ISelectionAlgorithm selectionAlgorithm;
 
 	/** 生存アルゴリズム。エリート戦略を採用。*/
-	protected SurvivalAlgorithm survivalAlgorithm;
+	protected ISurvivalAlgorithm survivalAlgorithm;
 
 	/** 交叉アルゴリズム。2点交叉を採用。*/
-	protected CrossoverAlgorithm crossoverAlgorithm;
+	protected ICrossoverAlgorithm crossoverAlgorithm;
 
 
 
@@ -103,6 +103,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
 		{
 
 			Console.WriteLine(exception.StackTrace);
+			throw;
 		}
 	}
 
@@ -139,7 +140,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する適応度計算アルゴリズムを実装するクラスのインスタンス
      */
-	public override FitnessAlgorithm getFitnessAlgorithm()
+	public override IFitnessAlgorithm getFitnessAlgorithm()
 	{
 
 		//------ 適応度計算アルゴリズムクラスを返す ------//
@@ -155,7 +156,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する淘汰アルゴリズムを実装するクラスのインスタンス
      */
-	public override SelectionAlgorithm getSelectionAlgorithm()
+	public override ISelectionAlgorithm getSelectionAlgorithm()
 	{
 
 		//------ 淘汰アルゴ値ズムを返す ------//
@@ -173,7 +174,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する生存アルゴリズムを実装するクラスのインスタンス
      */
-	public override SurvivalAlgorithm getSurvivalAlgorithm()
+	public override ISurvivalAlgorithm getSurvivalAlgorithm()
 	{
 
 		//------ 生存アルゴリズムを返す ------//
@@ -191,7 +192,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する交叉アルゴリズムを実装するクラスのインスタンスを返します。
      */
-	public override CrossoverAlgorithm getCrossoverAlgorithm()
+	public override ICrossoverAlgorithm getCrossoverAlgorithm()
 	{
 
 		//------ 交叉アルゴリズムを返す ------//

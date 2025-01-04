@@ -73,8 +73,8 @@ public abstract class AbstractGeneticAlgorithmModel: IGeneticAlgorithmModel
 	}
 
 	public abstract IIndividual getIndividualModel();
-	public abstract FitnessAlgorithm getFitnessAlgorithm();
-	public abstract SelectionAlgorithm getSelectionAlgorithm();
-	public abstract SurvivalAlgorithm getSurvivalAlgorithm();
-	public abstract CrossoverAlgorithm getCrossoverAlgorithm();
+	public abstract IFitnessAlgorithm getFitnessAlgorithm();
+	public abstract ISelectionAlgorithm getSelectionAlgorithm();
+	public abstract ISurvivalAlgorithm getSurvivalAlgorithm();
+	public abstract ICrossoverAlgorithm getCrossoverAlgorithm();
 }

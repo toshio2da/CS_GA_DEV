@@ -14,7 +14,7 @@
  * @version 1.0 (2002/12/07)
  */
 
-public interface GeneticReportable
+public interface IGeneticReportable
 {
 
 	/**

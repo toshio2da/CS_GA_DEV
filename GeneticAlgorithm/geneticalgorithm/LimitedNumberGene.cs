@@ -96,7 +96,7 @@ public class LimitedNumberGene : NumberGene
      * @param genoIndex  突然変異を起こさせる塩基の場所を指定します。
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます。
      */
-	public void mutateOneGene(int genoIndex)
+	public new void mutateOneGene(int genoIndex)
 	{ //throws OutOfBoundsGeneException {
 		try
 		{
@@ -104,9 +104,9 @@ public class LimitedNumberGene : NumberGene
 			//------ ランダム整数を代入します ------//
 			this.baseData[genoIndex] = (int)(GARandomGenerator.random() * this.limitNumber);
 		}
-		catch (OutOfRangeException exception)
+		catch (OutOfRangeException)
 		{
-			throw new OutOfBoundsGeneException();
+			throw;
 		}
 	}
 }
