@@ -2,6 +2,7 @@
 using jp.co.tmdgroup.common.tmdtools;
 
 using static jp.co.tmdgroup.nqueengasample.NQueenGA;
+using static jp.co.tmdgroup.nqueengasample.TestForm;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace jp.co.tmdgroup.nqueengasample
@@ -60,31 +61,35 @@ namespace jp.co.tmdgroup.nqueengasample
 		int[] bestPattern = [];
 
 
-		private class GeneticReportableImpl(NQueenGA parent) : IGeneticReportable
+		private class GeneticReportableImpl(NQueenGA parent, funcDelegate reportFunc) : IGeneticReportable
 		{
 			public void Report(Individual surperior)
 			{
 				parent.status = GeneticStatus.SEARCHING;
 				parent.bestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
-				//owner.mapPanel.canvas.repaint();
+
+				reportFunc(surperior);
 			}
 
 			public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
 			{
 				parent.status = GeneticStatus.DONE_SEARCH;
 				parent.bestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
-				//owner.mapPanel.canvas.repaint();
-			}
-		}
 
-		/**
+                reportFunc(lastSurperior);
+            }
+        }
+
+		public delegate void funcDelegate(Individual surperior);
+
+        /**
 		* 遺伝的アルゴリズムによる探索を行います
 		**/
-		public void SearchQueeen()
+        public void SearchQueeen(funcDelegate reportFunc)
 		{
 			gaStatus = new ();
 			gaStatus.Command = this.command;
-			gaStatus.Reporter = new GeneticReportableImpl(this);
+			gaStatus.Reporter = new GeneticReportableImpl(this, reportFunc);
 
 			NQueenGeneticAlgorithm model = new (context.QueenCnt);
 
