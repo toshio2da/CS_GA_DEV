@@ -22,46 +22,30 @@ using jp.co.tmdgroup.common.tmdtools;
 public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 {
 
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	public NQueenFitnessAlgorithm() { }
 
-	//===============================================//
-	//-------------------- 構築子 --------------------//
-	//===============================================//
-
-	/**
-     * <p>構築子です。</p>
-     */
-	public NQueenFitnessAlgorithm()
-	{
-	}
-
-
-
-
-
-	//===========================================================================//
-	//-------------------- FitnessAlgorithmインタフェースの実装 --------------------//
-	//===========================================================================//
-
-	/**
-     * <p>N-Queen問題における個体の適応度の計算を行います。</p>
-     * N-Queen問題では各クイーンがお互いに取れない様に配置されていなければなりません。<br>
-     * 本N-Queen問題では適応度をInteger.MAX_VALUEからの減点方式で算出します。<br>
-     * つまり、Integer.MAX_VALUEが最高適応度となります。<br>
-     * 互いに取れるクイーンが配置されると100減点されます。<br>
-     * 適応度は本メソッドに返されると同時に渡された個体に保持されます。<br>
-     *
-     * @param individual 適応度を算出する個体
-     * @return 算出された適応度
-     * @throws IllegalGenoTypeException 個体の持つ遺伝子の塩基タイプが本クラスで扱うものと一致しません
-     * @throws IllegalGenoSizeException 個体の持つ遺伝子が
-     */
+	/// <summary>
+	/// N-Queen問題における個体の適応度の計算を行います。
+	/// </summary>
+	/// <remarks>
+	/// N-Queen問題では各クイーンがお互いに取れない様に配置されていなければなりません。<br>
+	/// 本N-Queen問題では適応度をInteger.MAX_VALUEからの減点方式で算出します。<br>
+	/// つまり、Integer.MAX_VALUEが最高適応度となります。<br>
+	/// 互いに取れるクイーンが配置されると100減点されます。<br>
+	/// 適応度は本メソッドに返されると同時に渡された個体に保持されます。<br>
+	/// </remarks>
+	/// <param name="individual">適応度を算出する個体</param>
+	/// <returns>算出された適応度</returns>
 	public double GetFitnessValue(Individual individual)
-	{ //throws IllegalGenoTypeException, IllegalGenoSizeException {
+	{
 
 		//------ 遺伝子情報の組み替え。致死遺伝子の削除 ------//
-		int[] gene = DataTools.CreateUniqElementArray((int[])individual.Gene.GetBase());
-		//        int[]            gene = (int[])individual.getGene().getBase();
-		int fitnessValue = (int)this.GetBestFitnessValue();              // 適応度を保持
+		//int[] gene = DataTools.CreateUniqElementArray((int[])individual.Gene.GetBase());
+		int[] gene = (int[])individual.Gene.GetBase();
+		int fitnessValue = (int)this.BestFitnessValue;              // 適応度を保持
 
 
 		//------ 各塩基を順に調査 ------//
@@ -95,62 +79,13 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 		return fitnessValue;                                                    // 算出した適応度を返す
 	}
 
-
-
-	/**
-     * <p>N-Queen問題における個体の最大適応度(究極の個体)を返します。</p>
-     * 本問題ではInteger.MAX_VALUEからの減点方式を採用しています。<br>
-     * よってInteger.MAX_VALUEが最大適応度として返されます。<br>
-     *
-     * @return N-Queen問題における個体の最大適応度
-     */
-	public double GetBestFitnessValue()
-	{
-
-		//------ 最大適応度を返します ------//
-		return (double)1000000;
-	}
-
-
-
-
-
-	//public static void NQeenMain(String[] args)
-	public static void NQeenMain()
-	{
-		try
-		{
-
-			NQueenGeneticAlgorithm model = new(16);
-			GeneticStatus status = new();
-			GeneticAlgorithm GeneticAlgorithm = new(model, status, 200);
-
-			Individual bestIndividual = (Individual)GeneticAlgorithm.Search(5000);
-
-
-			int[] bestIndividualArray = DataTools.CreateUniqElementArray((int[])(bestIndividual.Gene.GetBase()));
-
-			FileStream output = new("c:\\tmdproject\\java\\nqueengasample\\output\\output.html", FileMode.OpenOrCreate);
-			StreamWriter dataOutput = new(output);
-			dataOutput.Write("<html><head></head><body>");
-			dataOutput.Write(NQueenToHtml.ToHtml(bestIndividualArray));
-			dataOutput.Write("</body></html>");
-
-			for (int index = 0; index < bestIndividualArray.Length; index++)
-			{
-
-				Console.WriteLine(bestIndividualArray[index] + " ");
-			}
-			Console.WriteLine();
-
-			Console.WriteLine((int)bestIndividual.FitnessValue);
-
-
-		}
-		catch (Exception exception)
-		{
-
-			Console.WriteLine(exception);
-		}
-	}
+	/// <summary>
+	/// N-Queen問題における個体の最大適応度(究極の個体)を返します。
+	/// </summary>
+	/// <remarks>
+	/// 本問題ではInteger.MAX_VALUEからの減点方式を採用しています。<br>
+	/// よってInteger.MAX_VALUEが最大適応度として返されます。<br>
+	/// </remarks>
+	/// <returns>N-Queen問題における個体の最大適応度</returns>
+	public double BestFitnessValue => (double)1000000;
 }

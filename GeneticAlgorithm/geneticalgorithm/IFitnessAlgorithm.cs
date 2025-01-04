@@ -51,5 +51,5 @@ public interface IFitnessAlgorithm
      *
      * @return 個体の持つことの出来る最大の適応度を返します。
      */
-	public double GetBestFitnessValue();
+	public double BestFitnessValue { get; }
 }

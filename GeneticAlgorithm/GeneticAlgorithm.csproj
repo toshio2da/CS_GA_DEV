@@ -16,6 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="geneticalgorithm\sample\**" />
+    <EmbeddedResource Remove="geneticalgorithm\sample\**" />
+    <None Remove="geneticalgorithm\sample\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="geneticalgorithm\GeneticStatus.jbx" />
   </ItemGroup>
 

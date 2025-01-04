@@ -37,11 +37,13 @@ partial class TestForm
 		label2 = new Label();
 		numQueenCnt = new NumericUpDown();
 		label1 = new Label();
+		webView = new Microsoft.Web.WebView2.WinForms.WebView2();
 		panel1.SuspendLayout();
 		((System.ComponentModel.ISupportInitialize)numMutationRate).BeginInit();
 		((System.ComponentModel.ISupportInitialize)numIndividualCnt).BeginInit();
 		((System.ComponentModel.ISupportInitialize)numGenerationChangeCnt).BeginInit();
 		((System.ComponentModel.ISupportInitialize)numQueenCnt).BeginInit();
+		((System.ComponentModel.ISupportInitialize)webView).BeginInit();
 		SuspendLayout();
 		// 
 		// panel1
@@ -58,12 +60,12 @@ partial class TestForm
 		panel1.Dock = DockStyle.Left;
 		panel1.Location = new Point(0, 0);
 		panel1.Name = "panel1";
-		panel1.Size = new Size(275, 637);
+		panel1.Size = new Size(240, 637);
 		panel1.TabIndex = 0;
 		// 
 		// btnSearch
 		// 
-		btnSearch.Location = new Point(21, 154);
+		btnSearch.Location = new Point(135, 152);
 		btnSearch.Name = "btnSearch";
 		btnSearch.Size = new Size(75, 23);
 		btnSearch.TabIndex = 1;
@@ -100,7 +102,7 @@ partial class TestForm
 		numIndividualCnt.Size = new Size(89, 23);
 		numIndividualCnt.TabIndex = 5;
 		numIndividualCnt.TextAlign = HorizontalAlignment.Right;
-		numIndividualCnt.Value = new decimal(new int[] { 100, 0, 0, 0 });
+		numIndividualCnt.Value = new decimal(new int[] { 1000, 0, 0, 0 });
 		// 
 		// label3
 		// 
@@ -134,11 +136,12 @@ partial class TestForm
 		// numQueenCnt
 		// 
 		numQueenCnt.Location = new Point(135, 22);
+		numQueenCnt.Minimum = new decimal(new int[] { 4, 0, 0, 0 });
 		numQueenCnt.Name = "numQueenCnt";
 		numQueenCnt.Size = new Size(89, 23);
 		numQueenCnt.TabIndex = 1;
 		numQueenCnt.TextAlign = HorizontalAlignment.Right;
-		numQueenCnt.Value = new decimal(new int[] { 5, 0, 0, 0 });
+		numQueenCnt.Value = new decimal(new int[] { 10, 0, 0, 0 });
 		// 
 		// label1
 		// 
@@ -149,20 +152,36 @@ partial class TestForm
 		label1.TabIndex = 0;
 		label1.Text = "QUEENの数";
 		// 
+		// webView
+		// 
+		webView.AllowExternalDrop = true;
+		webView.CreationProperties = null;
+		webView.DefaultBackgroundColor = Color.White;
+		webView.Dock = DockStyle.Fill;
+		webView.Location = new Point(240, 0);
+		webView.Name = "webView";
+		webView.Size = new Size(531, 637);
+		webView.TabIndex = 1;
+		webView.ZoomFactor = 1D;
+		// 
 		// TestForm
 		// 
 		AutoScaleDimensions = new SizeF(7F, 15F);
 		AutoScaleMode = AutoScaleMode.Font;
 		ClientSize = new Size(771, 637);
+		Controls.Add(webView);
 		Controls.Add(panel1);
 		Name = "TestForm";
-		Text = "Form1";
+		StartPosition = FormStartPosition.CenterScreen;
+		Text = "NQueenサンプル";
+		Load += TestForm_Load;
 		panel1.ResumeLayout(false);
 		panel1.PerformLayout();
 		((System.ComponentModel.ISupportInitialize)numMutationRate).EndInit();
 		((System.ComponentModel.ISupportInitialize)numIndividualCnt).EndInit();
 		((System.ComponentModel.ISupportInitialize)numGenerationChangeCnt).EndInit();
 		((System.ComponentModel.ISupportInitialize)numQueenCnt).EndInit();
+		((System.ComponentModel.ISupportInitialize)webView).EndInit();
 		ResumeLayout(false);
 	}
 
@@ -178,5 +197,5 @@ partial class TestForm
 	private NumericUpDown numGenerationChangeCnt;
 	private Label label2;
 	private Button btnSearch;
-
+	private Microsoft.Web.WebView2.WinForms.WebView2 webView;
 }

@@ -88,7 +88,7 @@ public class EliteStrategy : AbstractSurvival
 
 		//------ ソートを行う。 ------//
 		//        Collections.sort(survivors);
-
+		survivors = survivors.OrderBy(e => e.FitnessValue).ToList();
 
 		//------ 世代間ギャップによって決められた数だけ順に抽出 ------//
 		int eliteNumber = (int)(survivors.Count * (1.0 - this.GenerationGap));  // 生き残るエリートの数を計算

@@ -26,54 +26,11 @@ using System.Runtime.CompilerServices;
 public class GeneticStatus
 {
 
-	///<sammary> 検索続行命令。検索中は通常この命令が格納されています。 */
-	public const int GO_AHEAD_SEARCH = 0;
-
-	///<sammary> 検索終了命令。検索を終了させるときに格納します。世代交代時にチェックされます。 */
-	public const int STOP_SEARCH = 1;
-
-
-	///<sammary> 状態変数。現在検索中であることを示します。 */
-	public const int SEARCHING = 100;
-
-	///<sammary> 状態変数。検索が完了したことを示します。*/
-	public const int DONE_SEARCH = 101;
-
-	///<sammary> 状態変数。検索を待っていることを示します。デフォルト値です。*/
-	public const int WAIT_FOR_SEARCH = 102;
-
-
-	///<sammary> 検索の種類。指定世代数まで世代交代を行います。デフォルト値です。 */
-	public const int LIMIT_NUMBER = 200;
-
-	///<sammary> 検索の種類。指定時間まで延々と世代交代を行います。*/
-	public const int LIMIT_TIME = 201;
-
-	///<sammary> 検索の種類.指定世代数の検索を指定時間まで繰り返します。広範囲に渡る検索が可能です。*/
-	public const int LIMIT_NUMBER_UNTIL_TIME = 202;
-
-
-
-	///<sammary> 各世代の最優秀個体(最新の検索中) */
+	//各世代の最優秀個体(最新の検索中)
 	private List<Individual> superior = [];
 
-	///<sammary> 全検索の中で生き残った最優秀個体 */
+	//全検索の中で生き残った最優秀個体
 	private Individual bestIndividual = null!;
-
-	///<sammary> 検索に対する命令格納場所。別スレッドで動くためこの変数を介して制御します。 */
-	private int command = GeneticStatus.GO_AHEAD_SEARCH;
-
-	///<sammary> 状態変数です。現在の検索状況を示します。*/
-	private int status = GeneticStatus.WAIT_FOR_SEARCH;
-
-	///<sammary> 検索の方法を示します。世代交代数指定と時間指定、またはその組み合わせが可能です。 */
-	private int search_method = GeneticStatus.LIMIT_NUMBER;
-
-	///<sammary> 適応度計算アルゴリズム。GeneticAlgorithmクラスに自動的に設定されます。 */
-	private IFitnessAlgorithm? fitness;
-
-	///<sammary> 途中経過の報告クラス。デフォルトでは標準出力に適応度を出力 */
-	private IGeneticReportable reporter = new DefaultGeneticReporter();
 
 
 	///<sammary>
@@ -86,95 +43,50 @@ public class GeneticStatus
 	/// <sammary>
 	/// 適応度計算アルゴリズムを取得または設定します
 	/// </sammary>
-	public IFitnessAlgorithm? FitnessAlgorithm { get => fitness; set => fitness = value; }
-
+	/// <remarks>
+	/// GeneticAlgorithmクラスに自動的に設定されます。
+	/// </remarks>
+	public IFitnessAlgorithm? FitnessAlgorithm { get; set; } = null;
 
 	/// <sammary>
 	/// 途中経過報告クラス
 	/// </sammary>
-	public IGeneticReportable Reporter { get => this.reporter; set => this.reporter = value; }
+	/// <remarks>
+	/// デフォルトでは標準出力に適応度を出力
+	/// </remarks>
+	public IGeneticReportable Reporter { get; set; } = new DefaultGeneticReporter();
 
 
-
-
-	//==================================================//
-	//-------------------- 検索命令 --------------------//
-	//==================================================//
-
-	public int Command
-	{
-		get => this.command;
-		set
-		{
-			//------ サポートされている検索命令かチェック ------//
-			if (value != GeneticStatus.GO_AHEAD_SEARCH && value != GeneticStatus.STOP_SEARCH)
-			{
-
-				throw new ArgumentException("サポートされていない検索命令です");
-			}
-
-			//------ 検索命令を設定 ------//
-			this.command = value;
-		}
-	}
+	/// <summary>
+	/// 検索に対する命令を取得または設定します
+	/// </summary>
+	public GeneticSearchCommand Command { get; set; } = GeneticSearchCommand.GO_AHEAD_SEARCH;
 
 	/// <sammary>
-	/// 状態変数
+	/// 状態変数を取得または設定します
 	/// </sammary>
-	public int SearchStatus
-	{
-		get => this.status;
-		set
-		{
-			//------ サポートしているかチェックする ------//
-			if (value != GeneticStatus.SEARCHING && status != GeneticStatus.DONE_SEARCH && value != GeneticStatus.WAIT_FOR_SEARCH)
-			{
-				throw new ArgumentException("サポートされていない状態変数です。");
-			}
+	public GeneticSearchStatus SearchStatus { get; set; } = GeneticSearchStatus.WAIT_FOR_SEARCH;
 
-			//------ 検索状態を変更 ------//
-			this.status = value;
-		}
-	}
 
 	/// <sammary>
-	/// 検索手法
+	/// 検索手法を取得または設定します
 	/// </sammary>
-	public int SearchMethod
-	{
-
-		get => this.search_method;
-		set
-		{
-			//------ チェック ------//
-			if (value != GeneticStatus.LIMIT_NUMBER && value != GeneticStatus.LIMIT_TIME &&
-				value != GeneticStatus.LIMIT_NUMBER_UNTIL_TIME)
-			{
-				throw new ArgumentException("不正な検索手法を指定しています。");
-			}
-
-			//------ 検索手法を変更 ------//
-			this.search_method = value;
-		}
-	}
+	public GeneticSearchMethod SearchMethod { get; set; } = GeneticSearchMethod.LIMIT_NUMBER;
 
 
-
-
-	//==========================================================//
-	//-------------------- 現検索中の優秀個体 --------------------//
-	//=========================================================//
-
-	///<sammary>
-	///<p>指定した世代の最優秀個体を取得します。</p>
-	///本クラスには各世代の最高個体が保持されています。<br>
-	///いわば、遺伝的アルゴリズムの記録と言えます。<br>
-	///本メソッドでは世代を指定することでその世代の最優秀個体を得ることができます。<br>
-	///これにより世代による個体の成長を見ることもできます。<br>
-	///@param generationIndex 指定する世代
-	///@return 指定世代の最優秀個体
-	///@throws ArgumentOutOfRangeException 指定世代が記録されている世代数の範囲を超えています
-	///</sammary>
+	/// 
+	/// <summary>
+	/// 指定した世代の最優秀個体を取得します。
+	/// </summary>
+	/// <remarks>
+	/// 本クラスには各世代の最高個体が保持されています。<br>
+	/// いわば、遺伝的アルゴリズムの記録と言えます。<br>
+	/// 本メソッドでは世代を指定することでその世代の最優秀個体を得ることができます。<br>
+	/// これにより世代による個体の成長を見ることもできます。<br>
+	/// </remarks>
+	/// <param name="generationIndex">指定する世代</param>
+	/// <returns>指定世代の最優秀個体</returns>
+	/// <exception cref="IllegalParameterSizeException"></exception>
 	public Individual GetSuperior(int generationIndex)
 	{ //throws ArgumentOutOfRangeException {
 
@@ -200,49 +112,42 @@ public class GeneticStatus
 	}
 
 	///<sammary>
-	///<p>記録した現検索の優秀個体の情報を全て削除します。</p>
-	///本メソッドはGeneticAlgorithmクラスによって呼び出されます。<br>
+	///記録した現検索の優秀個体の情報を全て削除します。
 	///</sammary>
+	///<remarks>
+	///本メソッドはGeneticAlgorithmクラスによって呼び出されます。<br>
+	///</remarks>
 	public void ClearSuperior()
 	{
-
-		//------ 記録を全て削除 ------//
 		this.superior.Clear();
 	}
 
-	//===========================================================//
-	//-------------------- 全検索中の最優秀個体 --------------------//
-	//===========================================================//
-
-	///<sammary>
-	///<p>今までの全検索の内、最優秀である個体を返します。</p>
-	///全検索とは、複数回の検索全てを含みます。<br>
-	///よって最終的な検索結果となります。<br>
-
-	///@return 全検索中最優秀個体
-	///</sammary>
+	/// <summary>
+	/// 今までの全検索の内、最優秀である個体を返します。
+	/// </summary>
+	/// <remarks>
+	/// 全検索とは、複数回の検索全てを含みます。<br>
+	/// よって最終的な検索結果となります。<br>
+	/// </remarks>
+	/// <returns>全検索中最優秀個体</returns>
 	public Individual GetBestIndividual()
 	{
-
-
-		//------ 最優秀の個体を返す ------//
 		return this.bestIndividual;
 	}
 
-	///<sammary>
-	///<p>最優秀候補を交代します。</p>
-	///適応度計算アルゴリズムによって適応度が比較され、現在保持されている最優秀個体よりも優秀な場合は交代となります。<br>
-	///つまり、候補を引数として渡せば自動的にチェックされます。<br>
-	///本メソッドはGeneticAlgorithmクラスによって呼び出されます。<br>
 
-	///@param candidate 最優秀個体候補
-	///@param geneticNumber 現在の世代数
-	///@throws IllegalGenoSizeException 候補として渡された個体の遺伝子の遺伝子長が一致していません
-	///@throws IllegalGenoTypeException 候補として渡された個体の遺伝子の塩基タイプが一致していません
-	///</sammary>
+	/// <summary>
+	/// 最優秀候補を交代します。
+	/// </summary>
+	/// <remarks>
+	/// 適応度計算アルゴリズムによって適応度が比較され、現在保持されている最優秀個体よりも優秀な場合は交代となります。<br>
+	/// つまり、候補を引数として渡せば自動的にチェックされます。<br>
+	/// 本メソッドはGeneticAlgorithmクラスによって呼び出されます。<br>
+	/// </remarks>
+	/// <param name="candidate">最優秀個体候補</param>
+	/// <exception cref="NullReferenceException">FitnessAlgorithmがNullの場合</exception>
 	public void SetBestIndividual(Individual candidate)
 	{
-
 		//------ 始めの1回目かチェック ------//
 		if (this.bestIndividual == null)
 		{
@@ -252,16 +157,16 @@ public class GeneticStatus
 			return;
 		}
 
-		if (this.fitness == null) throw new NullReferenceException("fitnessがNullです");
+		if (this.FitnessAlgorithm == null) throw new NullReferenceException("FitnessAlgorithmがNullです");
 
 		//------ 適応度が現在の最優秀候補よりも高いかチェック ------//
-		if (this.fitness.GetFitnessValue(this.bestIndividual) < this.fitness.GetFitnessValue(candidate))
+		if (this.FitnessAlgorithm.GetFitnessValue(this.bestIndividual) < this.FitnessAlgorithm.GetFitnessValue(candidate))
 		{
 			//------ さらに優秀な個体が現れたので交代 ------//
 			this.bestIndividual = candidate;
 
 			//------ 最優秀個体が交代したので報告 ------//
-			this.reporter.Report(this.bestIndividual);
+			this.Reporter.Report(this.bestIndividual);
 		}
 	}
 }

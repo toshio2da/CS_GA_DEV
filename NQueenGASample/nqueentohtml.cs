@@ -1,5 +1,6 @@
 ﻿namespace jp.co.tmdgroup.nqueengasample;
 
+using System.Runtime.CompilerServices;
 using System.Text;
 
 
@@ -20,32 +21,28 @@ public class NQueenToHtml
 	}
 
 
-	public static String ToHtml(int[] gene)
+	public static String ToHtml(int[] gene, int webViewWidth)
 	{
 
 		StringBuilder buffer = new();
-		int w = gene.Length * 26;
+		int w = Math.Abs(webViewWidth / gene.Length);
 
-		buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"" + w.ToString() + "\">  <tbody>");
+		buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"" + webViewWidth.ToString() + "\">  <tbody>");
 
 		for (int rowIndex = 0; rowIndex < gene.Length; rowIndex++)
 		{
 
-			buffer.Append("<tr>");
+			buffer.Append("<tr height='" + w.ToString() + "'>");
 			for (int columnIndex = 0; columnIndex < gene.Length; columnIndex++)
 			{
-
-				buffer.Append("<td valign=\"top\" align=\"center\">");
-
 				if (gene[rowIndex] == columnIndex)
 				{
-
-					buffer.Append("<img src=\"queen.bmp\">");
+					//buffer.Append("<img src=\"queen.bmp\">");
+					buffer.Append("<td valign=\"top\" align=\"center\" style='background-color:black'>");
 				}
 				else
 				{
-
-					buffer.Append('　');
+					buffer.Append("<td valign=\"top\" align=\"center\">");
 				}
 
 				buffer.Append("<br></td>");

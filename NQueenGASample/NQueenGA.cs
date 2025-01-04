@@ -35,13 +35,6 @@ namespace jp.co.tmdgroup.nqueengasample
 
 
 		/// <summary>
-		/// 制御コマンド変数
-		/// </summary>
-		int command = GeneticStatus.GO_AHEAD_SEARCH;
-
-
-
-		/// <summary>
 		/// GAの状態オブジェクト
 		/// </summary>
 		private GeneticStatus? gaStatus = null;
@@ -51,28 +44,30 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// <summary>
 		/// 探索状態変数
 		/// </summary>
-		int status = GeneticStatus.WAIT_FOR_SEARCH;
+		private GeneticSearchStatus status = GeneticSearchStatus.WAIT_FOR_SEARCH;
 
 
 		/// <summary>
 		/// 探索結果
 		/// </summary>
-		int[] bestPattern = [];
+		private int[] bestPattern = [];
 
 
 		private class GeneticReportableImpl(NQueenGA parent) : IGeneticReportable
 		{
 			public void Report(Individual surperior)
 			{
-				parent.status = GeneticStatus.SEARCHING;
-				parent.bestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
+				parent.status = GeneticSearchStatus.SEARCHING;
+				//parent.bestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
+				parent.bestPattern = (int[])surperior.Gene.GetBase();
 				//owner.mapPanel.canvas.repaint();
 			}
 
 			public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
 			{
-				parent.status = GeneticStatus.DONE_SEARCH;
-				parent.bestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
+				parent.status = GeneticSearchStatus.DONE_SEARCH;
+				//parent.bestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
+				parent.bestPattern = (int[])lastSurperior.Gene.GetBase();
 				//owner.mapPanel.canvas.repaint();
 			}
 		}
@@ -80,16 +75,18 @@ namespace jp.co.tmdgroup.nqueengasample
 		/**
 		* 遺伝的アルゴリズムによる探索を行います
 		**/
-		public void SearchQueeen()
+		public Individual SearchQueeen()
 		{
 			gaStatus = new ();
-			gaStatus.Command = this.command;
+			gaStatus.Command = GeneticSearchCommand.GO_AHEAD_SEARCH;
 			gaStatus.Reporter = new GeneticReportableImpl(this);
 
 			NQueenGeneticAlgorithm model = new (context.QueenCnt);
 
 			GeneticAlgorithm _ga = new (model, gaStatus, context.IndividualCnt);
 			Individual _best = _ga.Search(context.GenerationChangeCnt); // 探索
+
+			return _best;
 		}
 	}
 }
