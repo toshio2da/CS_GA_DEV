@@ -33,7 +33,7 @@ public interface IFitnessAlgorithm
      * @throws IllegalGenoSizeException  遺伝子断片の合計遺伝子長が本遺伝子の遺伝子長と一致しません(遺伝子不足又は過多)
      * @throws IllegalGenoTypeException  遺伝子断片の塩基タイプが本遺伝子の塩基タイプと一致しません
      */
-	public double Fitness(Individual individual); //throws IllegalGenoTypeException, IllegalGenoSizeException;
+	public double GetFitnessValue(Individual individual); //throws IllegalGenoTypeException, IllegalGenoSizeException;
 
 
 

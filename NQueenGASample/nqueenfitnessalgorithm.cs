@@ -55,7 +55,7 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
      * @throws IllegalGenoTypeException 個体の持つ遺伝子の塩基タイプが本クラスで扱うものと一致しません
      * @throws IllegalGenoSizeException 個体の持つ遺伝子が
      */
-	public double Fitness(Individual individual)
+	public double GetFitnessValue(Individual individual)
 	{ //throws IllegalGenoTypeException, IllegalGenoSizeException {
 
 		//------ 遺伝子情報の組み替え。致死遺伝子の削除 ------//
@@ -91,10 +91,7 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 
 
 		//------ 算出した適応度を個体に保持させ、返す ------//
-		individual.
-
-		//------ 算出した適応度を個体に保持させ、返す ------//
-		FitnessValue = fitnessValue;                               // 個体に適応度を保持させる
+		individual.FitnessValue = fitnessValue;                               // 個体に適応度を保持させる
 		return fitnessValue;                                                    // 算出した適応度を返す
 	}
 
@@ -124,7 +121,7 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 		try
 		{
 
-			NQueenModel model = new(16);
+			NQueenGeneticAlgorithm model = new(16);
 			GeneticStatus status = new();
 			GeneticAlgorithm GeneticAlgorithm = new(model, status, 200);
 

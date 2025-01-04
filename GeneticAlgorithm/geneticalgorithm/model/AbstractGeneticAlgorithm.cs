@@ -25,7 +25,7 @@ using jp.co.tmdgroup.common.geneticalgorithm;
  * @version 1.0 (2002/11/03)
  */
 
-public abstract class AbstractGeneticAlgorithmModel : IGeneticAlgorithmModel
+public abstract class AbstractGeneticAlgorithm : IGeneticAlgorithm
 {
 
 

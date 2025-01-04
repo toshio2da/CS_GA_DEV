@@ -22,7 +22,7 @@ using jp.co.tmdgroup.common.geneticalgorithm;
  * @version 1.0 (2002/10/30)
  */
 
-public interface IGeneticAlgorithmModel
+public interface IGeneticAlgorithm
 {
 	/// <summary>
 	/// 使用する個体のモデルを実装するクラスのインスタンスを返します

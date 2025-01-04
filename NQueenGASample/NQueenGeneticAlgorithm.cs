@@ -43,7 +43,7 @@ using jp.co.tmdgroup.common.geneticalgorithm.model;
  * @version 1.0   (2002/11/03)
  */
 
-public class NQueenModel : AbstractGeneticAlgorithmModel
+public class NQueenGeneticAlgorithm : AbstractGeneticAlgorithm
 {
 
 
@@ -52,62 +52,22 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
 	//===================================================//
 
 	/** N-Queen問題のN。この数だけ盤ができ、クイーンが配置される。 */
-	protected int N;
+	private int N;
 
 	/** 個体モデル */
-	protected IIndividual individualModel;
+	private IIndividual individualModel;
 
 	/** 適応度計算アルゴリズム。専用のアルゴリズムを用意。 */
-	protected IFitnessAlgorithm fitnessAlgorithm;
+	private IFitnessAlgorithm fitnessAlgorithm;
 
 	/** 淘汰アルゴリズム。トーナメント方式を採用。*/
-	protected ISelectionAlgorithm selectionAlgorithm;
+	private ISelectionAlgorithm selectionAlgorithm;
 
 	/** 生存アルゴリズム。エリート戦略を採用。*/
-	protected ISurvivalAlgorithm survivalAlgorithm;
+	private ISurvivalAlgorithm survivalAlgorithm;
 
 	/** 交叉アルゴリズム。2点交叉を採用。*/
-	protected ICrossoverAlgorithm crossoverAlgorithm;
-
-
-
-
-	//===============================================//
-	//-------------------- 構築子 --------------------//
-	//===============================================//
-
-	/**
-     * <p>構築子です。<p>
-     * 取り扱うN-Queen問題の次数Nを指定します。<br>
-     *
-     * @param N 次数Nです
-     */
-	public NQueenModel(int N)
-	{
-
-		try
-		{
-			//------ 次数Nを設定 ------//
-			this.N = N;
-
-
-			//------ 各モデルインスタンスを作成・保持 ------//
-			this.individualModel = new LimitedNumberIndividualModel(this.N, this.N);  // 限定整数配列遺伝子を使用
-			this.fitnessAlgorithm = new NQueenFitnessAlgorithm();   //
-			this.selectionAlgorithm = new TournamentMethod(2);      // トーナメント方式。トーナメントサイズはデフォルトの2.
-			this.survivalAlgorithm = new EliteStrategy(0.95);      // エリート戦略による生存方式を採用。
-																   //            this.crossoverAlgorithm = new TwoPointCrossover();      // 交叉は2点交叉。
-			this.crossoverAlgorithm = new OnePointCrossover();
-		}
-		catch (OutOfRangeException exception)
-		{
-			Console.WriteLine(exception);
-			throw;
-		}
-	}
-
-
-
+	private ICrossoverAlgorithm crossoverAlgorithm;
 
 	//========================================================================================//
 	//-------------------- AbstractGeneticAlgorithmModelインタフェースの実装 --------------------//
@@ -123,10 +83,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する個体のモデルを実装するクラスのインスタンス
      */
-	public override IIndividual IndividualModel =>
-
-		//------ 個体モデルを返す ------//
-		this.individualModel;
+	public override IIndividual IndividualModel => this.individualModel;
 
 
 	/**
@@ -137,10 +94,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する適応度計算アルゴリズムを実装するクラスのインスタンス
      */
-	public override IFitnessAlgorithm FitnessAlgorithm =>
-
-		//------ 適応度計算アルゴリズムクラスを返す ------//
-		this.fitnessAlgorithm;
+	public override IFitnessAlgorithm FitnessAlgorithm => this.fitnessAlgorithm;
 
 
 
@@ -151,10 +105,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する淘汰アルゴリズムを実装するクラスのインスタンス
      */
-	public override ISelectionAlgorithm SelectionAlgorithm =>
-
-		//------ 淘汰アルゴ値ズムを返す ------//
-		this.selectionAlgorithm;
+	public override ISelectionAlgorithm SelectionAlgorithm => this.selectionAlgorithm;
 
 
 
@@ -167,10 +118,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する生存アルゴリズムを実装するクラスのインスタンス
      */
-	public override ISurvivalAlgorithm SurvivalAlgorithm =>
-
-		//------ 生存アルゴリズムを返す ------//
-		this.survivalAlgorithm;
+	public override ISurvivalAlgorithm SurvivalAlgorithm => this.survivalAlgorithm;
 
 
 
@@ -183,8 +131,32 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する交叉アルゴリズムを実装するクラスのインスタンスを返します。
      */
-	public override ICrossoverAlgorithm CrossoverAlgorithm =>
+	public override ICrossoverAlgorithm CrossoverAlgorithm => this.crossoverAlgorithm;
 
-		//------ 交叉アルゴリズムを返す ------//
-		this.crossoverAlgorithm;
+
+
+
+	//===============================================//
+	//-------------------- 構築子 --------------------//
+	//===============================================//
+
+	/**
+     * <p>構築子です。<p>
+     * 取り扱うN-Queen問題の次数Nを指定します。<br>
+     *
+     * @param N 次数Nです
+     */
+	public NQueenGeneticAlgorithm(int N)
+	{
+		//------ 次数Nを設定 ------//
+		this.N = N;
+
+		//------ 各モデルインスタンスを作成・保持 ------//
+		this.individualModel = new LimitedNumberIndividualModel(this.N, this.N);  // 限定整数配列遺伝子を使用
+		this.fitnessAlgorithm = new NQueenFitnessAlgorithm();   //
+		this.selectionAlgorithm = new TournamentMethod(2);      // トーナメント方式。トーナメントサイズはデフォルトの2.
+		this.survivalAlgorithm = new EliteStrategy(0.95);      // エリート戦略による生存方式を採用。
+															   //            this.crossoverAlgorithm = new TwoPointCrossover();      // 交叉は2点交叉。
+		this.crossoverAlgorithm = new OnePointCrossover();
+	}
 }

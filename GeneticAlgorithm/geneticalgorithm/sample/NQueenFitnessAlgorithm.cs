@@ -56,7 +56,7 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
      * @throws IllegalGenoTypeException 個体の持つ遺伝子の塩基タイプが本クラスで扱うものと一致しません
      * @throws IllegalGenoSizeException 個体の持つ遺伝子が
      */
-	public double Fitness(Individual individual)
+	public double GetFitnessValue(Individual individual)
 	{ //throws IllegalGenoTypeException, IllegalGenoSizeException {
 
 		//------ 遺伝子情報の組み替え。致死遺伝子の削除 ------//

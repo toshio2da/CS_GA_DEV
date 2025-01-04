@@ -43,7 +43,7 @@ public class GeneticAlgorithm :
 	private List<Individual> group = [];
 
 	/** 使用する遺伝的アルゴリズムのモデルクラス */
-	private readonly IGeneticAlgorithmModel model;
+	private readonly IGeneticAlgorithm model;
 
 	/** 検索状況の報告クラス。自動的に同期が取られます。 */
 	private readonly GeneticStatus status = null!;
@@ -112,7 +112,7 @@ public class GeneticAlgorithm :
      * @param model 使用する遺伝的アルゴリズムのモデルクラス
      * @param status 状況報告クラス。検索の制御にも使用。
      */
-	public GeneticAlgorithm(IGeneticAlgorithmModel model, GeneticStatus status)
+	public GeneticAlgorithm(IGeneticAlgorithm model, GeneticStatus status)
 	{
 
 		//------ 使用するモデルクラスを保持 ------//
@@ -124,7 +124,7 @@ public class GeneticAlgorithm :
 
 
 		//------ 適応度計算アルゴリズムを渡す ------//
-		this.status.SetFitnessAlgorithm(this.model.FitnessAlgorithm);
+		this.status.FitnessAlgorithm = this.model.FitnessAlgorithm;
 
 
 		//------ 集団を形成 ------//
@@ -146,7 +146,7 @@ public class GeneticAlgorithm :
      * @param status 状況報告クラス。検索の制御にも使用。
      * @param peopleNumber 集団の個体数
      */
-	public GeneticAlgorithm(IGeneticAlgorithmModel model, GeneticStatus status, int peopleNumber)
+	public GeneticAlgorithm(IGeneticAlgorithm model, GeneticStatus status, int peopleNumber)
 	{
 
 		//------ 集団数と最大世代交代数を保持 ------//
@@ -162,7 +162,7 @@ public class GeneticAlgorithm :
 
 
 		//------ 適応度計算アルゴリズムを渡す ------//
-		this.status.SetFitnessAlgorithm(this.model.FitnessAlgorithm);
+		this.status.FitnessAlgorithm = this.model.FitnessAlgorithm;
 
 
 		//------ 集団を形成 ------//
@@ -201,7 +201,6 @@ public class GeneticAlgorithm :
      */
 	public Individual Search(int maxIterationNumber)
 	{
-		//throws IllegalParameterTypeException, IllegalParameterSizeException, IllegalElementException, ArgumentOutOfRangeException {
 		try
 		{
 			//------ 各世代毎の優秀な個体を登録していく ------//
@@ -214,9 +213,9 @@ public class GeneticAlgorithm :
 			{
 				//------ 適応度を計算・個体に保持させる。究極の個体が現れたらその場で終了 ------//
 
-				double fitnessValue = this.model.FitnessAlgorithm.Fitness(individual);   // 適応度を計算
+				double fitnessValue = this.model.FitnessAlgorithm.GetFitnessValue(individual);   // 適応度を計算
 				if (fitnessValue == this.model.FitnessAlgorithm.GetBestFitnessValue())   // 究極の個体か検証
-					this.status.SetCommand(GeneticStatus.STOP_SEARCH);                        // 究極の個体であれば返す
+					this.status.Command = GeneticStatus.STOP_SEARCH;                        // 究極の個体であれば返す
 			}
 			this.status.SetBestIndividual(this.group[0]);
 
@@ -225,7 +224,7 @@ public class GeneticAlgorithm :
 			this.nowGenerationNumber = 0;
 
 			//前回進化した時間(秒)
-			long lastEvolutionTime = DateTime.Now.Ticks;// DateTime.Now.Ticks;
+			long lastEvolutionTime = DateTime.Now.Ticks;
 														//前回進化してからの世代数
 			int lastEvolutionGeneration = 0;
 			//検索終了目標
@@ -242,7 +241,7 @@ public class GeneticAlgorithm :
 				this.status.SetBestIndividual(this.NewGeneration());
 
 				//------ 中断命令がきていれば検索を強制終了 ------//
-				if (this.status.GetCommand() == GeneticStatus.STOP_SEARCH)
+				if (this.status.Command == GeneticStatus.STOP_SEARCH)
 				{
 					break;
 				}
@@ -285,8 +284,8 @@ public class GeneticAlgorithm :
 			//------ 最大世代交代数が終わっても究極の個体が見つからなかったのでその中で一番個体を返す ------//
 			Individual lastSuperior = this.status.GetBestIndividual();
 
-			this.status.SetSearchStatus(GeneticStatus.DONE_SEARCH);
-			this.status.reporter.FinishReport(lastSuperior, this.nowGenerationNumber, DateTime.Now.Ticks - this.startingTime);
+			this.status.SearchStatus = GeneticStatus.DONE_SEARCH;
+			this.status.Reporter.FinishReport(lastSuperior, this.nowGenerationNumber, DateTime.Now.Ticks - this.startingTime);
 			return lastSuperior;
 		}
 		catch (ArgumentException exception)
@@ -391,7 +390,7 @@ public class GeneticAlgorithm :
 
 			//------ 適応度を計算・個体に保持させる。究極の個体が現れたらその場で終了 ------//
 			//Individual individual = (Individual)iterator.next();                          // 個体を取得
-			double fitnessValue = this.model.FitnessAlgorithm.Fitness(individual);   // 適応度を計算
+			double fitnessValue = this.model.FitnessAlgorithm.GetFitnessValue(individual);   // 適応度を計算
 			if (fitnessValue == this.model.FitnessAlgorithm.GetBestFitnessValue())   // 究極の個体か検証
 				return individual;                                                        // 究極の個体であれば返す
 		}
@@ -455,7 +454,7 @@ public class GeneticAlgorithm :
 
 
 			//------ 状況報告クラスから情報を取得 ------//
-			int searchMethod = this.status.GetSearchMethod();
+			int searchMethod = this.status.SearchMethod;
 
 
 			//------ 今回は必ず世代数指定 ------//

@@ -19,23 +19,10 @@ using jp.co.tmdgroup.common.geneticalgorithm.exception;
  * @version 1.0 (2002/11/01)
  */
 
-public class LimitedNumberGene : NumberGene
+public class LimitedNumberGene : AbstractNumberGene
 {
-
-
-	//=====================================================//
-	//------------------- 追加メンバ変数 --------------------//
-	//=====================================================//
-
 	/** 塩基の取りうる指定範囲 */
 	protected int limitNumber;
-
-
-
-
-	//==============================================//
-	//------------------- 構築子 --------------------//
-	//==============================================//
 
 	/**
      * <p>サイズと共に塩基の取りうる範囲の指定構築子です。</p>
@@ -44,24 +31,14 @@ public class LimitedNumberGene : NumberGene
      * @param size  遺伝子の長さ
      * @param limitNumber  指定範囲です。負の値が渡されたときはその絶対を使用します。
      */
-	public LimitedNumberGene(int size, int limitNumber)
-	: base(size)
+	public LimitedNumberGene(int size, int limitNumber) : base(size)
 	{
-
-		//------ 基底クラスの構築子を呼ぶ ------//
-
-
-
 		//------ 限定範囲を保持。負の整数の場合は絶対値を使用 ------//
 		this.limitNumber = Math.Abs(limitNumber);
 
-
 		//------ 乱数で初期化 ------//
 		this.RandumReconstruct();
-
 	}
-
-
 
 	/**
      * <p>コピーコンストラクタです。</p>
@@ -71,10 +48,6 @@ public class LimitedNumberGene : NumberGene
      * @throws IllegalGenoSizeException 渡された遺伝子の長さが正しくありません
      */
 	public LimitedNumberGene(int[] gene) : base(gene) { }
-
-	//=============================================================================//
-	//------------------- 突然変異遺伝子生成メソッドのオーバーライド --------------------//
-	//=============================================================================//
 
 
 	/**
@@ -90,17 +63,9 @@ public class LimitedNumberGene : NumberGene
      * @param genoIndex  突然変異を起こさせる塩基の場所を指定します。
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます。
      */
-	public new void MutateOneGene(int genoIndex)
+	public override void MutateOneGene(int genoIndex)
 	{
-		try
-		{
-
-			//------ ランダム整数を代入します ------//
-			this.baseData[genoIndex] = (int)(GARandomGenerator.Random * this.limitNumber);
-		}
-		catch (OutOfRangeException)
-		{
-			throw;
-		}
+		//------ ランダム整数を代入します ------//
+		this.baseData[genoIndex] = (int)(GARandomGenerator.Random * this.limitNumber);
 	}
 }

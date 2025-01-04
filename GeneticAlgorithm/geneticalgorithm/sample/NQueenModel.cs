@@ -43,7 +43,7 @@ using jp.co.tmdgroup.common.geneticalgorithm.model;
  * @version 1.0   (2002/11/03)
  */
 
-public class NQueenModel : AbstractGeneticAlgorithmModel
+public class NQueenModel : AbstractGeneticAlgorithm
 {
 
 

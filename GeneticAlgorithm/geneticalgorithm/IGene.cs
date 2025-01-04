@@ -47,7 +47,7 @@ public interface IGene
      * @throws IllegalGenoSizeException  遺伝子断片の合計遺伝子長が本遺伝子の遺伝子長と一致しません(遺伝子不足又は過多)
      * @throws IllegalGenoTypeException  遺伝子断片の塩基タイプが本遺伝子の塩基タイプと一致しません
      */
-	void CreateGene(object[] piecesOfGene); //throws IllegalGenoSizeException, IllegalGenoTypeException;
+	void CreateGene(object[] piecesOfGene); 
 
 
 
@@ -64,7 +64,7 @@ public interface IGene
      * @return  抜き出された部分遺伝子断片です
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
      */
-	IGene GetSubGene(int firstGenoIndex, int lastGenoIndex); //throws OutOfBoundsGeneException;
+	IGene GetSubGene(int firstGenoIndex, int lastGenoIndex);
 
 
 
@@ -84,7 +84,7 @@ public interface IGene
 	* @param genoIndex  突然変異を起こさせる塩基の場所を指定します(0\uFF5E)
 	* @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
 	*/
-	void MutateOneGene(int genoIndex); //throws OutOfBoundsGeneException;
+	void MutateOneGene(int genoIndex); 
 
 
 
@@ -98,5 +98,6 @@ public interface IGene
 	  * @param lastGenoIndex  抜き出す遺伝子断片の終端を指定します
 	  * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
 	  */
-	void InverseSubGene(int firstGenoIndex, int lastGenoIndex); //throws OutOfBoundsGeneException;
+	void InverseSubGene(int firstGenoIndex, int lastGenoIndex); 
+
 }

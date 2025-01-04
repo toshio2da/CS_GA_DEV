@@ -115,7 +115,7 @@ public class NumberIndividualModel : IIndividual
      *
      * @return 新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値。
      */
-	public IGene CreateNewGene()
+	public virtual IGene CreateNewGene()
 	{
 
 		//------ 新しく整数配列遺伝子を生成 ------//
