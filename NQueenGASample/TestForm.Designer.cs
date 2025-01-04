@@ -39,6 +39,8 @@ partial class TestForm
         label1 = new Label();
         panel2 = new Panel();
         boardCtrl1 = new NQueen.View.BoardCtrl();
+        label5 = new Label();
+        txtPoint = new TextBox();
         panel1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)numMutationRate).BeginInit();
         ((System.ComponentModel.ISupportInitialize)numIndividualCnt).BeginInit();
@@ -49,6 +51,8 @@ partial class TestForm
         // 
         // panel1
         // 
+        panel1.Controls.Add(txtPoint);
+        panel1.Controls.Add(label5);
         panel1.Controls.Add(btnSearch);
         panel1.Controls.Add(numMutationRate);
         panel1.Controls.Add(label4);
@@ -171,6 +175,23 @@ partial class TestForm
         boardCtrl1.Size = new Size(496, 637);
         boardCtrl1.TabIndex = 0;
         // 
+        // label5
+        // 
+        label5.AutoSize = true;
+        label5.Location = new Point(135, 158);
+        label5.Name = "label5";
+        label5.Size = new Size(43, 15);
+        label5.TabIndex = 8;
+        label5.Text = "ポイント";
+        // 
+        // txtPoint
+        // 
+        txtPoint.Location = new Point(135, 176);
+        txtPoint.Name = "txtPoint";
+        txtPoint.Size = new Size(89, 23);
+        txtPoint.TabIndex = 9;
+        txtPoint.TextAlign = HorizontalAlignment.Right;
+        // 
         // TestForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -205,4 +226,6 @@ partial class TestForm
 	private Button btnSearch;
     private Panel panel2;
     private NQueen.View.BoardCtrl boardCtrl1;
+    private TextBox txtPoint;
+    private Label label5;
 }

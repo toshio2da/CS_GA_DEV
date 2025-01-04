@@ -17,6 +17,8 @@ public partial class TestForm : Form
 
     private void btnSearch_Click(object sender, EventArgs e)
     {
+        txtPoint.Text = "";
+
         NQueenGA.NQueenGAContext context = new();
 
         context.QueenCnt = Convert.ToInt32(this.numQueenCnt.Value);
@@ -33,6 +35,9 @@ public partial class TestForm : Form
     {
         List<int> results = new List<int>();
         List<int> lists = new List<int>(((int[])(((LimitedNumberGene)surperior.Gene).GetBase())));
+
+        int point = (int)surperior.FitnessValue;
+        txtPoint.Text = point.ToString();
 
         this.boardCtrl1.SetResult(lists);
     }
