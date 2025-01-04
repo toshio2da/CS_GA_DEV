@@ -68,7 +68,7 @@ namespace jp.co.tmdgroup.nqueengasample
 				parent.status = GeneticStatus.SEARCHING;
 				parent.bestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
 
-				reportFunc(surperior);
+				reportFunc.Invoke(surperior);
 			}
 
 			public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
@@ -76,7 +76,7 @@ namespace jp.co.tmdgroup.nqueengasample
 				parent.status = GeneticStatus.DONE_SEARCH;
 				parent.bestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
 
-                reportFunc(lastSurperior);
+                reportFunc.Invoke(lastSurperior);
             }
         }
 
