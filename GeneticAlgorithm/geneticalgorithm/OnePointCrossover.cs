@@ -82,19 +82,18 @@ public class OnePointCrossover : ICrossoverAlgorithm
 
 			object[] argment = [ourModel];                                   // 引数。個体のモデルクラス。
 
-			//T.Tsuda
-			//コンストラクタメタ情報を取得
-			ConstructorInfo? constructorInfo = typeof(Individual).GetType().GetConstructor([typeof(IIndividual)]);
-			if (constructorInfo == null)
-			{
-				throw new ArgumentException("指定されたタイプにIIndividualをを引数としたコンストラクタが存在しません");
-			}
+            //T.Tsuda
+            //コンストラクタメタ情報を取得
+            //ConstructorInfo? constructorInfo = typeof(Individual).GetType().GetConstructor([typeof(IIndividual)]);
+            //if (constructorInfo == null)
+            //{
+            //	throw new ArgumentException("指定されたタイプにIIndividualをを引数としたコンストラクタが存在しません");
+            //}
 
-
-			//------------------------------------------//
-			//------ 親集団と同じ数の子集団を生成 ------//
-			//------------------------------------------//
-			List<Individual> children = new(perentCandidates.Count);                           // 生成する子集団
+            //------------------------------------------//
+            //------ 親集団と同じ数の子集団を生成 ------//
+            //------------------------------------------//
+            List<Individual> children = new(perentCandidates.Count);                           // 生成する子集団
 			object[] sonsGene = new object[2];       // 1点交叉なので2つの部分遺伝子から作成
 			object[] daughtersGene = new object[2];       // 1点交叉なので2つの部分遺伝子から作成
 														  //sonsGene.setSize(2);                              // 2つの遺伝子を合成する
@@ -131,15 +130,19 @@ public class OnePointCrossover : ICrossoverAlgorithm
 				daughtersGene[1] = fathersRightGene.GetBase();    //
 
 
-				//------ 子供を2体生成 ------//
-				Individual son = (Individual)constructorInfo.Invoke(argment);// 親と同じクラス（派生クラス）で子供を生成
-				Individual daughter = (Individual)constructorInfo.Invoke(argment);  // メタクラスによる動的生成を使用。
-				son.				Gene.CreateGene(sonsGene);                                         // 新しく生成された遺伝子を子供に設定
-				daughter.				Gene.CreateGene(daughtersGene);                               // 新しく生成された遺伝子を子供に設定
+                //------ 子供を2体生成 ------//
+                //Individual son = (Individual)constructorInfo.Invoke(argment);// 親と同じクラス（派生クラス）で子供を生成
+                //Individual daughter = (Individual)constructorInfo.Invoke(argment);  // メタクラスによる動的生成を使用。
+                //son.				Gene.CreateGene(sonsGene);                                         // 新しく生成された遺伝子を子供に設定
+                //daughter.				Gene.CreateGene(daughtersGene);                               // 新しく生成された遺伝子を子供に設定
 
+                // とりあえず　LimitedNumberIndividualModel を使う
+                // 本当は、引数の型から LimitedNumberIndividualModel または NumberIndividualModel を取得しなければならない。
+                Individual son = (Individual)(new LimitedNumberIndividualModel(geneSize, childrenNumber)).CreateNewGene().GetBase();
+                Individual daughter = (Individual)(new LimitedNumberIndividualModel(geneSize, childrenNumber)).CreateNewGene().GetBase();
 
-				//------ 生成した子供を次世代の集団に追加 ------//
-				children.Add(son);                                                          // 息子を追加
+                //------ 生成した子供を次世代の集団に追加 ------//
+                children.Add(son);                                                          // 息子を追加
 				children.Add(daughter);                                                     // 娘を追加
 			}
 
