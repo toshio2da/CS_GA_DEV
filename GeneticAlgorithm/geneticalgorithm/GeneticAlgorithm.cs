@@ -143,7 +143,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
 		//------ 集団を形成 ------//
 		for (int index = 0; index < this.peopleNumber; index++)
 		{
-			//------ 個体を準に生成 ------//
+			//------ 個体を順に生成 ------//
 			this.group.Add(new Individual(this.model.IndividualModel));
 		}
 	}
@@ -208,7 +208,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
 			long limitSearchingTime = this.SearchingTime * 1000;
 
 			//前回の最大評価
-			double lastBestFitnessValue = Double.MaxValue;
+			double lastBestFitnessValue = Double.MinValue;
 			double bestFitnessValue;
 
 
@@ -237,7 +237,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
 
 				//------ 新しい進化があったかどうかを調べる ------//
 				bestFitnessValue = this.status.GetBestIndividual().FitnessValue;
-				if (lastBestFitnessValue != bestFitnessValue)
+				if (lastBestFitnessValue < bestFitnessValue)
 				{
 					lastBestFitnessValue = bestFitnessValue;
 					//世代をリセット

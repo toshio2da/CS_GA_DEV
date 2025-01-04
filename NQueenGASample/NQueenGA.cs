@@ -52,36 +52,42 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// </summary>
 		private int[] bestPattern = [];
 
-
-		private class GeneticReportableImpl(NQueenGA parent) : IGeneticReportable
+		private class GeneticReportableImpl(NQueenGA parent, funcDelegate reportFunc) : IGeneticReportable
 		{
 			public void Report(Individual surperior)
 			{
 				parent.status = GeneticSearchStatus.SEARCHING;
-				//parent.bestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
-				parent.bestPattern = (int[])surperior.Gene.GetBase();
-				//owner.mapPanel.canvas.repaint();
-			}
+				parent.bestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
+                int point = (int)surperior.FitnessValue;
+                //parent.bestPattern = (int[])surperior.Gene.GetBase();
+                //owner.mapPanel.canvas.repaint();
+                reportFunc.Invoke(parent.bestPattern, point);
+            }
 
-			public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
+            public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
 			{
 				parent.status = GeneticSearchStatus.DONE_SEARCH;
-				//parent.bestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
-				parent.bestPattern = (int[])lastSurperior.Gene.GetBase();
-				//owner.mapPanel.canvas.repaint();
-			}
-		}
+				parent.bestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
+                int point = (int)lastSurperior.FitnessValue;
 
-		/**
+                //parent.bestPattern = (int[])lastSurperior.Gene.GetBase();
+                //owner.mapPanel.canvas.repaint();
+                reportFunc.Invoke(parent.bestPattern, point);
+            }
+        }
+
+		public delegate void funcDelegate(int[] bestPattern, int point);
+
+        /**
 		* 遺伝的アルゴリズムによる探索を行います
 		**/
-		public Individual SearchQueeen()
-		{
-			gaStatus = new ();
+        public Individual SearchQueeen(funcDelegate reportFunc)
+        {
+            gaStatus = new ();
 			gaStatus.Command = GeneticSearchCommand.GO_AHEAD_SEARCH;
-			gaStatus.Reporter = new GeneticReportableImpl(this);
+            gaStatus.Reporter = new GeneticReportableImpl(this, reportFunc);
 
-			NQueenGeneticAlgorithm model = new (context.QueenCnt);
+            NQueenGeneticAlgorithm model = new (context.QueenCnt);
 
 			GeneticAlgorithm _ga = new (model, gaStatus, context.IndividualCnt);
 			Individual _best = _ga.Search(context.GenerationChangeCnt); // 探索

@@ -2,64 +2,61 @@ namespace jp.co.tmdgroup.nqueengasample;
 
 using jp.co.tmdgroup.common.geneticalgorithm;
 using jp.co.tmdgroup.common.tmdtools;
-
-using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using jp.co.tmdgroup.common.geneticalgorithm;
+using System.Net.NetworkInformation;
+using System.Reflection;
+using static jp.co.tmdgroup.nqueengasample.NQueenGA;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 public partial class TestForm : Form
 {
-	public TestForm()
-	{
-		InitializeComponent();
-	}
+    NQueenGA.NQueenGAContext context = new();
 
-	private async void TestForm_Load(object sender, EventArgs e)
-	{
-		await this.InitializeAsync();
-	}
+    public TestForm()
+    {
+        InitializeComponent();
+    }
 
+    private void TestForm_Load(object sender, EventArgs e)
+    {
+        numQueenCnt.Value = Convert.ToDecimal(context.QueenCnt);
+        numGenerationChangeCnt.Value = Convert.ToDecimal(context.GenerationChangeCnt);
+        numIndividualCnt.Value = Convert.ToDecimal(context.IndividualCnt);
+        numMutationRate.Value = Convert.ToDecimal(context.MutationRate);
 
-	private async Task InitializeAsync()
-	{
-		try
-		{
-			await webView.EnsureCoreWebView2Async(null);
-		}
-		catch (Exception)
-		{
-			MessageBox.Show("WebView2ランタイムがインストールされていない可能性があります。", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			this.Close();
-		}
-	}
+        this.boardCtrl1.SetNQueenCount(Convert.ToInt32(this.numQueenCnt.Value));
+    }
 
+    private void btnSearch_Click(object sender, EventArgs e)
+    {
+        txtPoint.Text = "";
 
-	private void btnSearch_Click(object sender, EventArgs e)
-	{
-		NQueenGA.NQueenGAContext context = new();
+        context.QueenCnt = Convert.ToInt32(this.numQueenCnt.Value);
+        context.GenerationChangeCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
+        context.IndividualCnt = Convert.ToInt32(this.numIndividualCnt.Value);
+        context.MutationRate = Convert.ToDouble(this.numMutationRate.Value);
 
-		context.QueenCnt = Convert.ToInt32(this.numQueenCnt.Value);
-		context.GenerationChangeCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
-		context.IndividualCnt = Convert.ToInt32(this.numIndividualCnt.Value);
-		context.MutationRate = Convert.ToDouble(this.numMutationRate.Value);
+        NQueenGA ga = new(context);
 
-		NQueenGA nQueenGA = new(context);
+        Individual bestIndividual = ga.SearchQueeen(Report);
+        int[] bextPattern = DataTools.CreateUniqElementArray((int[])bestIndividual.Gene.GetBase());
+        int point = (int)bestIndividual.FitnessValue;
 
-		Individual bestIndividual = nQueenGA.SearchQueeen();
+        Report(bextPattern, point);
+    }
 
-		//int[] bestIndividualArray = DataTools.CreateUniqElementArray((int[])(bestIndividual.Gene.GetBase()));
-		int[] bestIndividualArray = (int[])(bestIndividual.Gene.GetBase());
+    private void Report(int[] bestPattern, int point)
+    {
+        txtPoint.Text = point.ToString();
 
-		
+        this.boardCtrl1.SetResult(bestPattern.ToList());
+    }
 
-		StringBuilder dataOutput = new();
-		dataOutput.AppendLine("<html><head></head><body>");
-		dataOutput.AppendLine("<h3>スコア:");
-		dataOutput.AppendLine(Convert.ToString(bestIndividual.FitnessValue));
-		dataOutput.AppendLine("</h3>");
-		dataOutput.AppendLine(NQueenToHtml.ToHtml(bestIndividualArray, this.webView.Width - 20));
-		dataOutput.AppendLine("</body></html>");
-
-		this.webView.NavigateToString(dataOutput.ToString());
-	}
+    private void numQueenCnt_ValueChanged(object sender, EventArgs e)
+    {
+        this.boardCtrl1.SetNQueenCount(Convert.ToInt32(this.numQueenCnt.Value));
+    }
 
 }
 

@@ -4,7 +4,22 @@
 	{
 		public static int[] CreateUniqElementArray(int[] ints)
 		{
-			return ints.Distinct().ToArray();
+			List<int> nums = new List<int>();
+			for (int i = 0; i < ints.Length; ++i)
+			{
+				nums.Add(i);
+			}
+
+			List<int> newNums = new List<int>();
+            for (int i = 0; i < ints.Length; ++i)
+			{
+				int pos = ints[i] % nums.Count;
+                int n = nums[pos];
+				newNums.Add(n);
+				nums.RemoveAt(pos);
+			}
+
+            return newNums.ToArray();
 		}
 
 		public static bool[] FuseBinaryArray(object[] binaryArrays)
