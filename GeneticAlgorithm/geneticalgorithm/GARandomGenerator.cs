@@ -17,7 +17,7 @@ public class GARandomGenerator
 	static private int seed;
 
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	static public void setSeed(int s)
+	public static void setSeed(int s)
 	{
 		seed = s;
 		randomBase = new Random(seed);
@@ -25,7 +25,7 @@ public class GARandomGenerator
 
 
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	static public double random()
+	public static double random()
 	{
 		if (randomBase == null)
 		{

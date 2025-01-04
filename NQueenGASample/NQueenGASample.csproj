@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>jp.co.tmdgroup.nqueengasample</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="controlpanel.cs" />
+    <Compile Remove="mainform.cs" />
+    <Compile Remove="mappanel.cs" />
+    <Compile Remove="nqueen.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeneticAlgorithm\GeneticAlgorithm.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -47,7 +47,7 @@ public class GeneticAlgorithm :
 	protected List<Individual> group = new List<Individual>();
 
 	/** 使用する遺伝的アルゴリズムのモデルクラス */
-	protected GeneticAlgorithmModel model;
+	protected IGeneticAlgorithmModel model;
 
 	/** 検索状況の報告クラス。自動的に同期が取られます。 */
 	protected GeneticStatus status = null;
@@ -85,7 +85,7 @@ public class GeneticAlgorithm :
      * @param model 使用する遺伝的アルゴリズムのモデルクラス
      * @param status 状況報告クラス。検索の制御にも使用。
      */
-	public GeneticAlgorithm(GeneticAlgorithmModel model, GeneticStatus status)
+	public GeneticAlgorithm(IGeneticAlgorithmModel model, GeneticStatus status)
 	{
 
 		//------ 使用するモデルクラスを保持 ------//
@@ -119,7 +119,7 @@ public class GeneticAlgorithm :
      * @param status 状況報告クラス。検索の制御にも使用。
      * @param peopleNumber 集団の個体数
      */
-	public GeneticAlgorithm(GeneticAlgorithmModel model, GeneticStatus status, int peopleNumber)
+	public GeneticAlgorithm(IGeneticAlgorithmModel model, GeneticStatus status, int peopleNumber)
 	{
 
 		//------ 集団数と最大世代交代数を保持 ------//

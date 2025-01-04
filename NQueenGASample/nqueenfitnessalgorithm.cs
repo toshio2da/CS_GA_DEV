@@ -1,9 +1,9 @@
-﻿namespace jp.co.tmdgroup.common.geneticalgorithm.sample;
+﻿namespace jp.co.tmdgroup.nqueengasample;
 
-using System.IO;
 using jp.co.tmdgroup.common.tmdtools;
 using jp.co.tmdgroup.common.geneticalgorithm;
 using jp.co.tmdgroup.common.geneticalgorithm.exception;
+
 /**
  * <p>N-Queen問題において各個体の適応度を算出します。</p>
  * N-Queen問題では各クイーンがお互いに取れない様に配置されていなければなりません。<br>
@@ -116,7 +116,7 @@ public class NQueenFitnessAlgorithm : FitnessAlgorithm
 
 
 
-	public static void main(String[] args)
+	static public void main(String[] args)
 	{
 		try
 		{
@@ -130,7 +130,7 @@ public class NQueenFitnessAlgorithm : FitnessAlgorithm
 
 			int[] bestIndividualArray = DataTools.createUniqElementArray((int[])(bestIndividual.getGene().getBase()));
 
-			FileStream output = new(".\\output.html", FileMode.OpenOrCreate);
+			FileStream output = new("c:\\tmdproject\\java\\nqueengasample\\output\\output.html", FileMode.OpenOrCreate);
 			StreamWriter dataOutput = new StreamWriter(output);
 			dataOutput.Write("<html><head></head><body>");
 			dataOutput.Write(NQueenToHtml.toHtml(bestIndividualArray));
@@ -149,7 +149,8 @@ public class NQueenFitnessAlgorithm : FitnessAlgorithm
 		}
 		catch (Exception exception)
 		{
-			Console.WriteLine(exception.StackTrace);
+
+			Console.WriteLine(exception);
 		}
 	}
 }

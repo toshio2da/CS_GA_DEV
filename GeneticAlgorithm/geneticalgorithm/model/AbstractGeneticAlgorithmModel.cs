@@ -25,7 +25,7 @@ using jp.co.tmdgroup.common.geneticalgorithm;
  * @version 1.0 (2002/11/03)
  */
 
-public abstract class AbstractGeneticAlgorithmModel 
+public abstract class AbstractGeneticAlgorithmModel: IGeneticAlgorithmModel
 {
 
 
@@ -73,12 +73,8 @@ public abstract class AbstractGeneticAlgorithmModel
 	}
 
 	public abstract IIndividual getIndividualModel();
-
-	//public abstract FitnessAlgorithm getFitnessAlgorithm();
-
-	//public abstract SelectionAlgorithm getSelectionAlgorithm();
-
-	//public abstract SurvivalAlgorithm getSurvivalAlgorithm();
-
-	//public abstract CrossoverAlgorithm getCrossoverAlgorithm();
+	public abstract FitnessAlgorithm getFitnessAlgorithm();
+	public abstract SelectionAlgorithm getSelectionAlgorithm();
+	public abstract SurvivalAlgorithm getSurvivalAlgorithm();
+	public abstract CrossoverAlgorithm getCrossoverAlgorithm();
 }

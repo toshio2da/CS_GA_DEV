@@ -32,30 +32,30 @@ public class GeneticStatus
 	//====================================================//
 
 	/** 検索続行命令。検索中は通常この命令が格納されています。 */
-	static public int GO_AHEAD_SEARCH = 0;
+	public static int GO_AHEAD_SEARCH = 0;
 
 	/** 検索終了命令。検索を終了させるときに格納します。世代交代時にチェックされます。 */
-	static public int STOP_SEARCH = 1;
+	public static int STOP_SEARCH = 1;
 
 
 	/** 状態変数。現在検索中であることを示します。 */
-	static public int SEARCHING = 100;
+	public static int SEARCHING = 100;
 
 	/** 状態変数。検索が完了したことを示します。*/
-	static public int DONE_SEARCH = 101;
+	public static int DONE_SEARCH = 101;
 
 	/** 状態変数。検索を待っていることを示します。デフォルト値です。*/
-	static public int WAIT_FOR_SEARCH = 102;
+	public static int WAIT_FOR_SEARCH = 102;
 
 
 	/** 検索の種類。指定世代数まで世代交代を行います。デフォルト値です。 */
-	static public int LIMIT_NUMBER = 200;
+	public static int LIMIT_NUMBER = 200;
 
 	/** 検索の種類。指定時間まで延々と世代交代を行います。*/
-	static public int LIMIT_TIME = 201;
+	public static int LIMIT_TIME = 201;
 
 	/** 検索の種類.指定世代数の検索を指定時間まで繰り返します。広範囲に渡る検索が可能です。*/
-	static public int LIMIT_NUMBER_UNTIL_TIME = 202;
+	public static int LIMIT_NUMBER_UNTIL_TIME = 202;
 
 
 

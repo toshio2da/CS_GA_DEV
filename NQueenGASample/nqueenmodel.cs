@@ -1,4 +1,4 @@
-﻿namespace jp.co.tmdgroup.common.geneticalgorithm.sample;
+﻿namespace jp.co.tmdgroup.nqueengasample;
 
 using jp.co.tmdgroup.common.geneticalgorithm;
 using jp.co.tmdgroup.common.geneticalgorithm.exception;
@@ -43,77 +43,72 @@ using jp.co.tmdgroup.common.geneticalgorithm.model;
  * @version 1.0   (2002/11/03)
  */
 
-public class NQueenModel : AbstractGeneticAlgorithmModel
-{
+public class NQueenModel : AbstractGeneticAlgorithmModel {
 
 
-	//===================================================//
-	//-------------------- メンバ変数 --------------------//
-	//===================================================//
+    //===================================================//
+    //-------------------- メンバ変数 --------------------//
+    //===================================================//
 
-	/** N-Queen問題のN。この数だけ盤ができ、クイーンが配置される。 */
-	protected int N;
+    /** N-Queen問題のN。この数だけ盤ができ、クイーンが配置される。 */
+    protected int                N;
 
-	/** 個体モデル */
-	protected IIndividual individualModel;
+    /** 個体モデル */
+    protected IIndividual          individualModel;
 
-	/** 適応度計算アルゴリズム。専用のアルゴリズムを用意。 */
-	protected FitnessAlgorithm fitnessAlgorithm;
+    /** 適応度計算アルゴリズム。専用のアルゴリズムを用意。 */
+    protected FitnessAlgorithm        fitnessAlgorithm;
 
-	/** 淘汰アルゴリズム。トーナメント方式を採用。*/
-	protected SelectionAlgorithm selectionAlgorithm;
+    /** 淘汰アルゴリズム。トーナメント方式を採用。*/
+    protected SelectionAlgorithm    selectionAlgorithm;
 
-	/** 生存アルゴリズム。エリート戦略を採用。*/
-	protected SurvivalAlgorithm survivalAlgorithm;
+    /** 生存アルゴリズム。エリート戦略を採用。*/
+    protected SurvivalAlgorithm      survivalAlgorithm;
 
-	/** 交叉アルゴリズム。2点交叉を採用。*/
-	protected CrossoverAlgorithm crossoverAlgorithm;
-
-
+    /** 交叉アルゴリズム。2点交叉を採用。*/
+    protected CrossoverAlgorithm    crossoverAlgorithm;
 
 
-	//===============================================//
-	//-------------------- 構築子 --------------------//
-	//===============================================//
 
-	/**
+
+    //===============================================//
+    //-------------------- 構築子 --------------------//
+    //===============================================//
+
+    /**
      * <p>構築子です。<p>
      * 取り扱うN-Queen問題の次数Nを指定します。<br>
      *
      * @param N 次数Nです
      */
-	public NQueenModel(int N)
-	{
+    public NQueenModel(int N) {
 
-		try
-		{
-			//------ 次数Nを設定 ------//
-			this.N = N;
+        try {
+            //------ 次数Nを設定 ------//
+            this.N = N;
 
 
-			//------ 各モデルインスタンスを作成・保持 ------//
-			this.individualModel = new LimitedNumberIndividualModel(this.N, this.N);  // 限定整数配列遺伝子を使用
-			this.fitnessAlgorithm = new NQueenFitnessAlgorithm();   //
-			this.selectionAlgorithm = new TournamentMethod(2);      // トーナメント方式。トーナメントサイズはデフォルトの2.
-			this.survivalAlgorithm = new EliteStrategy(0.95);      // エリート戦略による生存方式を採用。
-																   //            this.crossoverAlgorithm = new TwoPointCrossover();      // 交叉は2点交叉。
-			this.crossoverAlgorithm = new OnePointCrossover();
-		}
-		catch (OutOfRangeException exception)
-		{
-
-			Console.WriteLine(exception.StackTrace);
-		}
-	}
+            //------ 各モデルインスタンスを作成・保持 ------//
+            this.individualModel = new LimitedNumberIndividualModel(this.N, this.N);  // 限定整数配列遺伝子を使用
+            this.fitnessAlgorithm = new NQueenFitnessAlgorithm();   //
+            this.selectionAlgorithm = new TournamentMethod(2);      // トーナメント方式。トーナメントサイズはデフォルトの2.
+            this.survivalAlgorithm  = new EliteStrategy(0.95);      // エリート戦略による生存方式を採用。
+//            this.crossoverAlgorithm = new TwoPointCrossover();      // 交叉は2点交叉。
+            this.crossoverAlgorithm = new OnePointCrossover();
+        }
+        catch (OutOfRangeException exception) {
+            Console.WriteLine(exception);
+        }
+    }
 
 
 
 
-	//========================================================================================//
-	//-------------------- AbstractGeneticAlgorithmModelインタフェースの実装 --------------------//
-	//========================================================================================//
+    //========================================================================================//
+    //-------------------- AbstractGeneticAlgorithmModelインタフェースの実装 --------------------//
+    //========================================================================================//
 
-	/**
+    /**
      * <p>使用する個体のモデルを実装するクラスのインスタンスを返します。</p>
      * 個体モデルは個体の遺伝子長、塩基配列などを決定します。<br>
      * 個体モデルは適応度計算アルゴリズムと相互に関係しますが、他のアルゴリズムとは独立ですので、
@@ -123,15 +118,14 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する個体のモデルを実装するクラスのインスタンス
      */
-	public override IIndividual getIndividualModel()
-	{
+    public override IIndividual getIndividualModel() {
 
-		//------ 個体モデルを返す ------//
-		return this.individualModel;
-	}
+        //------ 個体モデルを返す ------//
+        return this.individualModel;
+    }
 
 
-	/**
+    /**
      * <p>使用する適応度計算アルゴリズムを実装するクラスのインスタンスを返します。</p>
      * GeneticAlgorithmクラスはこのメソッドで返されたクラスのアルゴリズムを使用することになります。<br>
      * 適応度の計算法は問題によって異なります。<br>
@@ -139,32 +133,30 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する適応度計算アルゴリズムを実装するクラスのインスタンス
      */
-	public override FitnessAlgorithm getFitnessAlgorithm()
-	{
+    public override FitnessAlgorithm getFitnessAlgorithm() {
 
-		//------ 適応度計算アルゴリズムクラスを返す ------//
-		return this.fitnessAlgorithm;
-	}
-
+        //------ 適応度計算アルゴリズムクラスを返す ------//
+        return this.fitnessAlgorithm;
+    }
 
 
-	/**
+
+    /**
      * <p>使用する淘汰アルゴリズムを実装するクラスのインスタンスを返します。</p>
      * GeneticAlgorithmクラスはこのメソッドで返されたクラスのアルゴリズムを使用することになります。<br>
      * 本モデルクラスではトーナメント方式を採用しています。
      *
      * @return 使用する淘汰アルゴリズムを実装するクラスのインスタンス
      */
-	public override SelectionAlgorithm getSelectionAlgorithm()
-	{
+    public override SelectionAlgorithm getSelectionAlgorithm() {
 
-		//------ 淘汰アルゴ値ズムを返す ------//
-		return this.selectionAlgorithm;
-	}
-
+        //------ 淘汰アルゴ値ズムを返す ------//
+        return this.selectionAlgorithm;
+    }
 
 
-	/**
+
+    /**
      * 使用する生存アルゴリズムを実装するクラスのインスタンスを返します。</p>
      * GeneticAlgorithmクラスはこのメソッドで返されたクラスのアルゴリズムを使用することになります。<br>
      * 生存とは親集団の中から次世代子集団の中にそのまま生き残る個体を指します。<br>
@@ -173,16 +165,15 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する生存アルゴリズムを実装するクラスのインスタンス
      */
-	public override SurvivalAlgorithm getSurvivalAlgorithm()
-	{
+    public override SurvivalAlgorithm getSurvivalAlgorithm() {
 
-		//------ 生存アルゴリズムを返す ------//
-		return this.survivalAlgorithm;
-	}
-
+        //------ 生存アルゴリズムを返す ------//
+        return this.survivalAlgorithm;
+    }
 
 
-	/**
+
+    /**
      * <p>使用する交叉アルゴリズムを実装するクラスのインスタンスを返します。</p>
      * GeneticAlgorithmクラスはこのメソッドで返されたクラスのアルゴリズムを使用することになります。<br>
      * 遺伝的アルゴリズムは交叉と突然変異、または逆位によって集団の中から優秀な個体を生成し、最適な解を検索します。<br>
@@ -191,10 +182,9 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する交叉アルゴリズムを実装するクラスのインスタンスを返します。
      */
-	public override CrossoverAlgorithm getCrossoverAlgorithm()
-	{
+    public override CrossoverAlgorithm getCrossoverAlgorithm() {
 
-		//------ 交叉アルゴリズムを返す ------//
-		return this.crossoverAlgorithm;
-	}
+        //------ 交叉アルゴリズムを返す ------//
+        return this.crossoverAlgorithm;
+    }
 }

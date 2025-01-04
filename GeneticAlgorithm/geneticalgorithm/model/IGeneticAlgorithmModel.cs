@@ -22,7 +22,7 @@ using jp.co.tmdgroup.common.geneticalgorithm;
  * @version 1.0 (2002/10/30)
  */
 
-public interface GeneticAlgorithmModel
+public interface IGeneticAlgorithmModel
 {
 
 
