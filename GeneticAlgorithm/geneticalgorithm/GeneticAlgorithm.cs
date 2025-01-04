@@ -208,7 +208,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
 			long limitSearchingTime = this.SearchingTime * 1000;
 
 			//前回の最大評価
-			double lastBestFitnessValue = Double.MinValue;
+			double lastBestFitnessValue = Double.MaxValue;
 			double bestFitnessValue;
 
 
@@ -237,7 +237,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
 
 				//------ 新しい進化があったかどうかを調べる ------//
 				bestFitnessValue = this.status.GetBestIndividual().FitnessValue;
-				if (lastBestFitnessValue < bestFitnessValue)
+				if (lastBestFitnessValue != bestFitnessValue)
 				{
 					lastBestFitnessValue = bestFitnessValue;
 					//世代をリセット
