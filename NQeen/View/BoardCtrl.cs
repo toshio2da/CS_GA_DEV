@@ -25,7 +25,7 @@ namespace NQueen.View
 
         public void SetNQueenCount(int nQueenCount)
         {
-            if (nQueenCount >= 5)
+            if (nQueenCount >= 4)
             {
                 this.nQueenCount = nQueenCount;
                 DrawBoard();
@@ -97,7 +97,7 @@ namespace NQueen.View
 
         private void DrawQueen()
         {
-            if (nQueenCount >= 5 && queenPositions.Count != nQueenCount)
+            if (nQueenCount < 4 || queenPositions.Count != nQueenCount)
             {
                 ClearQueen();
                 return;

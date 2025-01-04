@@ -36,7 +36,7 @@ namespace NQueen
             int n = 0;
             if (int.TryParse(txtQeenCnt.Text, out n))
             {
-                if (n >= 5)
+                if (n >= 4)
                     boardCtrl1.SetNQueenCount(n);
             }
         }
