@@ -14,7 +14,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			/// <summary>
 			/// Queenの数
 			/// </summary>
-			public int QueenCnt { get; set; } = 10;
+			public int QueenCnt { get; set; } = 15;
 
 			/// <summary>
 			/// 世代交代数

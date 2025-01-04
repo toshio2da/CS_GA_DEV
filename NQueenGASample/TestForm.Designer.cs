@@ -28,6 +28,8 @@ partial class TestForm
     private void InitializeComponent()
     {
         panel1 = new Panel();
+        txtPoint = new TextBox();
+        label5 = new Label();
         btnSearch = new Button();
         numMutationRate = new NumericUpDown();
         label4 = new Label();
@@ -39,8 +41,6 @@ partial class TestForm
         label1 = new Label();
         panel2 = new Panel();
         boardCtrl1 = new NQueen.View.BoardCtrl();
-        label5 = new Label();
-        txtPoint = new TextBox();
         panel1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)numMutationRate).BeginInit();
         ((System.ComponentModel.ISupportInitialize)numIndividualCnt).BeginInit();
@@ -68,6 +68,23 @@ partial class TestForm
         panel1.Size = new Size(275, 637);
         panel1.TabIndex = 0;
         // 
+        // txtPoint
+        // 
+        txtPoint.Location = new Point(135, 176);
+        txtPoint.Name = "txtPoint";
+        txtPoint.Size = new Size(89, 23);
+        txtPoint.TabIndex = 9;
+        txtPoint.TextAlign = HorizontalAlignment.Right;
+        // 
+        // label5
+        // 
+        label5.AutoSize = true;
+        label5.Location = new Point(135, 158);
+        label5.Name = "label5";
+        label5.Size = new Size(43, 15);
+        label5.TabIndex = 8;
+        label5.Text = "ポイント";
+        // 
         // btnSearch
         // 
         btnSearch.Location = new Point(21, 154);
@@ -87,7 +104,7 @@ partial class TestForm
         numMutationRate.Size = new Size(89, 23);
         numMutationRate.TabIndex = 7;
         numMutationRate.TextAlign = HorizontalAlignment.Right;
-        numMutationRate.Value = new decimal(new int[] { 5, 0, 0, 131072 });
+        numMutationRate.Value = new decimal(new int[] { 95, 0, 0, 131072 });
         // 
         // label4
         // 
@@ -174,23 +191,6 @@ partial class TestForm
         boardCtrl1.Name = "boardCtrl1";
         boardCtrl1.Size = new Size(496, 637);
         boardCtrl1.TabIndex = 0;
-        // 
-        // label5
-        // 
-        label5.AutoSize = true;
-        label5.Location = new Point(135, 158);
-        label5.Name = "label5";
-        label5.Size = new Size(43, 15);
-        label5.TabIndex = 8;
-        label5.Text = "ポイント";
-        // 
-        // txtPoint
-        // 
-        txtPoint.Location = new Point(135, 176);
-        txtPoint.Name = "txtPoint";
-        txtPoint.Size = new Size(89, 23);
-        txtPoint.TabIndex = 9;
-        txtPoint.TextAlign = HorizontalAlignment.Right;
         // 
         // TestForm
         // 

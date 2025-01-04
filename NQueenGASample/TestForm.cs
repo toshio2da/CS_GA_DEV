@@ -10,6 +10,8 @@ using static jp.co.tmdgroup.nqueengasample.NQueenGA;
 
 public partial class TestForm : Form
 {
+    NQueenGA.NQueenGAContext context = new();
+
     public TestForm()
     {
         InitializeComponent();
@@ -18,8 +20,6 @@ public partial class TestForm : Form
     private void btnSearch_Click(object sender, EventArgs e)
     {
         txtPoint.Text = "";
-
-        NQueenGA.NQueenGAContext context = new();
 
         context.QueenCnt = Convert.ToInt32(this.numQueenCnt.Value);
         context.GenerationChangeCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
@@ -49,6 +49,11 @@ public partial class TestForm : Form
 
     private void TestForm_Load(object sender, EventArgs e)
     {
+        numQueenCnt.Value = Convert.ToDecimal(context.QueenCnt);
+        numGenerationChangeCnt.Value = Convert.ToDecimal(context.GenerationChangeCnt);
+        numIndividualCnt.Value = Convert.ToDecimal(context.IndividualCnt);
+        numMutationRate.Value = Convert.ToDecimal(context.MutationRate);
+
         this.boardCtrl1.SetNQueenCount(Convert.ToInt32(this.numQueenCnt.Value));
     }
 }
