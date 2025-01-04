@@ -6,10 +6,6 @@ using jp.co.tmdgroup.common.geneticalgorithm.model;
 using jp.co.tmdgroup.common.interfaces;
 using jp.co.tmdgroup.common.interfaces.exception;
 
-using System.Globalization;
-
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 
 /**
  * <p>遺伝的アルゴリズムにより様々な組み合わせ問題の準最適解を高速に検索します。</p>
@@ -41,34 +37,65 @@ public class GeneticAlgorithm :
 	//==================================================//
 
 	/** 探索に用いる個体の数。デフォルトでは200 */
-	protected int peopleNumber = 200;
+	private readonly int peopleNumber = 200;
 
 	/** 遺伝的アルゴリズムに用いる個体の集団 */
-	protected List<Individual> group = new List<Individual>();
+	private List<Individual> group = [];
 
 	/** 使用する遺伝的アルゴリズムのモデルクラス */
-	protected IGeneticAlgorithmModel model;
+	private readonly IGeneticAlgorithmModel model;
 
 	/** 検索状況の報告クラス。自動的に同期が取られます。 */
-	protected GeneticStatus status = null!;
+	private readonly GeneticStatus status = null!;
 
 	/** 現在の世代交代数を保持します。 */
-	protected int nowGenerationNumber = 0;
+	private int nowGenerationNumber = 0;
 
 	/** 検索を始めた時間を保持します */
-	protected long startingTime = 0;
+	private long startingTime = 0;
+
+
 
 	/** 指定された世代交代数。デフォルトは3000[回] */
-	protected int generationNumber = 3000;
+	private int _generationNumber = 3000;
 
 	/** 指定された検索時間[秒]。デフォルトは60[秒] */
-	protected long searchingTime = -1;
+	private long _searchingTime = -1;
 
 	/** 進化中断までのインターバル */
-	protected int stopSearchInterval = -1;
+	private int _stopSearchInterval = -1;
 
 	/** 進化中断までの無進化世代数*/
-	protected int stopSearchGeneration = -1;
+	private int _stopSearchGeneration = -1;
+
+	/// <summary>
+	/// 検索に用いる世代交代数を取得または設定します。
+	/// 世代交代数指定、または検索時間かつ世代交代数指定の場合に用いられる世代交代数です。
+	/// </summary>
+	public int GenerationNumber { get => _generationNumber; set => _generationNumber = value; }
+
+	/// <summary>
+	/// 検索時間[秒]を取得または設定します。
+	/// 時間指定、または時間指定かつ世代交際数指定の場合に用いられる検索時間です。
+	/// </summary>
+	public long SearchingTime { get => _searchingTime; set => _searchingTime = value; }
+
+	/// <summary>
+	/// 進化を中断する無進化時間を取得または設定します。
+	/// 指定された時間に進化が無ければそこで中止とします。
+	/// 負の値がセットされた場合は無視されます。
+	/// </summary>
+	public int StopSearchInterval { get => _stopSearchInterval; set => _stopSearchInterval = value; }
+
+
+	/// <summary>
+	/// 進化を中断する無進化世代数を取得または設定します。
+	/// 指定された世代数進化が無ければそこで中止とします。
+	/// 負の値がセットされた場合は無視されます
+	/// </summary>
+	public int StopSearchGeneration { get => _stopSearchGeneration; set => _stopSearchGeneration = value; }
+
+
 
 
 
@@ -97,7 +124,7 @@ public class GeneticAlgorithm :
 
 
 		//------ 適応度計算アルゴリズムを渡す ------//
-		this.status.setFitnessAlgorithm(this.model.getFitnessAlgorithm());
+		this.status.SetFitnessAlgorithm(this.model.FitnessAlgorithm);
 
 
 		//------ 集団を形成 ------//
@@ -105,7 +132,7 @@ public class GeneticAlgorithm :
 		{
 
 			//------ 個体を準に生成 ------//
-			this.group.Add(new Individual(this.model.getIndividualModel()));
+			this.group.Add(new Individual(this.model.IndividualModel));
 		}
 	}
 
@@ -135,7 +162,7 @@ public class GeneticAlgorithm :
 
 
 		//------ 適応度計算アルゴリズムを渡す ------//
-		this.status.setFitnessAlgorithm(this.model.getFitnessAlgorithm());
+		this.status.SetFitnessAlgorithm(this.model.FitnessAlgorithm);
 
 
 		//------ 集団を形成 ------//
@@ -143,100 +170,8 @@ public class GeneticAlgorithm :
 		{
 
 			//------ 個体を準に生成 ------//
-			this.group.Add(new Individual(this.model.getIndividualModel()));
+			this.group.Add(new Individual(this.model.IndividualModel));
 		}
-	}
-
-
-
-	/**
-     * <p>検索に用いる世代交代数を取得します。</p>
-     * 世代交代数指定、または検索時間かつ世代交代数指定の場合に用いられる世代交代数です。<br>
-     *
-     * @return 現在設定されている世代交代数
-     */
-	public int getGenetationNumber()
-	{
-
-		//------ 現在設定されている検索を行う世代交代数を取得 ------//
-		return this.generationNumber;
-	}
-
-
-	/**
-     * <p>世代交代数を設定します。</p>
-     * 世代交代数指定、または検索時間かつ世代交代数指定の場合に用いられる世代交代数です。<br>
-     *
-     * @param newGenerationNumber 設定する世代交代数です。
-     */
-	public void setGenerationNumber(int newGenerationNumber)
-	{
-
-		//------ 世代交代数を設定 ------//
-		this.generationNumber = newGenerationNumber;
-	}
-
-
-	/**
-     * <p>検索時間[秒]を取得します。</p>
-     * 時間指定、または時間指定かつ世代交際数指定の場合に用いられる検索時間です。<br>
-     *
-     * @return 現在設定されている検索時間を取得します。
-     */
-	public long getSearchingTime()
-	{
-
-		//------ 現在設定されている検索時間を取得 ------//
-		return this.searchingTime;
-	}
-
-
-	/**
-     * <p>検索時間[秒]を設定します。</p>
-     * 時間指定、または時間指定かつ世代交際数指定の場合に用いられる検索時間です。<br>
-     *
-     * @param newSearchingTime 設定する検索時間[秒]です。
-     */
-	public void setSearchingTime(long newSearchingTime)
-	{
-
-		//------ 検索時間を設定 ------//
-		this.searchingTime = newSearchingTime;
-	}
-
-
-
-	/**
-     * <p> 進化を中断する無進化世代数を設定します</p>
-     * 指定された世代数進化が無ければそこで中止とします
-     * 負の値がセットされた場合は無視されます
-     * @param genelation  世代数
-     */
-	public void setStopSearchGeneration(int generation)
-	{
-		stopSearchGeneration = generation;
-	}
-
-	public int getStopSearchGeneration()
-	{
-		return stopSearchGeneration;
-	}
-
-	/**
-     * <p> 進化を中断する無進化時間を設定します</p>
-     * 指定された時間に進化が無ければそこで中止とします
-     * 負の値がセットされた場合は無視されます
-     * @param interval    時間[秒]
-     */
-	public void setStopSearchInterval(int interval)
-	{
-		stopSearchInterval = interval;
-	}
-
-
-	public int getStopSearchInterval()
-	{
-		return stopSearchInterval;
 	}
 
 
@@ -279,11 +214,11 @@ public class GeneticAlgorithm :
 			{
 				//------ 適応度を計算・個体に保持させる。究極の個体が現れたらその場で終了 ------//
 
-				double fitnessValue = this.model.getFitnessAlgorithm().fitness(individual);   // 適応度を計算
-				if (fitnessValue == this.model.getFitnessAlgorithm().getBestFitnessValue())   // 究極の個体か検証
-					this.status.setCommand(GeneticStatus.STOP_SEARCH);                        // 究極の個体であれば返す
+				double fitnessValue = this.model.FitnessAlgorithm.Fitness(individual);   // 適応度を計算
+				if (fitnessValue == this.model.FitnessAlgorithm.GetBestFitnessValue())   // 究極の個体か検証
+					this.status.SetCommand(GeneticStatus.STOP_SEARCH);                        // 究極の個体であれば返す
 			}
-			this.status.setBestIndividual(this.group[0]);
+			this.status.SetBestIndividual(this.group[0]);
 
 
 			//------ 最大世代交代数まで繰り返す ------//
@@ -294,7 +229,7 @@ public class GeneticAlgorithm :
 														//前回進化してからの世代数
 			int lastEvolutionGeneration = 0;
 			//検索終了目標
-			long limitSearchingTime = searchingTime * 1000;
+			long limitSearchingTime = _searchingTime * 1000;
 
 			//前回の最大評価
 			double lastBestFitnessValue = Double.MaxValue;
@@ -304,10 +239,10 @@ public class GeneticAlgorithm :
 			for (int index = 0; index < maxIterationNumber; index++)
 			{
 				//------ 世代毎の一番優秀な個体を登録していく ------//
-				this.status.setBestIndividual(this.newGeneration());
+				this.status.SetBestIndividual(this.NewGeneration());
 
 				//------ 中断命令がきていれば検索を強制終了 ------//
-				if (this.status.getCommand() == GeneticStatus.STOP_SEARCH)
+				if (this.status.GetCommand() == GeneticStatus.STOP_SEARCH)
 				{
 					break;
 				}
@@ -323,7 +258,7 @@ public class GeneticAlgorithm :
 				}
 
 				//------ 新しい進化があったかどうかを調べる ------//
-				bestFitnessValue = this.status.getBestIndividual().getFitnessValue();
+				bestFitnessValue = this.status.GetBestIndividual().FitnessValue;
 				if (lastBestFitnessValue != bestFitnessValue)
 				{
 					lastBestFitnessValue = bestFitnessValue;
@@ -335,11 +270,11 @@ public class GeneticAlgorithm :
 				else
 				{
 					lastEvolutionGeneration++;
-					if ((this.stopSearchGeneration > 0) && lastEvolutionGeneration > this.stopSearchGeneration)
+					if ((this._stopSearchGeneration > 0) && lastEvolutionGeneration > this._stopSearchGeneration)
 					{
 						break;
 					}
-					else if ((this.stopSearchInterval > 0) && ((DateTime.Now.Ticks - lastEvolutionTime) / 1000) > this.stopSearchInterval)
+					else if ((this._stopSearchInterval > 0) && ((DateTime.Now.Ticks - lastEvolutionTime) / 1000) > this._stopSearchInterval)
 					{
 						break;
 					}
@@ -348,16 +283,16 @@ public class GeneticAlgorithm :
 
 
 			//------ 最大世代交代数が終わっても究極の個体が見つからなかったのでその中で一番個体を返す ------//
-			Individual lastSuperior = this.status.getBestIndividual();
+			Individual lastSuperior = this.status.GetBestIndividual();
 
-			this.status.setSearchStatus(GeneticStatus.DONE_SEARCH);
-			this.status.reporter.finishReport(lastSuperior, this.nowGenerationNumber, DateTime.Now.Ticks - this.startingTime);
+			this.status.SetSearchStatus(GeneticStatus.DONE_SEARCH);
+			this.status.reporter.FinishReport(lastSuperior, this.nowGenerationNumber, DateTime.Now.Ticks - this.startingTime);
 			return lastSuperior;
 		}
 		catch (ArgumentException exception)
 		{
 			Console.WriteLine(exception.StackTrace);
-			return this.status.getBestIndividual();
+			return this.status.GetBestIndividual();
 		}
 		catch (IllegalGenoTypeException exception)
 		{
@@ -392,50 +327,50 @@ public class GeneticAlgorithm :
      * @throws IllegalIndividualException 個体の中にIndividualクラス又はその派生クラスでないものが含まれています。
      * @throws OutOfBoundsGeneException 保持世代数を越えた位置を指定しました。
      */
-	protected Individual newGeneration()
+	protected Individual NewGeneration()
 	{
 		//throws IllegalGenoTypeException, IllegalGenoSizeException, IllegalIndividualException, OutOfBoundsGeneException {
 
 		//------ 既に究極の個体がいる場合にはその個体を即時に返す ------//
-		if (this.status.getBestIndividual() == null) { }
-		else if (this.status.getBestIndividual().getFitnessValue() == this.model.getFitnessAlgorithm().getBestFitnessValue())
+		if (this.status.GetBestIndividual() == null) { }
+		else if (this.status.GetBestIndividual().FitnessValue == this.model.FitnessAlgorithm.GetBestFitnessValue())
 		{
 
-			return this.status.getBestIndividual();
+			return this.status.GetBestIndividual();
 		}
 
 
 		//------ 生存を行う。優秀な親は次世代集団に残る ------//
-		List<Individual> survivors = this.model.getSurvivalAlgorithm().survive(this.group);
+		List<Individual> survivors = this.model.SurvivalAlgorithm.Survive(this.group);
 
 
 		//------ 淘汰を行う。優秀な個体が多く残る ------//
-		List<Individual> new_group = this.model.getSelectionAlgorithm().select(this.group);
+		List<Individual> new_group = this.model.SelectionAlgorithm.Select(this.group);
 
 
 		//------ 交叉を行う。生存しなかった親は全て入れ替える ------//
-		List<Individual> children = this.model.getCrossoverAlgorithm().Crossover(new_group, new_group.Count - survivors.Count);
+		List<Individual> children = this.model.CrossoverAlgorithm.Crossover(new_group, new_group.Count - survivors.Count);
 
 
 
 		//------ 突然変異を子集団の各塩基に対して行う。突然変異率が0.0の場合は行わない ------//
-		double mutationProbability = this.model.getMutationProbability();
+		double mutationProbability = this.model.MutationProbability;
 		if (mutationProbability != 0.0)
 		{
-			this.mutation(children.GetEnumerator(), mutationProbability);
+			Mutation(children.GetEnumerator(), mutationProbability);
 		}
 
 
 		//------ 逆位を子集団の各個人に対して行う。逆位率が0.0の場合は行わない ------//
-		double inverseProbability = this.model.getInverseProbability();
+		double inverseProbability = this.model.InverseProbability;
 		if (inverseProbability != 0.0)
 		{
-			this.inverse(children.GetEnumerator(), inverseProbability);
+			Inverse(children.GetEnumerator(), inverseProbability);
 		}
 
 
 		//------ 親の生存集団と次世代子供集団を新しい世代として結合 ------//
-		List<Individual> nextGeneration = new List<Individual>(survivors);                // 親の生き残りを次世代集団に追加
+		List<Individual> nextGeneration = new(survivors);                // 親の生き残りを次世代集団に追加
 		nextGeneration.AddRange(children);                                // 新しい子供達を次世代集団に追加
 
 
@@ -456,8 +391,8 @@ public class GeneticAlgorithm :
 
 			//------ 適応度を計算・個体に保持させる。究極の個体が現れたらその場で終了 ------//
 			//Individual individual = (Individual)iterator.next();                          // 個体を取得
-			double fitnessValue = this.model.getFitnessAlgorithm().fitness(individual);   // 適応度を計算
-			if (fitnessValue == this.model.getFitnessAlgorithm().getBestFitnessValue())   // 究極の個体か検証
+			double fitnessValue = this.model.FitnessAlgorithm.Fitness(individual);   // 適応度を計算
+			if (fitnessValue == this.model.FitnessAlgorithm.GetBestFitnessValue())   // 究極の個体か検証
 				return individual;                                                        // 究極の個体であれば返す
 		}
 
@@ -488,7 +423,7 @@ public class GeneticAlgorithm :
 
 
 		//------ 今までの記録も削除 ------//
-		this.status.clearSuperior();
+		this.status.ClearSuperior();
 
 
 		//------ 集団を再形成 ------//
@@ -496,7 +431,7 @@ public class GeneticAlgorithm :
 		{
 
 			//------ 個体を準に生成 ------//
-			this.group.Add(new Individual(this.model.getIndividualModel()));
+			this.group.Add(new Individual(this.model.IndividualModel));
 		}
 	}
 
@@ -507,7 +442,7 @@ public class GeneticAlgorithm :
 	//-------------------- Threadクラスメソッドのオーバーライド --------------------//
 	//==============================================================================//
 
-	public void run()
+	public void Run()
 	{
 
 		try
@@ -520,13 +455,13 @@ public class GeneticAlgorithm :
 
 
 			//------ 状況報告クラスから情報を取得 ------//
-			int searchMethod = this.status.getSearchMethod();
+			int searchMethod = this.status.GetSearchMethod();
 
 
 			//------ 今回は必ず世代数指定 ------//
 			if (searchMethod == GeneticStatus.LIMIT_NUMBER)
 			{
-				this.Search(this.getGenetationNumber());
+				this.Search(this.GenerationNumber);
 			}
 
 
@@ -553,7 +488,7 @@ public class GeneticAlgorithm :
 	 * @param mutationProbability 各塩基に対して突然変異が起こる確率
 	 * @throws OutOfBoundsGeneException 遺伝子範囲外の塩基にアクセスすると送出されます
 	 */
-	protected void mutation(IEnumerator<Individual> individualIterator, double mutationProbability)
+	protected static void Mutation(IEnumerator<Individual> individualIterator, double mutationProbability)
 	{ //throws OutOfBoundsGeneException {
 
 		//------ 各個人の各塩基に対して行う ------//
@@ -561,16 +496,16 @@ public class GeneticAlgorithm :
 		{
 			//------ 個体を遺伝子を取得 ------//
 			Individual individual = (Individual)individualIterator.Current;  // 突然変異を行う個体を取得
-			IGene gene = individual.getGene();                   // その個体が持つ遺伝子を取得
+			IGene gene = individual.Gene;                   // その個体が持つ遺伝子を取得
 
 			//------ 各塩基に対して行う ------//
-			for (int geneIndex = 0; geneIndex < gene.getGenoSize(); geneIndex++)
+			for (int geneIndex = 0; geneIndex < gene.GetGenoSize(); geneIndex++)
 			{
 
 				//------ 確率のサイコロを振る ------//
-				if (GARandomGenerator.random() < mutationProbability)
+				if (GARandomGenerator.Random < mutationProbability)
 				{
-					gene.mutateOneGene(geneIndex);                  // 突然変異
+					gene.MutateOneGene(geneIndex);                  // 突然変異
 				}
 			}
 		}
@@ -586,7 +521,7 @@ public class GeneticAlgorithm :
 	 * @param inverseProbability 逆位を起こす確率
 	 * @throws OutOfBoundsGeneException 遺伝子範囲外の塩基にアクセスすると送出されます
 	 */
-	protected void inverse(IEnumerator<Individual> individualIterator, double inverseProbability)
+	protected static void Inverse(IEnumerator<Individual> individualIterator, double inverseProbability)
 	{ //throws OutOfBoundsGeneException {
 
 		//------ 各個体に対して行う ------//
@@ -595,13 +530,13 @@ public class GeneticAlgorithm :
 
 			//------ 個体と遺伝子を取得 ------//
 			Individual individual = (Individual)individualIterator.Current;
-			IGene gene = individual.getGene();
+			IGene gene = individual.Gene;
 
 			//------ 確率のサイコロ以下であれば逆位を行う。逆位点はランダムに生成 ------//
-			if (GARandomGenerator.random() < inverseProbability)
+			if (GARandomGenerator.Random < inverseProbability)
 			{
 
-				gene.InverseSubGene((int)(GARandomGenerator.random() * gene.getGenoSize()), (int)(GARandomGenerator.random() * gene.getGenoSize()));
+				gene.InverseSubGene((int)(GARandomGenerator.Random * gene.GetGenoSize()), (int)(GARandomGenerator.Random * gene.GetGenoSize()));
 			}
 		}
 	}

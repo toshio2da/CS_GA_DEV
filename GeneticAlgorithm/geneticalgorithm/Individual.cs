@@ -1,7 +1,7 @@
 ﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
 
-using jp.co.tmdgroup.common.geneticalgorithm.model;
 using jp.co.tmdgroup.common.geneticalgorithm.exception;
+using jp.co.tmdgroup.common.geneticalgorithm.model;
 
 
 /**
@@ -66,44 +66,31 @@ public class Individual : IComparable
 
 
 		//------ ランダムな遺伝子を取得・保持 ------//
-		this.gene = this.individualModel.createNewGene();        // モデルクラスに生成させる
+		this.gene = this.individualModel.CreateNewGene();        // モデルクラスに生成させる
 	}
+
+
 
 
 	//===============================================================//
 	//-------------------- 保持情報アクセスメソッド --------------------//
 	//===============================================================//
 
-	/**
-     * <p>個体の適応度を返します。</p>
-     * 適応度はFitnessクラスによって評価されます。<br>
-     * Indivisualクラスはその適応度を保持します。<br>
-     *
-     * @return 自己遺伝子の適応度
-     */
-	public double getFitnessValue()
+	/// <summary>
+	/// <p>個体の適応度を取得または設定します。</p>
+	/// 適応度はFitnessクラスによって評価されます。<br>
+	/// Indivisualクラスはその適応度を保持します。<br>
+	/// </summary>
+	public double FitnessValue
 	{
-
+		get =>
 		//------ 適応度を返す ------//
-		return this.fitnessValue;
-	}
+		this.fitnessValue;
 
-
-
-	/**
-     * <p>個体の適応度を設定します。</p>
-     * 本メソッドはFitnessクラスによって呼ばれます。<br>
-     * Indivisualクラスはその適応度を保持します。<br>
-     *
-     * @param fitnessValue  個体の遺伝子における適応度
-     */
-	public void setFitnessValue(double fitnessValue)
-	{
-
+		set =>
 		//------ 適応度を設定 ------//
-		this.fitnessValue = fitnessValue;
+		this.fitnessValue = value;
 	}
-
 
 
 	/**
@@ -112,12 +99,7 @@ public class Individual : IComparable
      *
      * @return  保持遺伝子
      */
-	public IGene getGene()
-	{
-
-		//------ 保持遺伝子を返す ------//
-		return this.gene;
-	}
+	public IGene Gene => this.gene;
 
 
 
@@ -129,15 +111,15 @@ public class Individual : IComparable
      * @throws IllegalGenoSizeException  遺伝子断片の合計遺伝子長が本遺伝子の遺伝子長と一致しません(遺伝子不足又は過多)
      * @throws IllegalGenoTypeException  遺伝子断片の塩基タイプが本遺伝子の塩基タイプと一致しません
      */
-	protected void setGene(IGene gene)
+	protected void SetGene(IGene gene)
 	{ //throws IllegalGenoTypeException, IllegalGenoSizeException {
 
 		//------ 設定する遺伝子情報が正しいかチェック ------//
-		if (this.individualModel.getGenoSize() != gene.getGenoSize())
+		if (this.individualModel.GetGenoSize() != gene.GetGenoSize())
 		{
 			throw new IllegalGenoSizeException();                              // 遺伝子長がモデルと一致しないので例外を送出
 		}
-		if (!this.individualModel.isLegalGenoType(gene))
+		if (!this.individualModel.IsLegalGenoType(gene))
 		{
 			throw new IllegalGenoTypeException();                               // 塩基タイプがモデルと一致しないので例外を送出
 		}
@@ -153,15 +135,7 @@ public class Individual : IComparable
      *
      * @return 適応されているモデルクラス
      */
-	public IIndividual getIndividualModel()
-	{
-
-		//------ モデルクラスを返す ------//
-		return this.individualModel;
-	}
-
-
-
+	public IIndividual IndividualModel => this.individualModel;
 
 
 
@@ -183,11 +157,11 @@ public class Individual : IComparable
 	{
 		//T.Tsuda
 		if (other == null) return 1;
-		if (!(other is Individual)) return 1;
+		if (other is not Individual) return 1;
 
 
 		//------ 適当度を用いて比較 ------//
-		double targetFitnessValue = ((Individual)other).getFitnessValue();
+		double targetFitnessValue = ((Individual)other).FitnessValue;
 		if (this.fitnessValue > targetFitnessValue)
 		{
 			return -1;                                                          // 対象よりも適応度が高いので負の数を返す（適応度の高い個体ほど小さいと評価される)

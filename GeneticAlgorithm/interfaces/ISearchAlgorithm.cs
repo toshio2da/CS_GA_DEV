@@ -1,7 +1,6 @@
 ﻿namespace jp.co.tmdgroup.common.interfaces;
 
 using jp.co.tmdgroup.common.geneticalgorithm;
-using jp.co.tmdgroup.common.interfaces.exception;
 
 /**
  * <p>検索を行うクラス群の基本インタフェースです。</p>

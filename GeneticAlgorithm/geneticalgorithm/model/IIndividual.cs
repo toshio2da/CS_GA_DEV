@@ -29,7 +29,7 @@ public interface IIndividual
      *
      * @return  自己遺伝子の遺伝子長
      */
-	public int getGenoSize();
+	public int GetGenoSize();
 
 
 
@@ -39,7 +39,7 @@ public interface IIndividual
      * @param gene  チェックしたい遺伝子です。
      * @return  正しければtrue, 不正であればfalseを返します。
      */
-	public bool isLegalGenoType(IGene gene);
+	public bool IsLegalGenoType(IGene gene);
 
 
 
@@ -50,6 +50,6 @@ public interface IIndividual
      *
      * @return 新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値。
      */
-	public IGene createNewGene();
+	public IGene CreateNewGene();
 
 }

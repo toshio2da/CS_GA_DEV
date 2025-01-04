@@ -1,8 +1,8 @@
 ﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
 
 
-using jp.co.tmdgroup.common.tmdtools;
 using jp.co.tmdgroup.common.geneticalgorithm.exception;
+using jp.co.tmdgroup.common.tmdtools;
 //using jp.co.tmdgroup.common.geneticalgorithm.algorithm;
 
 /**
@@ -34,23 +34,23 @@ public class NumberGene : IGene
 	//==================================================//
 
 	/** 塩基表現。整数値遺伝子 */
-	protected int[]         baseData;
+	protected int[] baseData;
 
 
 
 
 
-    //==============================================//
-    //------------------- 構築子 --------------------//
-    //==============================================//
+	//==============================================//
+	//------------------- 構築子 --------------------//
+	//==============================================//
 
-    /**
+	/**
      * <p>サイズ指定構築子です。</p>
      * 遺伝子はランダムに作成されます<br>
      *
      * @param size  遺伝子の長さ
      */
-    public NumberGene(int size)
+	public NumberGene(int size)
 	{
 
 		//------ 遺伝子領域を確保 ------//
@@ -58,7 +58,7 @@ public class NumberGene : IGene
 
 
 		//------ 乱数で初期化 ------//
-		this.randumReconstruct();
+		this.RandumReconstruct();
 	}
 
 
@@ -88,7 +88,7 @@ public class NumberGene : IGene
      *
      * @return 自己遺伝子の遺伝子長です。
      */
-	public int getGenoSize()
+	public int GetGenoSize()
 	{
 
 		//------ 自己遺伝子の遺伝子長を返します ------//
@@ -103,7 +103,7 @@ public class NumberGene : IGene
      *
      * @return 遺伝子配列
      */
-	public object getBase()
+	public object GetBase()
 	{
 
 		//------ 塩基配列を返す ------//
@@ -124,17 +124,17 @@ public class NumberGene : IGene
 	  * @throws IllegalGenoSizeException  遺伝子断片の合計遺伝子長が本遺伝子の遺伝子長と一致しません(遺伝子不足又は過多)
 	  * @throws IllegalGenoTypeException  遺伝子断片の塩基タイプが本遺伝子の塩基タイプと一致しません
 	  */
-	public void createGene(object[] piecesOfGene)
+	public void CreateGene(object[] piecesOfGene)
 	{ //throws IllegalGenoSizeException, IllegalGenoTypeException {
 		try
 		{
 
 			//------ 融合した遺伝子を作成 ------//
-			int[] newGene = DataTools.fuseIntegerArray(piecesOfGene);       // 2値バイナリ型をつなげる
+			int[] newGene = DataTools.FuseIntegerArray(piecesOfGene);       // 2値バイナリ型をつなげる
 
 
 			//------ 遺伝子長をチェック ------//
-			if (newGene.Length != this.getGenoSize())
+			if (newGene.Length != this.GetGenoSize())
 			{
 				throw new IllegalGenoSizeException();                           // 遺伝子長が正しくないので例外を送出
 			}
@@ -168,13 +168,13 @@ public class NumberGene : IGene
      * @param genoIndex  突然変異を起こさせる塩基の場所を指定します。
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます。
      */
-	public void mutateOneGene(int genoIndex)
+	public void MutateOneGene(int genoIndex)
 	{ //throws OutOfBoundsGeneException {
 		try
 		{
 
 			//------ ランダム整数を代入します ------//
-			this.baseData[genoIndex] = (int)(GARandomGenerator.random() * 2147483647);
+			this.baseData[genoIndex] = (int)(GARandomGenerator.Random * 2147483647);
 		}
 		catch (OutOfRangeException exception)
 		{
@@ -198,7 +198,7 @@ public class NumberGene : IGene
      * @return  抜き出された部分遺伝子断片です
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
      */
-	public IGene getSubGene(int firstGenoIndex, int lastGenoIndex)
+	public IGene GetSubGene(int firstGenoIndex, int lastGenoIndex)
 	{ //throws OutOfBoundsGeneException {
 
 		try
@@ -233,14 +233,15 @@ public class NumberGene : IGene
      * 個体遺伝子の初期化などに用いられます。<br>
      * ランダムな遺伝子は mutateOneGene()メソッドを使用して生成されます。
      */
-	public void randumReconstruct()
+	public void RandumReconstruct()
 	{
 		try
 		{
 
 			//------ 全塩基を再構築 ------//
-			for (int index = 0; index < this.baseData.Length; index++) {
-				this.mutateOneGene(index);
+			for (int index = 0; index < this.baseData.Length; index++)
+			{
+				this.MutateOneGene(index);
 			}
 		}
 		catch (OutOfBoundsGeneException exception)
@@ -268,8 +269,8 @@ public class NumberGene : IGene
 		{
 
 			//------ 逆位を行うために遺伝子断片を作成 ------//
-			IGene subGene = this.getSubGene(firstGenoIndex, lastGenoIndex);
-			int[] gene = (int[])subGene.getBase();
+			IGene subGene = this.GetSubGene(firstGenoIndex, lastGenoIndex);
+			int[] gene = (int[])subGene.GetBase();
 
 
 			//------ 逆順にコピー ------//

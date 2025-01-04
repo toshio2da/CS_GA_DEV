@@ -1,6 +1,7 @@
-﻿using System.Text;
+﻿namespace jp.co.tmdgroup.nqueengasample;
 
-namespace jp.co.tmdgroup.nqueengasample;
+using System.Text;
+
 
 /**
  * <p>タイトル: Genetic Algorithm Library</p>
@@ -11,42 +12,49 @@ namespace jp.co.tmdgroup.nqueengasample;
  * @version 1.0
  */
 
-public class NQueenToHtml {
+public class NQueenToHtml
+{
 
-    public NQueenToHtml() {
-    }
+	public NQueenToHtml()
+	{
+	}
 
 
-    public static String toHtml(int[]  gene) {
+	public static String ToHtml(int[] gene)
+	{
 
-        StringBuilder  buffer = new StringBuilder();
-        int w = gene.Length * 26;
+		StringBuilder buffer = new();
+		int w = gene.Length * 26;
 
-        buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"" + w.ToString() + "\">  <tbody>");
+		buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"" + w.ToString() + "\">  <tbody>");
 
-        for (int rowIndex = 0; rowIndex < gene.Length; rowIndex++) {
+		for (int rowIndex = 0; rowIndex < gene.Length; rowIndex++)
+		{
 
-            buffer.Append("<tr>");
-            for (int columnIndex = 0; columnIndex < gene.Length; columnIndex++) {
+			buffer.Append("<tr>");
+			for (int columnIndex = 0; columnIndex < gene.Length; columnIndex++)
+			{
 
-                buffer.Append("<td valign=\"top\" align=\"center\">");
+				buffer.Append("<td valign=\"top\" align=\"center\">");
 
-                if (gene[rowIndex] == columnIndex) {
+				if (gene[rowIndex] == columnIndex)
+				{
 
-                    buffer.Append("<img src=\"queen.bmp\">");
-                }
-                else {
+					buffer.Append("<img src=\"queen.bmp\">");
+				}
+				else
+				{
 
-                    buffer.Append("　");
-                }
+					buffer.Append('　');
+				}
 
-                buffer.Append("<br></td>");
-            }
-            buffer.Append("</tr>");
-        }
+				buffer.Append("<br></td>");
+			}
+			buffer.Append("</tr>");
+		}
 
-        buffer.Append("</tbody></table>");
+		buffer.Append("</tbody></table>");
 
-        return buffer.ToString();
-    }
+		return buffer.ToString();
+	}
 }

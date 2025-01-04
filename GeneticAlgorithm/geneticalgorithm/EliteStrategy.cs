@@ -83,7 +83,7 @@ public class EliteStrategy : AbstractSurvival
      * @return 次世代に引き継がれるエリート親集団
      * @throws IllegalIndividualException 集団の要素にIndivisualクラスでない要素があります
      */
-	public override List<Individual> survive(List<Individual> survivors)
+	public override List<Individual> Survive(List<Individual> survivors)
 	{ //throws IllegalIndividualException {
 
 		//------ ソートを行う。 ------//
@@ -91,10 +91,10 @@ public class EliteStrategy : AbstractSurvival
 
 
 		//------ 世代間ギャップによって決められた数だけ順に抽出 ------//
-		int eliteNumber = (int)(survivors.Count * (1.0 - this.getGenerationGap()));  // 生き残るエリートの数を計算
+		int eliteNumber = (int)(survivors.Count * (1.0 - this.GenerationGap));  // 生き残るエリートの数を計算
 
 		//T.Tsuda
-		List<Individual> elites = survivors.GetRange(0, eliteNumber).ToList();
+		List<Individual> elites = [.. survivors.GetRange(0, eliteNumber)];
 
 		//List<Individual> elites = new List<Individual>(eliteNumber);                            // 生き残るエリート親集団
 		//ListIterator survivorsIterator = survivors.listIterator();//survivors.Count);//.iterator();                        // イテレータを取得

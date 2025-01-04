@@ -1,9 +1,9 @@
 ﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
 
 
-using System.Reflection;
 using jp.co.tmdgroup.common.geneticalgorithm.model;
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
+
+using System.Reflection;
 /**
  * <p>1点交叉による交叉を行います。</p>
  * 1点交叉は交叉法の中で最も一般的なものとして知られています。<br>
@@ -72,19 +72,19 @@ public class OnePointCrossover : ICrossoverAlgorithm
 		{
 			//------ 必要な情報を取得 ------//
 			Individual sample = perentCandidates[0];  // 個体に関する情報を得るためにサンプルとして取得
-			int geneSize = sample.getGene().getGenoSize();       // この集団の個体が持っている遺伝子の長さを取得
-			IIndividual ourModel = sample.getIndividualModel();          // 個体のモデルクラスを取得
+			int geneSize = sample.Gene.GetGenoSize();       // この集団の個体が持っている遺伝子の長さを取得
+			IIndividual ourModel = sample.IndividualModel;          // 個体のモデルクラスを取得
 
 			//Class individualClass = sample.getClass();                    // メタクラスを取得
 			//Class individualModelClass = Class.forName("jp.co.tmdgroup.common.geneticalgorithm.model.IIndividual");
 			//Class[] argmentModel = { individualModelClass };                      // メタクラスに呼ぶコンストラクタの引数定義(個体の生成構築子)
 			//Constructor constructor = individualClass.getConstructor(argmentModel); // メタコンストラクタ。クラス名から動的に個体を生成。
-			
-			object[] argment = { ourModel };                                   // 引数。個体のモデルクラス。
+
+			object[] argment = [ourModel];                                   // 引数。個体のモデルクラス。
 
 			//T.Tsuda
 			//コンストラクタメタ情報を取得
-			ConstructorInfo? constructorInfo = typeof(Individual).GetType().GetConstructor(new Type[] { typeof(IIndividual) });
+			ConstructorInfo? constructorInfo = typeof(Individual).GetType().GetConstructor([typeof(IIndividual)]);
 			if (constructorInfo == null)
 			{
 				throw new ArgumentException("指定されたタイプにIIndividualをを引数としたコンストラクタが存在しません");
@@ -94,7 +94,7 @@ public class OnePointCrossover : ICrossoverAlgorithm
 			//------------------------------------------//
 			//------ 親集団と同じ数の子集団を生成 ------//
 			//------------------------------------------//
-			List<Individual> children = new List<Individual>(perentCandidates.Count);                           // 生成する子集団
+			List<Individual> children = new(perentCandidates.Count);                           // 生成する子集団
 			object[] sonsGene = new object[2];       // 1点交叉なので2つの部分遺伝子から作成
 			object[] daughtersGene = new object[2];       // 1点交叉なので2つの部分遺伝子から作成
 														  //sonsGene.setSize(2);                              // 2つの遺伝子を合成する
@@ -105,18 +105,18 @@ public class OnePointCrossover : ICrossoverAlgorithm
 			{
 
 				//------ ランダムに親を2体選ぶ ------//
-				Individual father = perentCandidates[(int)(GARandomGenerator.random() * perentCandidates.Count)];   // 父を選ぶ
-				Individual mother = perentCandidates[(int)(GARandomGenerator.random() * perentCandidates.Count)];   // 母を選ぶ
+				Individual father = perentCandidates[(int)(GARandomGenerator.Random * perentCandidates.Count)];   // 父を選ぶ
+				Individual mother = perentCandidates[(int)(GARandomGenerator.Random * perentCandidates.Count)];   // 母を選ぶ
 
 
 				//------ 交叉点をランダムに生成 ------//
-				int crossoverPoint = (int)(1 + (GARandomGenerator.random() * geneSize - 2));                     // ランダムに交叉点を決定[1 - (size-1)]
+				int crossoverPoint = (int)(1 + (GARandomGenerator.Random * geneSize - 2));                     // ランダムに交叉点を決定[1 - (size-1)]
 
 				//------ 両親から部分遺伝子を搾取 ------//
-				IGene fathersLeftGene = father.getGene().getSubGene(0, crossoverPoint);                // 父の左側の部分遺伝子
-				IGene fathersRightGene = father.getGene().getSubGene(crossoverPoint + 1, geneSize - 1); // 父の右側の部分遺伝子
-				IGene mothersLeftGene = mother.getGene().getSubGene(0, crossoverPoint);                // 母の左側の部分遺伝子
-				IGene mothersRightGene = mother.getGene().getSubGene(crossoverPoint + 1, geneSize - 1); // 母の右側の部分遺伝子
+				IGene fathersLeftGene = father.Gene.GetSubGene(0, crossoverPoint);                // 父の左側の部分遺伝子
+				IGene fathersRightGene = father.Gene.GetSubGene(crossoverPoint + 1, geneSize - 1); // 父の右側の部分遺伝子
+				IGene mothersLeftGene = mother.Gene.GetSubGene(0, crossoverPoint);                // 母の左側の部分遺伝子
+				IGene mothersRightGene = mother.Gene.GetSubGene(crossoverPoint + 1, geneSize - 1); // 母の右側の部分遺伝子
 
 
 				//------ 子供に与える遺伝子を生成 ------//
@@ -125,17 +125,17 @@ public class OnePointCrossover : ICrossoverAlgorithm
 				//daughtersGene.setElementAt(mothersLeftGene.getBase(), 0);     // 娘は母の左側と父の右側を受け継ぎます
 				//daughtersGene.setElementAt(fathersRightGene.getBase(), 1);    //
 
-				sonsGene[0] = fathersLeftGene.getBase();          // 息子は父の左側と母の右側を受け継ぎます
-				sonsGene[1] = mothersRightGene.getBase();         //
-				daughtersGene[0] = mothersLeftGene.getBase();     // 娘は母の左側と父の右側を受け継ぎます
-				daughtersGene[1] = fathersRightGene.getBase();    //
+				sonsGene[0] = fathersLeftGene.GetBase();          // 息子は父の左側と母の右側を受け継ぎます
+				sonsGene[1] = mothersRightGene.GetBase();         //
+				daughtersGene[0] = mothersLeftGene.GetBase();     // 娘は母の左側と父の右側を受け継ぎます
+				daughtersGene[1] = fathersRightGene.GetBase();    //
 
 
 				//------ 子供を2体生成 ------//
 				Individual son = (Individual)constructorInfo.Invoke(argment);// 親と同じクラス（派生クラス）で子供を生成
 				Individual daughter = (Individual)constructorInfo.Invoke(argment);  // メタクラスによる動的生成を使用。
-				son.getGene().createGene(sonsGene);                                         // 新しく生成された遺伝子を子供に設定
-				daughter.getGene().createGene(daughtersGene);                               // 新しく生成された遺伝子を子供に設定
+				son.				Gene.CreateGene(sonsGene);                                         // 新しく生成された遺伝子を子供に設定
+				daughter.				Gene.CreateGene(daughtersGene);                               // 新しく生成された遺伝子を子供に設定
 
 
 				//------ 生成した子供を次世代の集団に追加 ------//
@@ -152,7 +152,7 @@ public class OnePointCrossover : ICrossoverAlgorithm
 		catch (Exception exception)
 		{
 			Console.WriteLine(exception.StackTrace);
-			return new List<Individual>();//null;
+			return [];//null;
 		}
 		/*
 		catch (OutOfBoundsGeneException exception) {

@@ -25,7 +25,7 @@ using jp.co.tmdgroup.common.geneticalgorithm;
  * @version 1.0 (2002/11/03)
  */
 
-public abstract class AbstractGeneticAlgorithmModel: IGeneticAlgorithmModel
+public abstract class AbstractGeneticAlgorithmModel : IGeneticAlgorithmModel
 {
 
 
@@ -47,11 +47,7 @@ public abstract class AbstractGeneticAlgorithmModel: IGeneticAlgorithmModel
      *
      * @return 各塩基の突然変異率。遺伝子長の逆数。
      */
-	public double getMutationProbability()
-	{
-
-		return (1.0 / (double)this.getIndividualModel().getGenoSize());
-	}
+	public double MutationProbability => (1.0 / (double)this.IndividualModel.GetGenoSize());
 
 
 	/**
@@ -65,16 +61,11 @@ public abstract class AbstractGeneticAlgorithmModel: IGeneticAlgorithmModel
      *
      * @return  各個体に逆位が起こる確率
      */
-	public double getInverseProbability()
-	{
+	public double InverseProbability => 0.0;//------ 逆位操作は行わない ------//
 
-		//------ 逆位操作は行わない ------//
-		return 0.0;
-	}
-
-	public abstract IIndividual getIndividualModel();
-	public abstract IFitnessAlgorithm getFitnessAlgorithm();
-	public abstract ISelectionAlgorithm getSelectionAlgorithm();
-	public abstract ISurvivalAlgorithm getSurvivalAlgorithm();
-	public abstract ICrossoverAlgorithm getCrossoverAlgorithm();
+	public abstract IIndividual IndividualModel { get; }
+	public abstract IFitnessAlgorithm FitnessAlgorithm { get; }
+	public abstract ISelectionAlgorithm SelectionAlgorithm { get; }
+	public abstract ISurvivalAlgorithm SurvivalAlgorithm { get; }
+	public abstract ICrossoverAlgorithm CrossoverAlgorithm { get; }
 }

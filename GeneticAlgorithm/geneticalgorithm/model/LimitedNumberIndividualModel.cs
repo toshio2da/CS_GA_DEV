@@ -63,10 +63,10 @@ public class LimitedNumberIndividualModel : NumberIndividualModel
      *
      * @return 新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値。
      */
-	public new IGene createNewGene()
+	public new IGene CreateNewGene()
 	{
 
 		//------ 新しく整数配列遺伝子を生成 ------//
-		return new LimitedNumberGene(this.getGenoSize(), this.limitNumber);
+		return new LimitedNumberGene(this.GetGenoSize(), this.limitNumber);
 	}
 }

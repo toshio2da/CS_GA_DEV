@@ -1,7 +1,4 @@
 ﻿namespace jp.co.tmdgroup.common.interfaces.exception;
-
-using jp.co.tmdgroup.common.tmdtools;
-
 /**
  * <p>タイトル: Generic Algorithm Library</p>
  * <p>説明: 汎用的な遺伝的アルゴリズムライブラリの構築</p>

@@ -1,8 +1,8 @@
 ﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
 
 
-using jp.co.tmdgroup.common.tmdtools;
 using jp.co.tmdgroup.common.geneticalgorithm.exception;
+using jp.co.tmdgroup.common.tmdtools;
 /**
  * <p>2値配列で遺伝子を表す遺伝子型です。</p>
  * 遺伝的アルゴリズムで使用される遺伝子型でも最も一般的な塩基タイプです。<br>
@@ -52,7 +52,7 @@ public class BinaryGene : IGene
 
 
 		//------ 乱数で初期化 ------//
-		this.randumReconstruct();
+		this.RandumReconstruct();
 	}
 
 
@@ -82,7 +82,7 @@ public class BinaryGene : IGene
      *
      * @return 自己遺伝子の遺伝子長です。
      */
-	public int getGenoSize()
+	public int GetGenoSize()
 	{
 
 		//------ 自己遺伝子の遺伝子長を返します ------//
@@ -97,7 +97,7 @@ public class BinaryGene : IGene
      *
      * @return 遺伝子配列
      */
-	public object getBase()
+	public object GetBase()
 	{
 
 		//------ 塩基配列を返す ------//
@@ -118,17 +118,17 @@ public class BinaryGene : IGene
 	  * @throws IllegalGenoSizeException  遺伝子断片の合計遺伝子長が本遺伝子の遺伝子長と一致しません(遺伝子不足又は過多)
 	  * @throws IllegalGenoTypeException  遺伝子断片の塩基タイプが本遺伝子の塩基タイプと一致しません
 	  */
-	public void createGene(object[] piecesOfGene)
+	public void CreateGene(object[] piecesOfGene)
 	{ //throws IllegalGenoSizeException, IllegalGenoTypeException {
 		try
 		{
 
 			//------ 融合した遺伝子を作成 ------//
-			bool[] newGene = DataTools.fuseBinaryArray(piecesOfGene);       // 2値バイナリ型をつなげる
+			bool[] newGene = DataTools.FuseBinaryArray(piecesOfGene);       // 2値バイナリ型をつなげる
 
 
 			//------ 遺伝子長をチェック ------//
-			if (newGene.Length != this.getGenoSize())
+			if (newGene.Length != this.GetGenoSize())
 			{
 				throw new IllegalGenoSizeException();                           // 遺伝子長が正しくないので例外を送出
 			}
@@ -158,7 +158,7 @@ public class BinaryGene : IGene
      * @param genoIndex  突然変異を起こさせる塩基の場所を指定します。
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます。
      */
-	public void mutateOneGene(int genoIndex)
+	public void MutateOneGene(int genoIndex)
 	{ //throws OutOfBoundsGeneException {
 		try
 		{
@@ -188,7 +188,7 @@ public class BinaryGene : IGene
      * @return  抜き出された部分遺伝子断片です
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
      */
-	public IGene getSubGene(int firstGenoIndex, int lastGenoIndex)
+	public IGene GetSubGene(int firstGenoIndex, int lastGenoIndex)
 	{ //throws OutOfBoundsGeneException {
 
 		try
@@ -222,14 +222,14 @@ public class BinaryGene : IGene
      * <p>自己遺伝子を全てランダムなもので再構築します。</p>
      * 個体遺伝子の初期化などに用いられます。<br>
      */
-	public void randumReconstruct()
+	public void RandumReconstruct()
 	{
 
 		//------ 乱数を使って全塩基を再構築 ------//
 		for (int index = 0; index < this.baseData.Length; index++)
 		{
 
-			this.baseData[index] = (GARandomGenerator.random() < 0.5);                         // 0.5未満だったら
+			this.baseData[index] = (GARandomGenerator.Random < 0.5);                         // 0.5未満だったら
 		}
 	}
 
@@ -252,8 +252,8 @@ public class BinaryGene : IGene
 		{
 
 			//------ 逆位を行うために遺伝子断片を作成 ------//
-			IGene subGene = this.getSubGene(firstGenoIndex, lastGenoIndex);
-			bool[] gene = (bool[])subGene.getBase();
+			IGene subGene = this.GetSubGene(firstGenoIndex, lastGenoIndex);
+			bool[] gene = (bool[])subGene.GetBase();
 
 
 			//------ 逆順にコピー ------//

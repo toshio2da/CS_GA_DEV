@@ -23,7 +23,7 @@ public interface IGeneticReportable
      *
      * @param surperior 現在における最優秀個体
      */
-	public void report(Individual surperior);
+	public void Report(Individual surperior);
 
 
 	/**
@@ -34,5 +34,5 @@ public interface IGeneticReportable
      * @param resultGenerationNumber 最終的に行った世代交代数
      * @param computationTime 最終的に計算に使用した時間
      */
-	public void finishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime);
+	public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime);
 }

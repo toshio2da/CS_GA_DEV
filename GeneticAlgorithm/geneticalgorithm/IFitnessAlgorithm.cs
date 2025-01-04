@@ -1,7 +1,4 @@
 ﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
-
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
-
 /**
  * <p>個体の適応度を算出するクラスのインタフェースです。</p>
  * 問題毎に適応度の計算法は異なります。適当度を算出するクラスは本インタフェースを実装することによって行われます。<br>
@@ -36,7 +33,7 @@ public interface IFitnessAlgorithm
      * @throws IllegalGenoSizeException  遺伝子断片の合計遺伝子長が本遺伝子の遺伝子長と一致しません(遺伝子不足又は過多)
      * @throws IllegalGenoTypeException  遺伝子断片の塩基タイプが本遺伝子の塩基タイプと一致しません
      */
-	public double fitness(Individual individual); //throws IllegalGenoTypeException, IllegalGenoSizeException;
+	public double Fitness(Individual individual); //throws IllegalGenoTypeException, IllegalGenoSizeException;
 
 
 
@@ -54,5 +51,5 @@ public interface IFitnessAlgorithm
      *
      * @return 個体の持つことの出来る最大の適応度を返します。
      */
-	public double getBestFitnessValue();
+	public double GetBestFitnessValue();
 }

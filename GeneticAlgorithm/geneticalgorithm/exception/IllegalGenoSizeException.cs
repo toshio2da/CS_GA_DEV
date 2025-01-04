@@ -13,13 +13,15 @@
  * @author 森本寛
  * @version 1.0   2002/10/16
  */
-public class IllegalGenoSizeException : GeneticAlgorithmException {
+public class IllegalGenoSizeException : GeneticAlgorithmException
+{
 
-    /**
+	/**
      * <p>デフォルト構築子。</p>
      *
      * 最終更新バージョン：1.0
      */
-    public IllegalGenoSizeException() {
-    }
+	public IllegalGenoSizeException()
+	{
+	}
 }

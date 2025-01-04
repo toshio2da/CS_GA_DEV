@@ -11,40 +11,47 @@ namespace jp.co.tmdgroup.common.geneticalgorithm.sample;
  * @version 1.0
  */
 
-public class NQueenToHtml {
+public class NQueenToHtml
+{
 
-    public NQueenToHtml() {
-    }
+	public NQueenToHtml()
+	{
+	}
 
 
-    public static String ToHtml(int[]  gene) {
+	public static String ToHtml(int[] gene)
+	{
 
-        StringBuilder  buffer = new StringBuilder();
-        buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"80%\">  <tbody>");
+		StringBuilder buffer = new();
+		buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"80%\">  <tbody>");
 
-        for (int rowIndex = 0; rowIndex < gene.Length; rowIndex++) {
+		for (int rowIndex = 0; rowIndex < gene.Length; rowIndex++)
+		{
 
-            buffer.Append("<tr>");
-            for (int columnIndex = 0; columnIndex < gene.Length; columnIndex++) {
+			buffer.Append("<tr>");
+			for (int columnIndex = 0; columnIndex < gene.Length; columnIndex++)
+			{
 
-                buffer.Append("<td valign=\"top\" align=\"center\">");
+				buffer.Append("<td valign=\"top\" align=\"center\">");
 
-                if (gene[rowIndex] == columnIndex) {
+				if (gene[rowIndex] == columnIndex)
+				{
 
-                    buffer.Append("<img src=\"queen.png\">");
-                }
-                else {
+					buffer.Append("<img src=\"queen.png\">");
+				}
+				else
+				{
 
-                    buffer.Append("　");
-                }
+					buffer.Append('　');
+				}
 
-                buffer.Append("<br></td>");
-            }
-            buffer.Append("</tr>");
-        }
+				buffer.Append("<br></td>");
+			}
+			buffer.Append("</tr>");
+		}
 
-        buffer.Append("</tbody></table>");
+		buffer.Append("</tbody></table>");
 
-        return buffer.ToString();
-    }
+		return buffer.ToString();
+	}
 }

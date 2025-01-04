@@ -1,8 +1,4 @@
 ﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
-
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
-using jp.co.tmdgroup.common.geneticalgorithm.model;
-
 /**
  * <p>遺伝的アルゴリズムの基本操作、交叉を行うクラスのインタフェースです。</p>
  * 交叉親集団からランダムに2体を選び、その2体を元に2体の子供を生成します。<br>
@@ -23,7 +19,7 @@ public interface ICrossoverAlgorithm
 {
 
 
-    /**
+	/**
      * <p>親候補集団から交叉を行い、子集団を生成します。</p>
      * 交叉親集団からランダムに2体を選び、その2体を元に2体の子供を生成します。<br>
      * 子供2体の合計遺伝子は親の合計遺伝子と等しくなります。<br>
@@ -34,5 +30,5 @@ public interface ICrossoverAlgorithm
      * @return 生成された子集団
      * @throws IllegalIndividualException perentCandidatesの中にindividualクラスでないオブジェクトが入っています
      */
-    public List<Individual> Crossover(List<Individual> perentCandidates, int childrenNumber); //throws IllegalIndividualException;
+	public List<Individual> Crossover(List<Individual> perentCandidates, int childrenNumber); //throws IllegalIndividualException;
 }

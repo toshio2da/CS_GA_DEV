@@ -31,10 +31,10 @@ public class DefaultGeneticReporter : IGeneticReportable
      * @param resultGenerationNumber 最終的に行った世代交代数
      * @param computationTime 最終的に計算に使用した時間
      */
-	public void report(Individual surperior)
+	public void Report(Individual surperior)
 	{
 
-		double fitnessValue = surperior.getFitnessValue();
+		double fitnessValue = surperior.FitnessValue;
 		Console.Write("適応度： ");
 		Console.WriteLine(fitnessValue);
 	}
@@ -45,7 +45,7 @@ public class DefaultGeneticReporter : IGeneticReportable
      *
      * @param lastSuperior 最終的な最優秀個体
      */
-	public void finishReport(Individual lastSuperior, int resultGenerationNumber, long computationTime)
+	public void FinishReport(Individual lastSuperior, int resultGenerationNumber, long computationTime)
 	{
 
 		Console.WriteLine("検索が完了しました");

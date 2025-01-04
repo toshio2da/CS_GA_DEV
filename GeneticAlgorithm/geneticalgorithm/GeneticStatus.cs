@@ -1,6 +1,6 @@
 ﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
 
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
+using jp.co.tmdgroup.common.interfaces.exception;
 
 using System.Runtime.CompilerServices;
 
@@ -66,7 +66,7 @@ public class GeneticStatus
 	//====================================================//
 
 	/** 各世代の最優秀個体(最新の検索中) */
-	protected List<Individual> superior = new List<Individual>();
+	protected List<Individual> superior = [];
 
 	/** 全検索の中で生き残った最優秀個体 */
 	protected Individual bestIndividual = null!;
@@ -114,7 +114,7 @@ public class GeneticStatus
      *
      * @param fitness 設定する適応度計算アルゴリズム
      */
-	public void setFitnessAlgorithm(IFitnessAlgorithm fitness)
+	public void SetFitnessAlgorithm(IFitnessAlgorithm fitness)
 	{
 
 		//------ 適応度計算アルゴリズムを設定 ------//
@@ -137,7 +137,7 @@ public class GeneticStatus
      *
      * @return 保持され値得る途中経過報告クラス
      */
-	public IGeneticReportable getReporter()
+	public IGeneticReportable GetReporter()
 	{
 
 		//------ 現在の途中経過報告クラスを渡す ------//
@@ -150,7 +150,7 @@ public class GeneticStatus
      *
      * @param newReporter 新しい途中経過報告クラス
      */
-	public void setReporter(IGeneticReportable newReporter)
+	public void SetReporter(IGeneticReportable newReporter)
 	{
 
 		//------ 途中経過報告クラスを変更 ------//
@@ -172,7 +172,7 @@ public class GeneticStatus
      * @return 現在設定されている検索命令
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public int getCommand()
+	public int GetCommand()
 	{
 
 		//------ 現在の検索命令を取得します。 ------//
@@ -189,7 +189,7 @@ public class GeneticStatus
      * @throws ArgumentException サポートされていない検索命令を設定しようとしました。
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public void setCommand(int command)
+	public void SetCommand(int command)
 	{ //throws ArgumentException {
 
 		//------ サポートされている検索命令かチェック ------//
@@ -221,7 +221,7 @@ public class GeneticStatus
      * @return 状態を返します。GeneticStatus.SEARCHING(検索中)と GeneticStatus.DONE_SEARCH(検索完了)があります。
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public int getSearchStatus()
+	public int GetSearchStatus()
 	{
 
 		//------ 現在の状態を返す ------//
@@ -237,7 +237,7 @@ public class GeneticStatus
      * @throws ArgumentException サポートされていない状態変数を設定しようとしました。
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public void setSearchStatus(int newStatus)
+	public void SetSearchStatus(int newStatus)
 	{ //throws ArgumentException {
 
 		//------ サポートしているかチェックする ------//
@@ -268,7 +268,7 @@ public class GeneticStatus
      * @return 現在の検索手法です。
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public int getSearchMethod()
+	public int GetSearchMethod()
 	{
 
 		//------ 現在の検索手法を返す ------//
@@ -285,7 +285,7 @@ public class GeneticStatus
      * @throws ArgumentException 説明にある3種類の値以外の値を渡すと送出されます。
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public void setSearchMethod(int newSearchMethod)
+	public void SetSearchMethod(int newSearchMethod)
 	{ //throws ArgumentException {
 
 		//------ チェック ------//
@@ -318,12 +318,12 @@ public class GeneticStatus
      * @throws ArgumentOutOfRangeException 指定世代が記録されている世代数の範囲を超えています
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public Individual getSuperior(int generationIndex)
+	public Individual GetSuperior(int generationIndex)
 	{ //throws ArgumentOutOfRangeException {
 
 		//------ サイズをチェック ------//
 		if (generationIndex >= this.superior.Count)
-			throw new ArgumentOutOfRangeException("指定世代が保持世代サイズを越えています");
+			throw new IllegalParameterSizeException("指定世代が保持世代サイズを越えています");
 
 
 		//------ 指定された世代の最高個体を取得 ------//
@@ -337,7 +337,7 @@ public class GeneticStatus
      * @param newBestIndividual 新しく登録する個体
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	void setSuperior(Individual newBestIndividual)
+	public void SetSuperior(Individual newBestIndividual)
 	{
 
 		//------ 個体を登録 ------//
@@ -352,7 +352,7 @@ public class GeneticStatus
      * 本メソッドはGeneticAlgorithmクラスによって呼び出されます。<br>
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public void clearSuperior()
+	public void ClearSuperior()
 	{
 
 		//------ 記録を全て削除 ------//
@@ -375,7 +375,7 @@ public class GeneticStatus
      * @return 全検索中最優秀個体
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public Individual getBestIndividual()
+	public Individual GetBestIndividual()
 	{
 
 
@@ -397,7 +397,7 @@ public class GeneticStatus
      * @throws IllegalGenoTypeException 候補として渡された個体の遺伝子の塩基タイプが一致していません
      */
 	[MethodImpl(MethodImplOptions.Synchronized)]
-	public void setBestIndividual(Individual candidate)
+	public void SetBestIndividual(Individual candidate)
 	{ //throws IllegalGenoSizeException, IllegalGenoTypeException {
 
 		//------ 始めの1回目かチェック ------//
@@ -412,7 +412,7 @@ public class GeneticStatus
 		if (this.fitness == null) throw new NullReferenceException("fitnessがNullです");
 
 		//------ 適応度が現在の最優秀候補よりも高いかチェック ------//
-		if (this.fitness.fitness(this.bestIndividual) < this.fitness.fitness(candidate))
+		if (this.fitness.Fitness(this.bestIndividual) < this.fitness.Fitness(candidate))
 		{
 
 			//------ さらに優秀な個体が現れたので交代 ------//
@@ -423,7 +423,7 @@ public class GeneticStatus
 
 
 			//------ 最優秀個体が交代したので報告 ------//
-			this.reporter.report(this.bestIndividual);
+			this.reporter.Report(this.bestIndividual);
 		}
 		//        else {Console.Write("|");};
 	}

@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
-
 /**
  * <p>適応度に応じて個体の淘汰を行うクラスのインタフェースです。</p>
  * ここでいう「淘汰」とはn種類の親集合からn個の子供の材料を作り出すことを指します。<br>
@@ -43,5 +41,5 @@ public interface ISelectionAlgorithm
      * @return 子集合候補。この集合を用いて新しい世代を創生します。
      * @throws IllegalElementException group内にIndividualまたはその派生クラスではない要素があります。
      */
-	public List<Individual> select(List<Individual> group); //throws IllegalIndividualException;
+	public List<Individual> Select(List<Individual> group); //throws IllegalIndividualException;
 }

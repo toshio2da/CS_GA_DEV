@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace jp.co.tmdgroup.common.tmdtools
+﻿namespace jp.co.tmdgroup.common.tmdtools
 {
 	public class DataTools
 	{
-		public static int[] createUniqElementArray(int[] ints)
+		public static int[] CreateUniqElementArray(int[] ints)
 		{
 			return ints.Distinct().ToArray();
 		}
 
-		public static bool[] fuseBinaryArray(object[] binaryArrays)
+		public static bool[] FuseBinaryArray(object[] binaryArrays)
 		{
 			return binaryArrays.SelectMany(e => (bool[])e).ToArray();
 
@@ -50,7 +42,7 @@ namespace jp.co.tmdgroup.common.tmdtools
 		}
 
 
-		public static int[] fuseIntegerArray(object[] intArrays)
+		public static int[] FuseIntegerArray(object[] intArrays)
 		{
 			return intArrays.SelectMany(e => (int[])e).ToArray();
 			/*

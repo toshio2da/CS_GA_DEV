@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
-
 /**
  * <p>世代交代時に親集団の生存を決めるクラスのインタフェースです。</p>
  * 遺伝的アルゴリズムでは世代交代時に全ての親が死ぬわけではなく、新しい世代と
@@ -29,8 +27,8 @@ public interface ISurvivalAlgorithm
 {
 
 
-    /**
-     * <p>世代間ギャップ[G]を設定します。</p>
+	/**
+     * <p>世代間ギャップ[G]を取得または設定します。</p>
      * 世代間ギャップは 0.0 - 1.0で示されます。<br>
      * G = 1.0 の場合、世代が変わる毎に全ての個体は死滅し、次世代が誕生します。<br>
      * つまり、親集団は生き残りません。<br>
@@ -40,26 +38,7 @@ public interface ISurvivalAlgorithm
      * @param generationGap 指定する世代間ギャップ
      * @throws OutOfRangeException 指定した世代間ギャップが範囲[0.0 - 1.0]を越えています
      */
-    public void setGenerationGap(double generationGap);
- //throws OutOfRangeException;
-
-
-
-
-	/**
-     * <p>現在設定されている世代間ギャップ[G]を取得します。</p>
-     * 世代間ギャップは 0.0\uFF5E1.0で示されます。<br>
-     * G = 1.0 の場合、世代が変わる毎に全ての個体は死滅し、次世代が誕生します。<br>
-     * つまり、親集団は生き残りません。<br>
-     * G = 0.0 の場合は世代が変わっても全ての親が存続するので遺伝的アルゴリズムは昨日しなくなってしまいます。<br>
-     * 一般的には世代間ギャップ[G]はかなり高めに設定されます。0.95\uFF5E1.0が多いようです。<br>
-     *
-     * @return 現在設定されている世代間ギャップ[G]
-     */
-	public double getGenerationGap();
-
-
-
+	public double GenerationGap{ get; set; }
 
 	/**
      * <p>親集団の中で次世代に生存する集団を決定します。</p>
@@ -71,6 +50,5 @@ public interface ISurvivalAlgorithm
      * @return 次世代に引き継がれる親集団
      * @throws IllegalIndividualException 集団の要素にIndivisualクラスでない要素があります
      */
-	//public List survive(List survivors); //throws IllegalIndividualException;
-	public List<Individual> survive(List<Individual> survivors); //throws IllegalIndividualException;
+	public List<Individual> Survive(List<Individual> survivors); 
 }

@@ -16,21 +16,22 @@ public class GARandomGenerator
 	static private Random? randomBase = null;
 	static private int seed;
 
-	[MethodImpl(MethodImplOptions.Synchronized)]
-	public static void setSeed(int s)
+	public static int Seed
 	{
-		seed = s;
-		randomBase = new Random(seed);
+		set
+		{
+			seed = value;
+			randomBase = new Random(seed);
+		}
 	}
 
 
-	[MethodImpl(MethodImplOptions.Synchronized)]
-	public static double random()
+	public static double Random
 	{
-		if (randomBase == null)
+		get
 		{
-			randomBase = new Random();
+			randomBase ??= new Random();
+			return randomBase.NextDouble();
 		}
-		return randomBase.NextDouble();
 	}
 }

@@ -30,8 +30,6 @@ public class BinaryIndividualModel : IIndividual
 	protected int genoSize;
 
 
-
-
 	//===============================================//
 	//-------------------- 構築子 --------------------//
 	//===============================================//
@@ -61,12 +59,10 @@ public class BinaryIndividualModel : IIndividual
      * @param gene  チェックしたい遺伝子です。
      * @return  正しければtrue, 不正であればfalseを返します。
      */
-	public bool isLegalGenoType(IGene gene)
+	public bool IsLegalGenoType(IGene gene)
 	{
-
 		//------ 試しにキャストしてみる ------//
-		bool[]? test = gene.getBase() as bool[];
-		return (test != null);
+		return (gene.GetBase() is bool[]);
 
 		/*
 		try
@@ -99,7 +95,7 @@ public class BinaryIndividualModel : IIndividual
 	*
 	* @return  自己遺伝子の遺伝子長
 	*/
-	public int getGenoSize()
+	public int GetGenoSize()
 	{
 
 		//------ 遺伝子長を返す ------//
@@ -114,10 +110,10 @@ public class BinaryIndividualModel : IIndividual
      *
      * @return 新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値。
      */
-	public IGene createNewGene()
+	public IGene CreateNewGene()
 	{
 
 		//------ 新しく2値遺伝子を生成、返す ------//
-		return new BinaryGene(this.getGenoSize());
+		return new BinaryGene(this.GetGenoSize());
 	}
 }

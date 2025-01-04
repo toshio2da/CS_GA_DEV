@@ -1,8 +1,6 @@
 ﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
 
 using System.Collections.Generic;
-
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
 /**
  * <p>親集団の生き残りを記述するSurvivalAlgorithmインタフェースのうち、
  * 世代間ギャップに関するメソッドのみを記述した抽象クラスです。</p>
@@ -76,43 +74,17 @@ public abstract class AbstractSurvival : ISurvivalAlgorithm
 	//-------------------- SurvivalAlgorithmインタフェースメソッドの実装 --------------------//
 	//===================================================================================//
 
-	/**
-	 * <p>世代間ギャップ[G]を設定します。</p>
-	 * 世代間ギャップは 0.0\uFF5E1.0で示されます。<br>
-	 * G = 1.0 の場合、世代が変わる毎に全ての個体は死滅し、次世代が誕生します。<br>
-	 * つまり、親集団は生き残りません。<br>
-	 * G = 0.0 の場合は世代が変わっても全ての親が存続するので遺伝的アルゴリズムは昨日しなくなってしまいます。<br>
-	 * 一般的には世代間ギャップ[G]はかなり高めに設定されます。0.95\uFF5E1.0が多いようです。<br>
-	 *
-	 * @param generationGap 指定する世代間ギャップ
-	 * @throws OutOfRangeException 指定した世代間ギャップが範囲[0.0\uFF5E1.0]を越えています
-	 */
-	public void setGenerationGap(double generationGap)
-	//throws OutOfRangeException
-	{
-		//------ 世代間ギャップを設定 ------//
-		this.generationGap = generationGap;
-	}
+	/// <summary>
+	/// 世代間ギャップ[G]を取得または設定します。
+	/// </summary>
+	/// <remarks>
+	/// 世代間ギャップは 0.0\uFF5E1.0で示されます。<br>
+	/// G = 1.0 の場合、世代が変わる毎に全ての個体は死滅し、次世代が誕生します。<br>
+	/// つまり、親集団は生き残りません。<br>
+	///  G = 0.0 の場合は世代が変わっても全ての親が存続するので遺伝的アルゴリズムは昨日しなくなってしまいます。<br>
+	/// 一般的には世代間ギャップ[G] はかなり高めに設定されます。0.95\uFF5E1.0が多いようです。<br>
+	/// </remarks>
+	public double GenerationGap{ get => this.generationGap; set => this.generationGap = value; }
 
-
-
-
-	/**
-	 * <p>現在設定されている世代間ギャップ[G]を取得します。</p>
-	 * 世代間ギャップは 0.0\uFF5E1.0で示されます。<br>
-	 * G = 1.0 の場合、世代が変わる毎に全ての個体は死滅し、次世代が誕生します。<br>
-	 * つまり、親集団は生き残りません。<br>
-	 * G = 0.0 の場合は世代が変わっても全ての親が存続するので遺伝的アルゴリズムは昨日しなくなってしまいます。<br>
-	 * 一般的には世代間ギャップ[G]はかなり高めに設定されます。0.95\uFF5E1.0が多いようです。<br>
-	 *
-	 * @return 現在設定されている世代間ギャップ[G]
-	 */
-	public double getGenerationGap()
-	{
-
-		//------ 現在の世代間ギャップを返す ------//
-		return this.generationGap;
-	}
-
-	public abstract List<Individual> survive(List<Individual> survivors);
+	public abstract List<Individual> Survive(List<Individual> survivors);
 }

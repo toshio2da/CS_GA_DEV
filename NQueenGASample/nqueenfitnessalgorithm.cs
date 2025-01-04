@@ -1,8 +1,7 @@
 ﻿namespace jp.co.tmdgroup.nqueengasample;
 
-using jp.co.tmdgroup.common.tmdtools;
 using jp.co.tmdgroup.common.geneticalgorithm;
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
+using jp.co.tmdgroup.common.tmdtools;
 
 /**
  * <p>N-Queen問題において各個体の適応度を算出します。</p>
@@ -56,13 +55,13 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
      * @throws IllegalGenoTypeException 個体の持つ遺伝子の塩基タイプが本クラスで扱うものと一致しません
      * @throws IllegalGenoSizeException 個体の持つ遺伝子が
      */
-	public double fitness(Individual individual)
+	public double Fitness(Individual individual)
 	{ //throws IllegalGenoTypeException, IllegalGenoSizeException {
 
 		//------ 遺伝子情報の組み替え。致死遺伝子の削除 ------//
-		int[] gene = DataTools.createUniqElementArray((int[])individual.getGene().getBase());
+		int[] gene = DataTools.CreateUniqElementArray((int[])individual.Gene.GetBase());
 		//        int[]            gene = (int[])individual.getGene().getBase();
-		int fitnessValue = (int)this.getBestFitnessValue();              // 適応度を保持
+		int fitnessValue = (int)this.GetBestFitnessValue();              // 適応度を保持
 
 
 		//------ 各塩基を順に調査 ------//
@@ -92,7 +91,10 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 
 
 		//------ 算出した適応度を個体に保持させ、返す ------//
-		individual.setFitnessValue(fitnessValue);                               // 個体に適応度を保持させる
+		individual.
+
+		//------ 算出した適応度を個体に保持させ、返す ------//
+		FitnessValue = fitnessValue;                               // 個体に適応度を保持させる
 		return fitnessValue;                                                    // 算出した適応度を返す
 	}
 
@@ -105,7 +107,7 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
      *
      * @return N-Queen問題における個体の最大適応度
      */
-	public double getBestFitnessValue()
+	public double GetBestFitnessValue()
 	{
 
 		//------ 最大適応度を返します ------//
@@ -116,24 +118,25 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 
 
 
-	static public void main(String[] args)
+	//public static void NQeenMain(String[] args)
+	public static void NQeenMain()
 	{
 		try
 		{
 
-			NQueenModel model = new NQueenModel(16);
-			GeneticStatus status = new GeneticStatus();
-			GeneticAlgorithm GeneticAlgorithm = new GeneticAlgorithm(model, status, 200);
+			NQueenModel model = new(16);
+			GeneticStatus status = new();
+			GeneticAlgorithm GeneticAlgorithm = new(model, status, 200);
 
 			Individual bestIndividual = (Individual)GeneticAlgorithm.Search(5000);
 
 
-			int[] bestIndividualArray = DataTools.createUniqElementArray((int[])(bestIndividual.getGene().getBase()));
+			int[] bestIndividualArray = DataTools.CreateUniqElementArray((int[])(bestIndividual.Gene.GetBase()));
 
 			FileStream output = new("c:\\tmdproject\\java\\nqueengasample\\output\\output.html", FileMode.OpenOrCreate);
-			StreamWriter dataOutput = new StreamWriter(output);
+			StreamWriter dataOutput = new(output);
 			dataOutput.Write("<html><head></head><body>");
-			dataOutput.Write(NQueenToHtml.toHtml(bestIndividualArray));
+			dataOutput.Write(NQueenToHtml.ToHtml(bestIndividualArray));
 			dataOutput.Write("</body></html>");
 
 			for (int index = 0; index < bestIndividualArray.Length; index++)
@@ -143,7 +146,7 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 			}
 			Console.WriteLine();
 
-			Console.WriteLine((int)bestIndividual.getFitnessValue());
+			Console.WriteLine((int)bestIndividual.FitnessValue);
 
 
 		}

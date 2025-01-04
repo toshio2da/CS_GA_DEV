@@ -1,8 +1,4 @@
 ﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
-
-
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
-
 /**
  * <p>トーナメント方式によって淘汰を行います。</p>
  * 親集団より子集団候補を作成するのに用いられる淘汰アルゴリズムの一つです。<br>
@@ -91,21 +87,20 @@ public class TournamentMethod : ISelectionAlgorithm
      * @return 子集合候補。この集合を用いて新しい世代を創生します。
      * @throws IllegalIndividualException group内にIndividualまたはその派生クラスではない要素があります。
      */
-	public List<Individual> select(List<Individual> group)
+	public List<Individual> Select(List<Individual> group)
 	{ //throws IllegalIndividualException {
 
 		//------ 元の親集合の数になるまで繰り返す ------//
-		List<Individual> candidates = new List<Individual>();                   // 最終的に選ばれた子集団候補者
-		List<Individual> preLiminary = new List<Individual>();                     // 予選候補者。この中で適応度の一番高いものが候補者となる。
-		for (int index = 0; index < group.Count(); index++)
+		List<Individual> candidates = [];                   // 最終的に選ばれた子集団候補者
+		List<Individual> preLiminary = [];                     // 予選候補者。この中で適応度の一番高いものが候補者となる。
+		for (int index = 0; index < group.Count; index++)
 		{
 
 			//------ 一度に選ぶ小集団をランダムに選出 ------//
 			preLiminary.Clear();                                                   // 予選候補者を初期化
 			for (int candidateIndex = 0; candidateIndex < this.tournamentSize; candidateIndex++)
 			{
-
-				preLiminary.Add(group[(int)(GARandomGenerator.random() * group.Count())]);   // ランダムに予選候補者を選出
+				preLiminary.Add(group[(int)(GARandomGenerator.Random * group.Count)]);   // ランダムに予選候補者を選出
 			}
 
 

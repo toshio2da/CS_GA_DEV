@@ -124,12 +124,8 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する個体のモデルを実装するクラスのインスタンス
      */
-	public override IIndividual getIndividualModel()
-	{
+	public override IIndividual IndividualModel => this.individualModel;
 
-		//------ 個体モデルを返す ------//
-		return this.individualModel;
-	}
 
 
 	/**
@@ -140,12 +136,8 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する適応度計算アルゴリズムを実装するクラスのインスタンス
      */
-	public override IFitnessAlgorithm getFitnessAlgorithm()
-	{
+	public override IFitnessAlgorithm FitnessAlgorithm => this.fitnessAlgorithm;
 
-		//------ 適応度計算アルゴリズムクラスを返す ------//
-		return this.fitnessAlgorithm;
-	}
 
 
 
@@ -156,12 +148,7 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する淘汰アルゴリズムを実装するクラスのインスタンス
      */
-	public override ISelectionAlgorithm getSelectionAlgorithm()
-	{
-
-		//------ 淘汰アルゴ値ズムを返す ------//
-		return this.selectionAlgorithm;
-	}
+	public override ISelectionAlgorithm SelectionAlgorithm => this.selectionAlgorithm;
 
 
 
@@ -174,28 +161,19 @@ public class NQueenModel : AbstractGeneticAlgorithmModel
      *
      * @return 使用する生存アルゴリズムを実装するクラスのインスタンス
      */
-	public override ISurvivalAlgorithm getSurvivalAlgorithm()
-	{
-
-		//------ 生存アルゴリズムを返す ------//
-		return this.survivalAlgorithm;
-	}
+	public override ISurvivalAlgorithm SurvivalAlgorithm => this.survivalAlgorithm;
 
 
 
 	/**
-     * <p>使用する交叉アルゴリズムを実装するクラスのインスタンスを返します。</p>
-     * GeneticAlgorithmクラスはこのメソッドで返されたクラスのアルゴリズムを使用することになります。<br>
-     * 遺伝的アルゴリズムは交叉と突然変異、または逆位によって集団の中から優秀な個体を生成し、最適な解を検索します。<br>
-     * 交叉アルゴリズムには様々なものがありますが、1点交叉と2点交叉が一般的です。<br>
-     * 本モデルクラスでは2点交叉を採用しています。<br>
-     *
-     * @return 使用する交叉アルゴリズムを実装するクラスのインスタンスを返します。
-     */
-	public override ICrossoverAlgorithm getCrossoverAlgorithm()
-	{
+	 * <p>使用する交叉アルゴリズムを実装するクラスのインスタンスを返します。</p>
+	 * GeneticAlgorithmクラスはこのメソッドで返されたクラスのアルゴリズムを使用することになります。<br>
+	 * 遺伝的アルゴリズムは交叉と突然変異、または逆位によって集団の中から優秀な個体を生成し、最適な解を検索します。<br>
+	 * 交叉アルゴリズムには様々なものがありますが、1点交叉と2点交叉が一般的です。<br>
+	 * 本モデルクラスでは2点交叉を採用しています。<br>
+	 *
+	 * @return 使用する交叉アルゴリズムを実装するクラスのインスタンスを返します。
+	 */
+	public override ICrossoverAlgorithm CrossoverAlgorithm => this.crossoverAlgorithm;
 
-		//------ 交叉アルゴリズムを返す ------//
-		return this.crossoverAlgorithm;
-	}
 }
