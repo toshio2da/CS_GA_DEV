@@ -11,7 +11,8 @@ using System.Diagnostics;
 
 public partial class TestForm : Form
 {
-    NQueenGA.NQueenGAParam context = new();
+    private NQueenGAParam context = new();
+    private NQueenGA ga;
 
     public TestForm()
     {
@@ -36,13 +37,14 @@ public partial class TestForm : Form
         context.MaxGenerationCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
         context.IndividualCnt = Convert.ToInt32(this.numIndividualCnt.Value);
         context.MutationRate = Convert.ToDouble(this.numMutationRate.Value);
-        NQueenGA ga = new(context);
+        ga = new(context);
 
         timer1.Interval = 100;
         timer1.Start();
         lastPoint = 0;
         btnSearch.Enabled = false;
         stopWatch.Start();
+        btnStop.Enabled = true;
 
         await Task.Run(() =>
         {
@@ -50,6 +52,7 @@ public partial class TestForm : Form
         });
         timer1.Stop();
         btnSearch.Enabled = true;
+        btnStop.Enabled = false;
         stopWatch.Stop();
         stopWatch.Reset();
 
@@ -57,6 +60,11 @@ public partial class TestForm : Form
         //int point = context.Point;
 
         //Report(bextPattern, point);
+    }
+
+    private void btnStop_Click(object sender, EventArgs e)
+    {
+        ga.StopSearch();   
     }
 
     private Stopwatch stopWatch = new Stopwatch();

@@ -44,11 +44,15 @@ namespace jp.co.tmdgroup.nqueengasample
             public int[] BestPattern { get; set; }
         }
 
-
 		/// <summary>
-		/// GAの状態オブジェクト
+		/// GA
 		/// </summary>
-		private GASearchContext? gaContext = null;
+		private GeneticAlgorithm _ga;
+
+        /// <summary>
+        /// GAの状態オブジェクト
+        /// </summary>
+        private GASearchContext? gaContext = null;
 
 		private NQueenGAParam nQueenGAParam { get; set; } = param;
 
@@ -88,7 +92,7 @@ namespace jp.co.tmdgroup.nqueengasample
         public Individual SearchQueeen()
         {
             NQueenGAModel model = new (param.QueenCnt);
-			GeneticAlgorithm _ga = new (model);
+			_ga = new (model);
 
 			gaContext = new();
 			gaContext.Command = GASearchCommand.GO_AHEAD_SEARCH;
@@ -98,6 +102,11 @@ namespace jp.co.tmdgroup.nqueengasample
 			Individual _best = _ga.Search(gaContext); // 探索
 
 			return _best;
+		}
+
+		public void StopSearch()
+		{
+			_ga.StopSearchInterval = 1;
 		}
 	}
 }
