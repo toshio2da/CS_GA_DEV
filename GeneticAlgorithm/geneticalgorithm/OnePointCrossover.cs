@@ -138,12 +138,15 @@ public class OnePointCrossover : ICrossoverAlgorithm
 
                 // とりあえず　LimitedNumberIndividualModel を使う
                 // 本当は、引数の型から LimitedNumberIndividualModel または NumberIndividualModel を取得しなければならない。
-                Individual son = (Individual)(new LimitedNumberIndividualModel(geneSize, childrenNumber)).CreateNewGene().GetBase();
-                Individual daughter = (Individual)(new LimitedNumberIndividualModel(geneSize, childrenNumber)).CreateNewGene().GetBase();
+                Individual son = new Individual(new LimitedNumberIndividualModel(geneSize, geneSize));
+                son.Gene.CreateGene(sonsGene);
+
+                Individual daughter = new Individual(new LimitedNumberIndividualModel(geneSize, geneSize));
+                daughter.Gene.CreateGene(daughtersGene);
 
                 //------ 生成した子供を次世代の集団に追加 ------//
-                children.Add(son);                                                          // 息子を追加
-				children.Add(daughter);                                                     // 娘を追加
+                children.Add((Individual)son);               // 息子を追加
+				children.Add((Individual)daughter);          // 娘を追加
 			}
 
 
