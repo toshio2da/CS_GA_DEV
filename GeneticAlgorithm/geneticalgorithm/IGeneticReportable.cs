@@ -1,4 +1,6 @@
-﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
+﻿using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
+
+namespace jp.co.tmdgroup.common.GeneticAlgorithm;
 
 /**
  * <p>遺伝的アルゴリズムによる検索中の途中経過を得るためのインタフェースです。</p>

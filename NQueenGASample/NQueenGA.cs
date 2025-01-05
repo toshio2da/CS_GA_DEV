@@ -1,5 +1,6 @@
-﻿using jp.co.tmdgroup.common.geneticalgorithm;
-using jp.co.tmdgroup.common.tmdtools;
+﻿using jp.co.tmdgroup.common.GeneticAlgorithm;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
+using jp.co.tmdgroup.common.Utils;
 
 using static jp.co.tmdgroup.nqueengasample.NQueenGA;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -37,14 +38,14 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// <summary>
 		/// GAの状態オブジェクト
 		/// </summary>
-		private GeneticStatus? gaStatus = null;
+		private GASearchStatus? gaStatus = null;
 
 
 
 		/// <summary>
 		/// 探索状態変数
 		/// </summary>
-		private GeneticSearchStatus status = GeneticSearchStatus.WAIT_FOR_SEARCH;
+		private GASearchStatusTypes status = GASearchStatusTypes.WAIT_FOR_SEARCH;
 
 
 		/// <summary>
@@ -56,7 +57,7 @@ namespace jp.co.tmdgroup.nqueengasample
 		{
 			public void Report(Individual surperior)
 			{
-				parent.status = GeneticSearchStatus.SEARCHING;
+				parent.status = GASearchStatusTypes.SEARCHING;
 				parent.bestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
                 int point = (int)surperior.FitnessValue;
                 //parent.bestPattern = (int[])surperior.Gene.GetBase();
@@ -66,7 +67,7 @@ namespace jp.co.tmdgroup.nqueengasample
 
             public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
 			{
-				parent.status = GeneticSearchStatus.DONE_SEARCH;
+				parent.status = GASearchStatusTypes.DONE_SEARCH;
 				parent.bestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
                 int point = (int)lastSurperior.FitnessValue;
 
@@ -84,7 +85,7 @@ namespace jp.co.tmdgroup.nqueengasample
         public Individual SearchQueeen(funcDelegate reportFunc)
         {
             gaStatus = new ();
-			gaStatus.Command = GeneticSearchCommand.GO_AHEAD_SEARCH;
+			gaStatus.Command = GASearchCommand.GO_AHEAD_SEARCH;
             gaStatus.Reporter = new GeneticReportableImpl(this, reportFunc);
 
             NQueenGeneticAlgorithm model = new (context.QueenCnt);

@@ -1,13 +1,12 @@
 namespace jp.co.tmdgroup.nqueengasample;
 
-using jp.co.tmdgroup.common.geneticalgorithm;
-using jp.co.tmdgroup.common.tmdtools;
+using jp.co.tmdgroup.common.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using jp.co.tmdgroup.common.geneticalgorithm;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using static jp.co.tmdgroup.nqueengasample.NQueenGA;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
 
 public partial class TestForm : Form
 {

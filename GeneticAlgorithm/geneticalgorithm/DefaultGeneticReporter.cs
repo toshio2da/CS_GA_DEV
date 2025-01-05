@@ -1,4 +1,6 @@
-﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
+﻿using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
+
+namespace jp.co.tmdgroup.common.GeneticAlgorithm;
 
 /**
  * <p>標準の途中経過報告クラスです。標準出力に途中経過を表示します。</p>

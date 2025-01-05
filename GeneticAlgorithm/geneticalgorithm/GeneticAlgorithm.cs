@@ -1,13 +1,11 @@
-﻿namespace jp.co.tmdgroup.common.geneticalgorithm;
-
-
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
-using jp.co.tmdgroup.common.geneticalgorithm.model;
-using jp.co.tmdgroup.common.interfaces;
-using jp.co.tmdgroup.common.interfaces.exception;
+﻿using jp.co.tmdgroup.common.GeneticAlgorithm.Exceptions;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
+using jp.co.tmdgroup.common.Utils;
 
 using System.Diagnostics;
 
+namespace jp.co.tmdgroup.common.GeneticAlgorithm;
 
 /**
  /// <p>遺伝的アルゴリズムにより様々な組み合わせ問題の準最適解を高速に検索します。</p>
@@ -28,7 +26,7 @@ using System.Diagnostics;
  /// @version 1.0 (2002/11/01)
  */
 
-public class GeneticAlgorithm : ISearchAlgorithm
+public class GeneticAlgorithm : IGeneticAlgorithm
 {
 	/** 探索に用いる個体の数。デフォルトでは200 */
 	private readonly int peopleNumber = 200;
@@ -37,10 +35,10 @@ public class GeneticAlgorithm : ISearchAlgorithm
 	private List<Individual> group = [];
 
 	/** 使用する遺伝的アルゴリズムのモデルクラス */
-	private readonly IGeneticAlgorithm model;
+	private readonly IGeneticAlgorithmModel model;
 
 	/** 検索状況の報告クラス。自動的に同期が取られます。 */
-	private readonly GeneticStatus status = null!;
+	private readonly GASearchStatus status = null!;
 
 	/** 現在の世代交代数を保持します。 */
 	private int nowGenerationNumber = 0;
@@ -91,7 +89,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
      /// @param model 使用する遺伝的アルゴリズムのモデルクラス
      /// @param status 状況報告クラス。検索の制御にも使用。
      */
-	public GeneticAlgorithm(IGeneticAlgorithm model, GeneticStatus status)
+	public GeneticAlgorithm(IGeneticAlgorithmModel model, GASearchStatus status)
 	{
 
 		//------ 使用するモデルクラスを保持 ------//
@@ -125,7 +123,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
      /// @param status 状況報告クラス。検索の制御にも使用。
      /// @param peopleNumber 集団の個体数
      */
-	public GeneticAlgorithm(IGeneticAlgorithm model, GeneticStatus status, int peopleNumber)
+	public GeneticAlgorithm(IGeneticAlgorithmModel model, GASearchStatus status, int peopleNumber)
 	{
 
 		//------ 集団数と最大世代交代数を保持 ------//
@@ -187,7 +185,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
 				if (fitnessValue == this.model.FitnessAlgorithm.BestFitnessValue)
 				{
 					// 究極の個体か検証
-					this.status.Command = GeneticSearchCommand.STOP_SEARCH;                        // 究極の個体であれば返す
+					this.status.Command = GASearchCommand.STOP_SEARCH;                        // 究極の個体であれば返す
 
 					Debug.WriteLine("進化なしで究極個体が発生");
 
@@ -220,7 +218,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
 				this.status.SetBestIndividual(this.NewGeneration());
 
 				//------ 中断命令がきていれば検索を強制終了 ------//
-				if (this.status.Command == GeneticSearchCommand.STOP_SEARCH)
+				if (this.status.Command == GASearchCommand.STOP_SEARCH)
 				{
 					break;
 				}
@@ -263,7 +261,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
 			//------ 最大世代交代数が終わっても究極の個体が見つからなかったのでその中で一番個体を返す ------//
 			Individual lastSuperior = this.status.GetBestIndividual();
 
-			this.status.SearchStatus = GeneticSearchStatus.DONE_SEARCH;
+			this.status.SearchStatusType = GASearchStatusTypes.DONE_SEARCH;
 			this.status.Reporter.FinishReport(lastSuperior, this.nowGenerationNumber, DateTime.Now.Ticks - this.startingTime);
 			return lastSuperior;
 		}
@@ -412,11 +410,11 @@ public class GeneticAlgorithm : ISearchAlgorithm
 
 
 			//------ 状況報告クラスから情報を取得 ------//
-			GeneticSearchMethod searchMethod = this.status.SearchMethod;
+			GASearchMethod searchMethod = this.status.SearchMethod;
 
 
 			//------ 今回は必ず世代数指定 ------//
-			if (searchMethod == GeneticSearchMethod.LIMIT_NUMBER)
+			if (searchMethod == GASearchMethod.LIMIT_NUMBER)
 			{
 				this.Search(this.GenerationNumber);
 			}
@@ -460,7 +458,7 @@ public class GeneticAlgorithm : ISearchAlgorithm
 			{
 
 				//------ 確率のサイコロを振る ------//
-				if (GARandomGenerator.Random < mutationProbability)
+				if (RandomGenerator.Random < mutationProbability)
 				{
 					gene.MutateOneGene(geneIndex);                  // 突然変異
 				}
@@ -490,10 +488,10 @@ public class GeneticAlgorithm : ISearchAlgorithm
 			IGene gene = individual.Gene;
 
 			//------ 確率のサイコロ以下であれば逆位を行う。逆位点はランダムに生成 ------//
-			if (GARandomGenerator.Random < inverseProbability)
+			if (RandomGenerator.Random < inverseProbability)
 			{
 
-				gene.InverseSubGene((int)(GARandomGenerator.Random * gene.GetGenoSize()), (int)(GARandomGenerator.Random * gene.GetGenoSize()));
+				gene.InverseSubGene((int)(RandomGenerator.Random * gene.GetGenoSize()), (int)(RandomGenerator.Random * gene.GetGenoSize()));
 			}
 		}
 	}

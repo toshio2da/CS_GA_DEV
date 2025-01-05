@@ -1,8 +1,12 @@
 ﻿namespace jp.co.tmdgroup.nqueengasample;
 
-using jp.co.tmdgroup.common.geneticalgorithm;
-using jp.co.tmdgroup.common.geneticalgorithm.exception;
-using jp.co.tmdgroup.common.geneticalgorithm.model;
+using jp.co.tmdgroup.common.GeneticAlgorithm;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Crossovers;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Exceptions;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Fitnesses;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Selections;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Survivals;
 
 /**
  * <p>代表的なNP完全問題であるN-Queen問題を遺伝的アルゴリズムで解くモデルクラスです。</p>
@@ -43,7 +47,7 @@ using jp.co.tmdgroup.common.geneticalgorithm.model;
  * @version 1.0   (2002/11/03)
  */
 
-public class NQueenGeneticAlgorithm : AbstractGeneticAlgorithm
+public class NQueenGeneticAlgorithm : AbstractGAContext
 {
 
 
