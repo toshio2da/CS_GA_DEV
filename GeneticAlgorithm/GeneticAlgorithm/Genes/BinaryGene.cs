@@ -111,9 +111,8 @@ public class BinaryGene : IGene
 	{ //throws IllegalGenoSizeException, IllegalGenoTypeException {
 		try
 		{
-
 			//------ 融合した遺伝子を作成 ------//
-			bool[] newGene = DataTools.FuseBinaryArray(piecesOfGene);       // 2値バイナリ型をつなげる
+			bool[] newGene = DataTools.ConvertInnerArray<bool>(piecesOfGene);       // 2値バイナリ型をつなげる
 
 
 			//------ 遺伝子長をチェック ------//

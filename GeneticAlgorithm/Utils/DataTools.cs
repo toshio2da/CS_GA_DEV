@@ -11,19 +11,22 @@
 			}
 
 			List<int> newNums = new List<int>();
-            for (int i = 0; i < ints.Length; ++i)
+			for (int i = 0; i < ints.Length; ++i)
 			{
 				int pos = ints[i] % nums.Count;
-                int n = nums[pos];
+				int n = nums[pos];
 				newNums.Add(n);
 				nums.RemoveAt(pos);
 			}
 
-            return newNums.ToArray();
+			return newNums.ToArray();
 		}
 
 
-
+		public static T[] ConvertInnerArray<T>(object[] arrays)
+		{
+			return arrays.SelectMany(e => (T[])e).ToArray();
+		}
 
 		public static bool[] FuseBinaryArray(object[] binaryArrays)
 		{

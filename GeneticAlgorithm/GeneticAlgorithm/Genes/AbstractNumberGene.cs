@@ -139,10 +139,8 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm.Genes
 		{
 			try
 			{
-
 				//------ 融合した遺伝子を作成 ------//
-				int[] newGene = DataTools.FuseIntegerArray(piecesOfGene);       // 2値バイナリ型をつなげる
-
+				int[] newGene = DataTools.ConvertInnerArray<int>(piecesOfGene);       // 2値バイナリ型をつなげる
 
 				//------ 遺伝子長をチェック ------//
 				if (newGene.Length != this.GenoSize)
