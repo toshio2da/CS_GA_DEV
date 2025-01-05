@@ -109,7 +109,7 @@ public class TournamentMethod : ISelectionAlgorithm
 
 			//------ 適応度が最大の個体を選出・子集合候補者に追加 ------//
 			//Collections.sort(preLiminary);
-			preLiminary = preLiminary.OrderBy(e => e.FitnessValue).ToList();
+			preLiminary = preLiminary.OrderByDescending(e => e.FitnessValue).ToList();
 
 			candidates.Add(preLiminary[0]);
 		}
