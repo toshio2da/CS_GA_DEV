@@ -44,6 +44,7 @@ public class Individual : IComparable
 	/** 個体の遺伝子モデルを決定するモデルクラスです。*/
 	protected IIndividualModel individualModel;
 
+	protected int generationNumber = 0;
 
 
 
@@ -100,7 +101,14 @@ public class Individual : IComparable
      */
 	public IGene Gene => gene;
 
-
+	/// <summary>
+	/// 世代
+	/// </summary>
+	public int GenerationNumber
+	{
+		get => generationNumber;
+		set => generationNumber = value;
+	}
 
 	/**
      * <p>個体の遺伝子情報を設定・更新します。</p>

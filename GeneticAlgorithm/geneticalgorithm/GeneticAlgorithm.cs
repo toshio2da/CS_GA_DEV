@@ -157,7 +157,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 
 			for (int index = 0; index < this.context.MaxGenerationCnt; index++)
 			{
-				Debug.WriteLine($"世代{index}/{this.context.MaxGenerationCnt}");
+				Debug.WriteLine($"世代 {index+1}/{this.context.MaxGenerationCnt}");
 
 				//------ 世代毎の一番優秀な個体を登録していく ------//
 				this.context.SetBestIndividual(this.NewGeneration());
@@ -178,8 +178,11 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 					break;
 				}
 
-				//------ 新しい進化があったかどうかを調べる ------//
-				bestFitnessValue = this.context.GetBestIndividual().FitnessValue;
+                //------ 新しい進化があったかどうかを調べる ------//
+                Individual bestIndividual = this.context.GetBestIndividual();
+				bestIndividual.GenerationNumber = this.nowGenerationNumber;
+
+                bestFitnessValue = bestIndividual.FitnessValue;
 				if (lastBestFitnessValue != bestFitnessValue)
 				{
 					lastBestFitnessValue = bestFitnessValue;
@@ -190,7 +193,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 
 					// レポート
                     this.context.SearchStatusType = GASearchStatus.DONE_SEARCH;
-                    this.context.Reporter.Report(this.context.GetBestIndividual());
+                    this.context.Reporter.Report(bestIndividual);
                 }
                 else
 				{

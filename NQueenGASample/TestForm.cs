@@ -7,6 +7,7 @@ using System.Reflection;
 using static jp.co.tmdgroup.nqueengasample.NQueenGA;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
+using System.Diagnostics;
 
 public partial class TestForm : Form
 {
@@ -41,6 +42,7 @@ public partial class TestForm : Form
         timer1.Start();
         lastPoint = 0;
         btnSearch.Enabled = false;
+        stopWatch.Start();
 
         await Task.Run(() =>
         {
@@ -48,6 +50,8 @@ public partial class TestForm : Form
         });
         timer1.Stop();
         btnSearch.Enabled = true;
+        stopWatch.Stop();
+        stopWatch.Reset();
 
         //int[] bextPattern = DataTools.CreateUniqElementArray(context.BestPattern);
         //int point = context.Point;
@@ -55,21 +59,25 @@ public partial class TestForm : Form
         //Report(bextPattern, point);
     }
 
+    private Stopwatch stopWatch = new Stopwatch();
     private int lastPoint = 0;
     private void timer1_Tick(object sender, EventArgs e)
     {
+        txtTime.Text = ((double)stopWatch.ElapsedMilliseconds / 1000).ToString("0.00000");
+
         if (lastPoint < context.Point)
         {
-            this.Report(context.BestPattern, context.Point);
+            this.Report();
             lastPoint = context.Point;
         }
     }
 
-    private void Report(int[] bestPattern, int point)
+    private void Report()
     {
-        txtPoint.Text = point.ToString();
+        txtPoint.Text = context.Point.ToString();
+        txtGenerationNumber.Text = context.GenerationNumber.ToString();
 
-        this.boardCtrl1.SetResult(bestPattern.ToList());
+        this.boardCtrl1.SetResult(context.BestPattern.ToList());
     }
 
     private void numQueenCnt_ValueChanged(object sender, EventArgs e)

@@ -29,6 +29,10 @@ partial class TestForm
     {
         components = new System.ComponentModel.Container();
         panel1 = new Panel();
+        txtTime = new TextBox();
+        label7 = new Label();
+        txtGenerationNumber = new TextBox();
+        label6 = new Label();
         txtPoint = new TextBox();
         label5 = new Label();
         btnSearch = new Button();
@@ -53,6 +57,10 @@ partial class TestForm
         // 
         // panel1
         // 
+        panel1.Controls.Add(txtTime);
+        panel1.Controls.Add(label7);
+        panel1.Controls.Add(txtGenerationNumber);
+        panel1.Controls.Add(label6);
         panel1.Controls.Add(txtPoint);
         panel1.Controls.Add(label5);
         panel1.Controls.Add(btnSearch);
@@ -69,6 +77,40 @@ partial class TestForm
         panel1.Name = "panel1";
         panel1.Size = new Size(275, 637);
         panel1.TabIndex = 0;
+        // 
+        // txtTime
+        // 
+        txtTime.Location = new Point(135, 291);
+        txtTime.Name = "txtTime";
+        txtTime.Size = new Size(89, 23);
+        txtTime.TabIndex = 13;
+        txtTime.TextAlign = HorizontalAlignment.Right;
+        // 
+        // label7
+        // 
+        label7.AutoSize = true;
+        label7.Location = new Point(135, 273);
+        label7.Name = "label7";
+        label7.Size = new Size(81, 15);
+        label7.TabIndex = 12;
+        label7.Text = "経過時間(Sec)";
+        // 
+        // txtGenerationNumber
+        // 
+        txtGenerationNumber.Location = new Point(135, 233);
+        txtGenerationNumber.Name = "txtGenerationNumber";
+        txtGenerationNumber.Size = new Size(89, 23);
+        txtGenerationNumber.TabIndex = 11;
+        txtGenerationNumber.TextAlign = HorizontalAlignment.Right;
+        // 
+        // label6
+        // 
+        label6.AutoSize = true;
+        label6.Location = new Point(135, 215);
+        label6.Name = "label6";
+        label6.Size = new Size(43, 15);
+        label6.TabIndex = 10;
+        label6.Text = "世代数";
         // 
         // txtPoint
         // 
@@ -235,4 +277,8 @@ partial class TestForm
     private TextBox txtPoint;
     private Label label5;
     private System.Windows.Forms.Timer timer1;
+    private TextBox txtTime;
+    private Label label7;
+    private TextBox txtGenerationNumber;
+    private Label label6;
 }
