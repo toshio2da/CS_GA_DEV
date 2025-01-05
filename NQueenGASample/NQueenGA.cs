@@ -7,9 +7,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace jp.co.tmdgroup.nqueengasample
 {
-	internal class NQueenGA(NQueenGAContext context)
+	internal class NQueenGA(NQueenGAParam param)
 	{
-		internal class NQueenGAContext
+		internal class NQueenGAParam
 		{
 			/// <summary>
 			/// Queenの数
@@ -19,7 +19,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			/// <summary>
 			/// 世代交代数
 			/// </summary>
-			public int GenerationChangeCnt { get; set; } = 500;
+			public int MaxGenerationCnt { get; set; } = 500;
 
 			/// <summary>
 			/// 個体数
@@ -38,14 +38,14 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// <summary>
 		/// GAの状態オブジェクト
 		/// </summary>
-		private GASearchStatus? gaStatus = null;
+		private GASearchContext? gaContext = null;
 
 
 
 		/// <summary>
 		/// 探索状態変数
 		/// </summary>
-		private GASearchStatusTypes status = GASearchStatusTypes.WAIT_FOR_SEARCH;
+		private GASearchStatus status = GASearchStatus.WAIT_FOR_SEARCH;
 
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace jp.co.tmdgroup.nqueengasample
 		{
 			public void Report(Individual surperior)
 			{
-				parent.status = GASearchStatusTypes.SEARCHING;
+				parent.status = GASearchStatus.SEARCHING;
 				parent.bestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
                 int point = (int)surperior.FitnessValue;
                 //parent.bestPattern = (int[])surperior.Gene.GetBase();
@@ -67,7 +67,7 @@ namespace jp.co.tmdgroup.nqueengasample
 
             public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
 			{
-				parent.status = GASearchStatusTypes.DONE_SEARCH;
+				parent.status = GASearchStatus.DONE_SEARCH;
 				parent.bestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
                 int point = (int)lastSurperior.FitnessValue;
 
@@ -84,14 +84,15 @@ namespace jp.co.tmdgroup.nqueengasample
 		**/
         public Individual SearchQueeen(funcDelegate reportFunc)
         {
-            gaStatus = new ();
-			gaStatus.Command = GASearchCommand.GO_AHEAD_SEARCH;
-            gaStatus.Reporter = new GeneticReportableImpl(this, reportFunc);
+            NQueenGAModel model = new (param.QueenCnt);
+			GeneticAlgorithm _ga = new (model);
 
-            NQueenGeneticAlgorithm model = new (context.QueenCnt);
-
-			GeneticAlgorithm _ga = new (model, gaStatus, context.IndividualCnt);
-			Individual _best = _ga.Search(context.GenerationChangeCnt); // 探索
+			gaContext = new();
+			gaContext.Command = GASearchCommand.GO_AHEAD_SEARCH;
+			gaContext.Reporter = new GeneticReportableImpl(this, reportFunc);
+			gaContext.IndividualCnt = param.IndividualCnt;
+			gaContext.MaxGenerationCnt = param.MaxGenerationCnt;
+			Individual _best = _ga.Search(gaContext); // 探索
 
 			return _best;
 		}

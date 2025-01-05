@@ -42,7 +42,7 @@ public class Individual : IComparable
 
 
 	/** 個体の遺伝子モデルを決定するモデルクラスです。*/
-	protected IIndividual individualModel;
+	protected IIndividualModel individualModel;
 
 
 
@@ -58,7 +58,7 @@ public class Individual : IComparable
      *
      * @param individualModel  個体の設定情報を記述するモデルクラスです。
      */
-	public Individual(IIndividual individualModel)
+	public Individual(IIndividualModel individualModel)
 	{
 		//------ モデルクラスを設定 ------//
 		this.individualModel = individualModel;                  // 遺伝子長・タイプを決定。
@@ -114,7 +114,7 @@ public class Individual : IComparable
 	{ //throws IllegalGenoTypeException, IllegalGenoSizeException {
 
 		//------ 設定する遺伝子情報が正しいかチェック ------//
-		if (individualModel.GetGenoSize() != gene.GetGenoSize())
+		if (individualModel.GenoSize != gene.GenoSize)
 		{
 			throw new IllegalGenoSizeException();                              // 遺伝子長がモデルと一致しないので例外を送出
 		}
@@ -134,7 +134,7 @@ public class Individual : IComparable
      *
      * @return 適応されているモデルクラス
      */
-	public IIndividual IndividualModel => individualModel;
+	public IIndividualModel IndividualModel => individualModel;
 
 
 

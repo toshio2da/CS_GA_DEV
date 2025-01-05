@@ -10,7 +10,7 @@ using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
 
 public partial class TestForm : Form
 {
-    NQueenGA.NQueenGAContext context = new();
+    NQueenGA.NQueenGAParam context = new();
 
     public TestForm()
     {
@@ -20,7 +20,7 @@ public partial class TestForm : Form
     private void TestForm_Load(object sender, EventArgs e)
     {
         numQueenCnt.Value = Convert.ToDecimal(context.QueenCnt);
-        numGenerationChangeCnt.Value = Convert.ToDecimal(context.GenerationChangeCnt);
+        numGenerationChangeCnt.Value = Convert.ToDecimal(context.MaxGenerationCnt);
         numIndividualCnt.Value = Convert.ToDecimal(context.IndividualCnt);
         numMutationRate.Value = Convert.ToDecimal(context.MutationRate);
 
@@ -32,7 +32,7 @@ public partial class TestForm : Form
         txtPoint.Text = "";
 
         context.QueenCnt = Convert.ToInt32(this.numQueenCnt.Value);
-        context.GenerationChangeCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
+        context.MaxGenerationCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
         context.IndividualCnt = Convert.ToInt32(this.numIndividualCnt.Value);
         context.MutationRate = Convert.ToDouble(this.numMutationRate.Value);
 

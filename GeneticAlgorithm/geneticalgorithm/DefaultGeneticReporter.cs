@@ -17,12 +17,10 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm;
 public class DefaultGeneticReporter : IGeneticReportable
 {
 
-	/**
-     * <p>標準構築子です。</p>
-     */
-	public DefaultGeneticReporter()
-	{
-	}
+	/// <summary>
+	/// デフォルトコンストラクタ
+	/// </summary>
+	public DefaultGeneticReporter() { }
 
 
 	/**

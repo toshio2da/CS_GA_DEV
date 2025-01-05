@@ -145,7 +145,7 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm.Genes
 
 
 				//------ 遺伝子長をチェック ------//
-				if (newGene.Length != GetGenoSize())
+				if (newGene.Length != this.GenoSize)
 				{
 					throw new IllegalGenoSizeException();                           // 遺伝子長が正しくないので例外を送出
 				}
@@ -180,21 +180,9 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm.Genes
 
 
 
-
-		//======================================//
-		//------ Geneインタフェースの実装 ------//
-		//======================================//
-
-		/**
-		 * <p>自己遺伝子の遺伝子長を返します。</p>
-		 *
-		 * @return 自己遺伝子の遺伝子長です。
-		 */
-		public int GetGenoSize()
-		{
-
-			//------ 自己遺伝子の遺伝子長を返します ------//
-			return baseData.Length;
-		}
+		/// <summary>
+		/// 自己遺伝子の遺伝子長を取得します
+		/// </summary>
+		public int GenoSize => baseData.Length;
 	}
 }

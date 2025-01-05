@@ -21,12 +21,14 @@ public interface IGeneticAlgorithm
 	/// <summary>
 	/// 検索を行います。
 	/// </summary>
-	/// <param name="maxIterationNumber"></param>
+	/// <param name="context">GA検索コンテキスト</param>
 	/// <returns>検索結果のオブジェクト</returns>
-	public Individual Search(int maxIterationNumber);
+	public Individual Search(GASearchContext context);
 
 	/**
      * <p>内部の状態を初期状態に戻します。</p>
      */
 	public void Reset();
+
+	public IGAModel GAModel { get; }
 }

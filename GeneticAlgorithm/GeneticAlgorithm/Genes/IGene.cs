@@ -22,7 +22,7 @@ public interface IGene
      *
      * @return 自己遺伝子の遺伝子長です。
      */
-	int GetGenoSize();
+	int GenoSize { get; }
 
 
 

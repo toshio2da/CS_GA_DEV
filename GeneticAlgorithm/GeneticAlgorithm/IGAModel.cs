@@ -26,7 +26,7 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm;
 /// @author 森本寛
 /// @version 1.0 (2002/10/30)
 /// </summary>
-public interface IGeneticAlgorithmModel
+public interface IGAModel
 {
 	/// <summary>
 	/// 使用する個体のモデルを実装するクラスのインスタンスを返します
@@ -35,7 +35,7 @@ public interface IGeneticAlgorithmModel
 	/// 個体モデルは個体の遺伝子長、塩基配列などを決定します。<br>
 	/// 個体モデルは適応度計算アルゴリズムと相互に関係しますが、他のアルゴリズムとは独立ですので、柔軟な設計を行うことができます。
 	/// </remarks>
-	public IIndividual IndividualModel { get; }
+	public IIndividualModel IndividualModel { get; }
 
 	/// <summary>
 	/// 使用する適応度計算アルゴリズムを実装するクラスのインスタンスを取得します
@@ -79,7 +79,7 @@ public interface IGeneticAlgorithmModel
 	public ICrossoverAlgorithm CrossoverAlgorithm { get; }
 
 	/// <summary>
-	/// <p>遺伝子の各塩基が突然変異を起こす確率を返します。</p>
+	/// 遺伝子の各塩基が突然変異を起こす確率を返します</p>
 	/// </summary>
 	/// <remarks>
 	/// 各塩基の突然変異率(0.0:突然変位が怒らない  1.0:全ての塩基に突然変異が起こる  通常:0.005程度？)
@@ -93,7 +93,7 @@ public interface IGeneticAlgorithmModel
 	public double MutationProbability { get; }
 
 	/// <summary>
-	/// <p>個体の遺伝子に逆位が起こる確率を返します。</p>
+	/// 個体の遺伝子に逆位が起こる確率を返します。
 	/// </summary>
 	/// <remarks>
 	/// 逆位とは部分遺伝子の順序が逆になる遺伝子操作です。<br>

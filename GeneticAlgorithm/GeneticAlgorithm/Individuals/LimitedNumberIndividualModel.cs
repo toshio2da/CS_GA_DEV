@@ -18,56 +18,46 @@ using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
 * @version 1.0 (2002/11/01)
 */
 
-public class LimitedNumberIndividualModel : NumberIndividualModel
+public class LimitedNumberIndividualModel : AbstractIndividualModel
 {
-
-
-	//===================================================//
-	//-------------------- メンバ変数 --------------------//
-	//===================================================//
-
 	/** 自己遺伝子の遺伝子長 */
-	protected int limitNumber;
+	private int limitNumber;
 
-
-
-
-	//===============================================//
-	//-------------------- 構築子 --------------------//
-	//===============================================//
-
-	/**
-     * <p>整数型塩基タイプの個体モデルの構築子です。</p>
-     * 自己遺伝子の遺伝子長を指定します。<br>
-     * 遺伝子長は適応する問題によって異なるのが一般的です。<br>
-     * 整数塩基は指定範囲未満の値をとります。<br>
-     * limitNumberに10と指定した場合、整数塩基は0~9の値をとります。<br>
-     *
-     * @param genoSize  自己遺伝子の遺伝子長
-     * @param limitNumber  指定範囲です。負の値が渡されたときはその絶対を使用します。
-     */
-	public LimitedNumberIndividualModel(int genoSize, int limitNumber)
-	: base(genoSize)//------ 遺伝子長を保持 ------//
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="genoSize">自己遺伝子の遺伝子長</param>
+	/// <param name="limitNumber">指定範囲です。負の値が渡されたときはその絶対を使用します</param>
+	public LimitedNumberIndividualModel(int genoSize, int limitNumber) : base(genoSize)//------ 遺伝子長を保持 ------//
 	{
 		//------ 範囲を指定 ------//
 		this.limitNumber = limitNumber;
 	}
 
+	/// <summary>
+	/// 遺伝子の塩基タイプがこの個体モデルにおいて正しいかどうかをチェックします
+	/// </summary>
+	/// <remarks>
+	///　渡された遺伝子が整数型の塩基タイプを持つかチェックします。<br>
+	///　整数型塩基タイプでなければfalseを返します。
+	/// </remarks>
+	/// <param name="gene">チェックしたい遺伝子です</param>
+	/// <returns>正しければtrue, 不正であればfalseを返します</returns>
+	public override bool IsLegalGenoType(IGene gene)
+	{
+		return (gene.GetBase() is bool[]);
+	}
 
-
-	//==========================================================================//
-	//-------------------- IndividualModelインタフェースの実装 --------------------//
-	//==========================================================================//
-
-	/**
-     * <p>新しい整数配列遺伝子を生成し、返します。各個体は本メソッドより遺伝子を生成します。 </p>
-     * 生成される遺伝子はgetGenoSize()メソッドで返される遺伝子長のものです。<br>
-     *
-     * @return 新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値。
-     */
+	/// <summary>
+	/// 新しい整数配列遺伝子を生成し、返します。各個体は本メソッドより遺伝子を生成します
+	/// </summary>
+	/// <remarks>
+	/// 生成される遺伝子はgetGenoSize()メソッドで返される遺伝子長のものです
+	/// </remarks>
+	/// <returns>新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値</returns>
 	public override IGene CreateNewGene()
 	{
 		//------ 新しく整数配列遺伝子を生成 ------//
-		return new LimitedNumberGene(this.GetGenoSize(), this.limitNumber);
+		return new LimitedNumberGene(this.GenoSize, this.limitNumber);
 	}
 }

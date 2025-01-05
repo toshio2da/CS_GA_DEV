@@ -29,58 +29,28 @@ using System.Reflection;
 
 public class OnePointCrossover : ICrossoverAlgorithm
 {
-
-
-	//================================================//
-	//-------------------- 構築子 --------------------//
-	//================================================//
-
-	/**
-     * <p>構築子です。</p>
-     */
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	public OnePointCrossover() { }
 
 	/// <summary>
-	/// 親候補集団から交叉を行い、子集団を生成します。
+	/// 親候補集団から交叉を行い、子集団を生成します
 	/// </summary>
 	/// <remarks>
 	/// 交叉親集団からランダムに2体を選び、その2体を元に2体の子供を生成します。<br>
 	/// 子供2体の合計遺伝子は親の合計遺伝子と等しくなります。<br>
 	/// つまり子供2体で親の同じ遺伝子は共有されません。<br>
-	/// 交叉点はランダムに選ばれた1点です。基本的な遺伝的アルゴリズムによく用いられます。<br>
-	/// <br>
-	/// 本メソッドでは親と同じクラスの個体を子供として生成します。<br>
-	/// これは親がIndividualの派生クラスであればどのクラスでもいいことを示します。<br>
-	/// メタクラスClass及びConstructorを使用しています。<br>
-	/// 内部でインスタンスの動的生成を行っているため、セキュリティポリシーの関係上、アプレットでは使用できない可能性があります。<br>
-	/// 個体のモデルクラスも同様に親から引き継がれます。<br>
 	/// </remarks>
+	/// <param name="ga">メインGAアルゴリズム</param>
 	/// <param name="perentCandidates">親候補集団。この中からランダムに親を選びます。</param>
 	/// <param name="childrenNumber">生成する子集団の数。偶数でなければなりません。</param>
-	/// <returns></returns>
-	/// <exception cref="ArgumentException">生成された子集団</exception>
-	public List<Individual> Crossover(List<Individual> perentCandidates, int childrenNumber)
+	/// <returns>生成された子集団</returns>
+	public List<Individual> Crossover(IGeneticAlgorithm ga, List<Individual> perentCandidates, int childrenNumber)
 	{
 		//------ 必要な情報を取得 ------//
 		Individual sample = perentCandidates[0];  // 個体に関する情報を得るためにサンプルとして取得
-		int geneSize = sample.Gene.GetGenoSize();       // この集団の個体が持っている遺伝子の長さを取得
-		IIndividual ourModel = sample.IndividualModel;          // 個体のモデルクラスを取得
-
-		//Class individualClass = sample.getClass();                    // メタクラスを取得
-		//Class individualModelClass = Class.forName("jp.co.tmdgroup.common.geneticalgorithm.model.IIndividual");
-		//Class[] argmentModel = { individualModelClass };                      // メタクラスに呼ぶコンストラクタの引数定義(個体の生成構築子)
-		//Constructor constructor = individualClass.getConstructor(argmentModel); // メタコンストラクタ。クラス名から動的に個体を生成。
-
-		object[] argment = [ourModel];                                   // 引数。個体のモデルクラス。
-
-		//T.Tsuda
-		//コンストラクタメタ情報を取得
-		ConstructorInfo? constructorInfo = typeof(Individual).GetType().GetConstructor([typeof(IIndividual)]);
-		if (constructorInfo == null)
-		{
-			throw new ArgumentException("指定されたタイプにIIndividualをを引数としたコンストラクタが存在しません");
-		}
-
+		int geneSize = sample.Gene.GenoSize;       // この集団の個体が持っている遺伝子の長さを取得
 
 		//------------------------------------------//
 		//------ 親集団と同じ数の子集団を生成 ------//
@@ -123,8 +93,11 @@ public class OnePointCrossover : ICrossoverAlgorithm
 
 
 			//------ 子供を2体生成 ------//
-			Individual son = (Individual)constructorInfo.Invoke(argment);// 親と同じクラス（派生クラス）で子供を生成
-			Individual daughter = (Individual)constructorInfo.Invoke(argment);  // メタクラスによる動的生成を使用。
+			//Individual son = (Individual)constructorInfo.Invoke(argment);// 親と同じクラス（派生クラス）で子供を生成
+			//Individual daughter = (Individual)constructorInfo.Invoke(argment);  // メタクラスによる動的生成を使用。
+			Individual son = new Individual(ga.GAModel.IndividualModel) ;// 親と同じクラス（派生クラス）で子供を生成
+			Individual daughter = new Individual(ga.GAModel.IndividualModel);  // メタクラスによる動的生成を使用。
+
 			son.Gene.CreateGene(sonsGene);                                         // 新しく生成された遺伝子を子供に設定
 			daughter.Gene.CreateGene(daughtersGene);                               // 新しく生成された遺伝子を子供に設定
 

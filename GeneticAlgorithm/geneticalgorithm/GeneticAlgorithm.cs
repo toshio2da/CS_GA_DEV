@@ -28,17 +28,15 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm;
 
 public class GeneticAlgorithm : IGeneticAlgorithm
 {
-	/** 探索に用いる個体の数。デフォルトでは200 */
-	private readonly int peopleNumber = 200;
+	/** 使用する遺伝的アルゴリズムのモデルクラス */
+	private readonly IGAModel model;
+
+	/** 検索状況の報告クラス。自動的に同期が取られます。 */
+	private GASearchContext context = null!;
 
 	/** 遺伝的アルゴリズムに用いる個体の集団 */
 	private List<Individual> group = [];
 
-	/** 使用する遺伝的アルゴリズムのモデルクラス */
-	private readonly IGeneticAlgorithmModel model;
-
-	/** 検索状況の報告クラス。自動的に同期が取られます。 */
-	private readonly GASearchStatus status = null!;
 
 	/** 現在の世代交代数を保持します。 */
 	private int nowGenerationNumber = 0;
@@ -47,12 +45,14 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 	private long startingTime = 0;
 
 
-	/// <summary>
-	/// 検索に用いる世代交代数を取得または設定します。
-	/// 世代交代数指定、または検索時間かつ世代交代数指定の場合に用いられる世代交代数です。
-	/// デフォルトは3000[回]
-	/// </summary>
-	public int GenerationNumber { get; set; } = 3000;
+	///// <summary>
+	///// 検索に用いる世代交代数を取得または設定します。
+	///// 世代交代数指定、または検索時間かつ世代交代数指定の場合に用いられる世代交代数です。
+	///// デフォルトは3000[回]
+	///// </summary>
+	//public int GenerationNumber { get; set; } = 3000;
+
+	public IGAModel GAModel => this.model;
 
 	/// <summary>
 	/// 検索時間[秒]を取得または設定します。
@@ -77,75 +77,15 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 	public int StopSearchGeneration { get; set; } = -1;
 
 
-
-	//===============================================//
-	//-------------------- 構築子 --------------------//
-	//===============================================//
-
-	/**
-     /// <p>構築子です。デフォルトでは集団数は200、最大世代数は1000となっています。</p>
-     /// 最大世代数に到達するか、個体の示す究極の個体(最大適応度を持つ)が現れると探索を終了します。<br>
-     *
-     /// @param model 使用する遺伝的アルゴリズムのモデルクラス
-     /// @param status 状況報告クラス。検索の制御にも使用。
-     */
-	public GeneticAlgorithm(IGeneticAlgorithmModel model, GASearchStatus status)
+	/// <p>構築子です。デフォルトでは集団数は200、最大世代数は1000となっています。</p>
+	/// 最大世代数に到達するか、個体の示す究極の個体(最大適応度を持つ)が現れると探索を終了します。<br>
+	/// @param model 使用する遺伝的アルゴリズムのモデルクラス
+	/// @param status 状況報告クラス。検索の制御にも使用。
+	public GeneticAlgorithm(IGAModel model)
 	{
-
 		//------ 使用するモデルクラスを保持 ------//
 		this.model = model;
-
-
-		//------ 状況報告クラスを保持 ------//
-		this.status = status;
-
-
-		//------ 適応度計算アルゴリズムを渡す ------//
-		this.status.FitnessAlgorithm = this.model.FitnessAlgorithm;
-
-
-		//------ 集団を形成 ------//
-		for (int index = 0; index < this.peopleNumber; index++)
-		{
-
-			//------ 個体を準に生成 ------//
-			this.group.Add(new Individual(this.model.IndividualModel));
-		}
 	}
-
-
-
-	/**
-     /// <p>構築子です。集団数と最大世代交代数を指定します。</p>
-     /// 最大世代数に到達するか、個体の示す究極の個体(最大適応度を持つ)が現れると探索を終了します。<br>
-     *
-     /// @param model 使用する遺伝的アルゴリズムのモデルクラス
-     /// @param status 状況報告クラス。検索の制御にも使用。
-     /// @param peopleNumber 集団の個体数
-     */
-	public GeneticAlgorithm(IGeneticAlgorithmModel model, GASearchStatus status, int peopleNumber)
-	{
-
-		//------ 集団数と最大世代交代数を保持 ------//
-		this.peopleNumber = peopleNumber;              // 集団数を保持
-
-		//------ 状況報告クラスを保持 ------//
-		this.status = status;
-
-		//------ 使用するモデルクラスを保持 ------//
-		this.model = model;
-
-		//------ 適応度計算アルゴリズムを渡す ------//
-		this.status.FitnessAlgorithm = this.model.FitnessAlgorithm;
-
-		//------ 集団を形成 ------//
-		for (int index = 0; index < this.peopleNumber; index++)
-		{
-			//------ 個体を順に生成 ------//
-			this.group.Add(new Individual(this.model.IndividualModel));
-		}
-	}
-
 
 	/// <summary>
 	/// 遺伝的アルゴリズムを用いて様々な組み合わせ問題の準最適解を高速に検索します。
@@ -162,14 +102,19 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 	/// 本メソッドを直接呼ばす、start()メソッドを呼び出すことにより呼び出し元とは異なるスレッドを生成し、検索を行います。<br>
 	/// 途中経過の取得や検索中止命令などは構築時に渡したGeneticStatusクラスによって行うことができます。<br>
 	/// </remarks>
-	/// <param name="maxIterationNumber">最大繰り返し数</param>
+	/// <param name="maxGenerationCnt">最大世代数</param>
 	/// <returns>探索で得た最適の個体(class: individual)</returns>
 	/// <exception cref="IllegalParameterTypeException">遺伝子の塩基タイプに不正があります。FitnessAlgorithmと一致していません。</exception>
 	/// <exception cref="IllegalParameterSizeException">遺伝子長が異なります。モデルクラスの値と一致していません。</exception>
 	/// <exception cref="IllegalElementException">個体の中にIndividualクラス又はその派生クラスでないものが含まれています。</exception>
 	/// <exception cref="ArgumentOutOfRangeException">保持世代数を越えた位置を指定しました。</exception>
-	public Individual Search(int maxIterationNumber)
+	public Individual Search(GASearchContext context)
 	{
+		//------ 状況報告クラスを保持 ------//
+		this.context = context;
+
+		this.Reset();
+
 		try
 		{
 			//------ 各世代毎の優秀な個体を登録していく ------//
@@ -185,14 +130,14 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 				if (fitnessValue == this.model.FitnessAlgorithm.BestFitnessValue)
 				{
 					// 究極の個体か検証
-					this.status.Command = GASearchCommand.STOP_SEARCH;                        // 究極の個体であれば返す
+					this.context.Command = GASearchCommand.STOP_SEARCH;                        // 究極の個体であれば返す
 
 					Debug.WriteLine("進化なしで究極個体が発生");
 
 					return individual;
 				}
 			}
-			this.status.SetBestIndividual(this.group[0]);
+			this.context.SetBestIndividual(this.group[0]);
 
 
 			//------ 最大世代交代数まで繰り返す ------//
@@ -210,15 +155,15 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 			double bestFitnessValue;
 
 
-			for (int index = 0; index < maxIterationNumber; index++)
+			for (int index = 0; index < this.context.MaxGenerationCnt; index++)
 			{
-				Debug.WriteLine($"世代{index}/{maxIterationNumber}");
+				Debug.WriteLine($"世代{index}/{this.context.MaxGenerationCnt}");
 
 				//------ 世代毎の一番優秀な個体を登録していく ------//
-				this.status.SetBestIndividual(this.NewGeneration());
+				this.context.SetBestIndividual(this.NewGeneration());
 
 				//------ 中断命令がきていれば検索を強制終了 ------//
-				if (this.status.Command == GASearchCommand.STOP_SEARCH)
+				if (this.context.Command == GASearchCommand.STOP_SEARCH)
 				{
 					break;
 				}
@@ -234,7 +179,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 				}
 
 				//------ 新しい進化があったかどうかを調べる ------//
-				bestFitnessValue = this.status.GetBestIndividual().FitnessValue;
+				bestFitnessValue = this.context.GetBestIndividual().FitnessValue;
 				if (lastBestFitnessValue != bestFitnessValue)
 				{
 					lastBestFitnessValue = bestFitnessValue;
@@ -259,16 +204,16 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 
 
 			//------ 最大世代交代数が終わっても究極の個体が見つからなかったのでその中で一番個体を返す ------//
-			Individual lastSuperior = this.status.GetBestIndividual();
+			Individual lastSuperior = this.context.GetBestIndividual();
 
-			this.status.SearchStatusType = GASearchStatusTypes.DONE_SEARCH;
-			this.status.Reporter.FinishReport(lastSuperior, this.nowGenerationNumber, DateTime.Now.Ticks - this.startingTime);
+			this.context.SearchStatusType = GASearchStatus.DONE_SEARCH;
+			this.context.Reporter.FinishReport(lastSuperior, this.nowGenerationNumber, DateTime.Now.Ticks - this.startingTime);
 			return lastSuperior;
 		}
 		catch (ArgumentException exception)
 		{
 			Console.WriteLine(exception.StackTrace);
-			return this.status.GetBestIndividual();
+			throw;
 		}
 		catch (IllegalGenoTypeException exception)
 		{
@@ -301,10 +246,10 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 	protected Individual NewGeneration()
 	{
 		//------ 既に究極の個体がいる場合にはその個体を即時に返す ------//
-		if (this.status.GetBestIndividual() == null) { }
-		else if (this.status.GetBestIndividual().FitnessValue == this.model.FitnessAlgorithm.BestFitnessValue)
+		if (this.context.GetBestIndividual() == null) { }
+		else if (this.context.GetBestIndividual().FitnessValue == this.model.FitnessAlgorithm.BestFitnessValue)
 		{
-			return this.status.GetBestIndividual();
+			return this.context.GetBestIndividual();
 		}
 
 		//------ 生存を行う。優秀な親は次世代集団に残る ------//
@@ -314,7 +259,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 		List<Individual> new_group = this.model.SelectionAlgorithm.Select(this.group);
 
 		//------ 交叉を行う。生存しなかった親は全て入れ替える ------//
-		List<Individual> children = this.model.CrossoverAlgorithm.Crossover(new_group, new_group.Count - survivors.Count);
+		List<Individual> children = this.model.CrossoverAlgorithm.Crossover(this, new_group, new_group.Count - survivors.Count);
 
 		//------ 突然変異を子集団の各塩基に対して行う。突然変異率が0.0の場合は行わない ------//
 		double mutationProbability = this.model.MutationProbability;
@@ -355,7 +300,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 		}
 
 		//------ 適応度順にソートする・世代内で一番優秀な個体を取得 ------//
-		this.group = this.group.OrderBy(e => e.FitnessValue).ToList();// 適応度でソート
+		this.group = this.group.OrderByDescending(e => e.FitnessValue).ToList();// 適応度でソート
 		Individual bestIndividual = this.group[0];                    // 世代の中で一番優秀な個体を取得
 
 		//------ 今の世代の中で一番優秀な個体を登録 ------//
@@ -372,68 +317,19 @@ public class GeneticAlgorithm : IGeneticAlgorithm
      */
 	public void Reset()
 	{
-
 		//------ 集団を一旦全削除 ------//
 		this.group.Clear();
-
-
 		//------ 今までの記録も削除 ------//
-		this.status.ClearSuperior();
-
+		this.context.ClearSuperior();
 
 		//------ 集団を再形成 ------//
-		for (int index = 0; index < this.peopleNumber; index++)
+		for (int index = 0; index < this.context.IndividualCnt; index++)
 		{
-
 			//------ 個体を準に生成 ------//
 			this.group.Add(new Individual(this.model.IndividualModel));
 		}
 	}
 
-
-
-
-	//==============================================================================//
-	//-------------------- Threadクラスメソッドのオーバーライド --------------------//
-	//==============================================================================//
-
-	public void Run()
-	{
-
-		try
-		{
-			//------ 状況報告クラスが設定されていない場合は何もせずに返す ------//
-			if (this.status == null)
-			{
-				return;
-			}
-
-
-			//------ 状況報告クラスから情報を取得 ------//
-			GASearchMethod searchMethod = this.status.SearchMethod;
-
-
-			//------ 今回は必ず世代数指定 ------//
-			if (searchMethod == GASearchMethod.LIMIT_NUMBER)
-			{
-				this.Search(this.GenerationNumber);
-			}
-
-
-
-		}
-		catch (Exception exception)
-		{
-			Console.WriteLine(exception.StackTrace);
-		}
-	}
-
-
-
-
-	//====================================================//
-	//-------------------- 内部メソッド --------------------//
-	//====================================================//
 
 	/**
 	 /// <p>集団に対して突然変異操作を行います。</p>
@@ -454,7 +350,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 			IGene gene = individual.Gene;                   // その個体が持つ遺伝子を取得
 
 			//------ 各塩基に対して行う ------//
-			for (int geneIndex = 0; geneIndex < gene.GetGenoSize(); geneIndex++)
+			for (int geneIndex = 0; geneIndex < gene.GenoSize; geneIndex++)
 			{
 
 				//------ 確率のサイコロを振る ------//
@@ -491,7 +387,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 			if (RandomGenerator.Random < inverseProbability)
 			{
 
-				gene.InverseSubGene((int)(RandomGenerator.Random * gene.GetGenoSize()), (int)(RandomGenerator.Random * gene.GetGenoSize()));
+				gene.InverseSubGene((int)(RandomGenerator.Random * gene.GenoSize), (int)(RandomGenerator.Random * gene.GenoSize));
 			}
 		}
 	}
