@@ -40,12 +40,14 @@ public partial class TestForm : Form
         timer1.Interval = 100;
         timer1.Start();
         lastPoint = 0;
+        btnSearch.Enabled = false;
 
         await Task.Run(() =>
         {
             ga.SearchQueeen();
         });
         timer1.Stop();
+        btnSearch.Enabled = true;
 
         //int[] bextPattern = DataTools.CreateUniqElementArray(context.BestPattern);
         //int point = context.Point;
