@@ -2,24 +2,46 @@
 {
 	public static class DataTools
 	{
+		/// <summary>
+		/// 重複している数字を重複しないように置き換える
+		/// </summary>
+		/// <param name="ints">整数配列</param>
+		/// <returns></returns>
 		public static int[] CreateUniqElementArray(int[] ints)
 		{
+            List<int> newNums = new List<int>();
+
 			List<int> nums = new List<int>();
 			for (int i = 0; i < ints.Length; ++i)
 			{
 				nums.Add(i);
 			}
 
-			List<int> newNums = new List<int>();
             for (int i = 0; i < ints.Length; ++i)
 			{
-				int pos = ints[i] % nums.Count;
-                int n = nums[pos];
-				newNums.Add(n);
-				nums.RemoveAt(pos);
+				nums.Remove(ints[i]);
 			}
 
-            return newNums.ToArray();
+			if (nums.Count == 0)
+			{
+				return ints;
+			}
+
+            for (int i = 0; i < ints.Length; ++i)
+			{
+				int n = ints[i];
+                if (newNums.Contains(n))
+				{
+                    // 既にあるので置き換える
+                    int pos = ints[i] % nums.Count;
+                    n = nums[pos];
+                    nums.RemoveAt(pos);
+                }
+
+                newNums.Add(n);
+			}
+
+			return newNums.ToArray();
 		}
 
 

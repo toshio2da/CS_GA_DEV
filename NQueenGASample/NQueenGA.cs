@@ -32,7 +32,12 @@ namespace jp.co.tmdgroup.nqueengasample
 			public double MutationRate { get; set; } = 0.95;
 
 			public int Point { get; set; } = 0;
-		}
+
+            /// <summary>
+            /// 探索結果
+            /// </summary>
+            public int[] BestPattern { get; set; }
+        }
 
 
 		/// <summary>
@@ -40,56 +45,46 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// </summary>
 		private GASearchContext? gaContext = null;
 
+		private NQueenGAParam nQueenGAParam { get; set; } = param;
+
+        /// <summary>
+        /// 探索状態変数
+        /// </summary>
+        private GASearchStatus status = GASearchStatus.WAIT_FOR_SEARCH;
 
 
-		/// <summary>
-		/// 探索状態変数
-		/// </summary>
-		private GASearchStatus status = GASearchStatus.WAIT_FOR_SEARCH;
-
-
-		/// <summary>
-		/// 探索結果
-		/// </summary>
-		private int[] bestPattern = [];
-
-		private class GeneticReportableImpl(NQueenGA parent, funcDelegate reportFunc) : IGeneticReportable
+		private class GeneticReportableImpl(NQueenGA parent) : IGeneticReportable
 		{
 			public void Report(Individual surperior)
 			{
 				parent.status = GASearchStatus.SEARCHING;
-				parent.bestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
-                int point = (int)surperior.FitnessValue;
+                parent.nQueenGAParam.BestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
+                parent.nQueenGAParam.Point = (int)surperior.FitnessValue;
                 //parent.bestPattern = (int[])surperior.Gene.GetBase();
                 //owner.mapPanel.canvas.repaint();
-                reportFunc.Invoke(parent.bestPattern, point);
             }
 
             public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
 			{
 				parent.status = GASearchStatus.DONE_SEARCH;
-				parent.bestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
-                int point = (int)lastSurperior.FitnessValue;
-
+                parent.nQueenGAParam.BestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
+                parent.nQueenGAParam.Point = (int)lastSurperior.FitnessValue;
                 //parent.bestPattern = (int[])lastSurperior.Gene.GetBase();
                 //owner.mapPanel.canvas.repaint();
-                reportFunc.Invoke(parent.bestPattern, point);
             }
         }
-
-		public delegate void funcDelegate(int[] bestPattern, int point);
 
         /**
 		* 遺伝的アルゴリズムによる探索を行います
 		**/
-        public Individual SearchQueeen(funcDelegate reportFunc)
+        public Individual SearchQueeen()
         {
             NQueenGAModel model = new (param.QueenCnt);
 			GeneticAlgorithm _ga = new (model);
 
 			gaContext = new();
 			gaContext.Command = GASearchCommand.GO_AHEAD_SEARCH;
-			gaContext.Reporter = new GeneticReportableImpl(this, reportFunc);
+			gaContext.Reporter = new GeneticReportableImpl(this);
 			gaContext.IndividualCnt = param.IndividualCnt;
 			gaContext.MaxGenerationCnt = param.MaxGenerationCnt;
 			Individual _best = _ga.Search(gaContext); // 探索

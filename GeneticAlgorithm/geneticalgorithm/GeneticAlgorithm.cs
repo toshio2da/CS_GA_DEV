@@ -187,8 +187,12 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 					lastEvolutionGeneration = 0;
 					//経過時間をリセット
 					lastEvolutionTime = DateTime.Now.Ticks;
-				}
-				else
+
+					// レポート
+                    this.context.SearchStatusType = GASearchStatus.DONE_SEARCH;
+                    this.context.Reporter.Report(this.context.GetBestIndividual());
+                }
+                else
 				{
 					lastEvolutionGeneration++;
 					if ((this.StopSearchGeneration > 0) && lastEvolutionGeneration > this.StopSearchGeneration)

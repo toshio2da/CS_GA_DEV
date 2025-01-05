@@ -27,7 +27,7 @@ public partial class TestForm : Form
         this.boardCtrl1.SetNQueenCount(Convert.ToInt32(this.numQueenCnt.Value));
     }
 
-    private void btnSearch_Click(object sender, EventArgs e)
+    private async void btnSearch_Click(object sender, EventArgs e)
     {
         txtPoint.Text = "";
 
@@ -35,14 +35,32 @@ public partial class TestForm : Form
         context.MaxGenerationCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
         context.IndividualCnt = Convert.ToInt32(this.numIndividualCnt.Value);
         context.MutationRate = Convert.ToDouble(this.numMutationRate.Value);
-
         NQueenGA ga = new(context);
 
-        Individual bestIndividual = ga.SearchQueeen(Report);
-        int[] bextPattern = DataTools.CreateUniqElementArray((int[])bestIndividual.Gene.GetBase());
-        int point = (int)bestIndividual.FitnessValue;
+        timer1.Interval = 100;
+        timer1.Start();
+        lastPoint = 0;
 
-        Report(bextPattern, point);
+        await Task.Run(() =>
+        {
+            ga.SearchQueeen();
+        });
+        timer1.Stop();
+
+        //int[] bextPattern = DataTools.CreateUniqElementArray(context.BestPattern);
+        //int point = context.Point;
+
+        //Report(bextPattern, point);
+    }
+
+    private int lastPoint = 0;
+    private void timer1_Tick(object sender, EventArgs e)
+    {
+        if (lastPoint < context.Point)
+        {
+            this.Report(context.BestPattern, context.Point);
+            lastPoint = context.Point;
+        }
     }
 
     private void Report(int[] bestPattern, int point)
@@ -56,6 +74,5 @@ public partial class TestForm : Form
     {
         this.boardCtrl1.SetNQueenCount(Convert.ToInt32(this.numQueenCnt.Value));
     }
-
 }
 

@@ -27,6 +27,7 @@ partial class TestForm
     /// </summary>
     private void InitializeComponent()
     {
+        components = new System.ComponentModel.Container();
         panel1 = new Panel();
         txtPoint = new TextBox();
         label5 = new Label();
@@ -41,6 +42,7 @@ partial class TestForm
         label1 = new Label();
         panel2 = new Panel();
         boardCtrl1 = new NQueen.View.BoardCtrl();
+        timer1 = new System.Windows.Forms.Timer(components);
         panel1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)numMutationRate).BeginInit();
         ((System.ComponentModel.ISupportInitialize)numIndividualCnt).BeginInit();
@@ -192,6 +194,10 @@ partial class TestForm
         boardCtrl1.Size = new Size(496, 637);
         boardCtrl1.TabIndex = 0;
         // 
+        // timer1
+        // 
+        timer1.Tick += timer1_Tick;
+        // 
         // TestForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -228,4 +234,5 @@ partial class TestForm
     private NQueen.View.BoardCtrl boardCtrl1;
     private TextBox txtPoint;
     private Label label5;
+    private System.Windows.Forms.Timer timer1;
 }
