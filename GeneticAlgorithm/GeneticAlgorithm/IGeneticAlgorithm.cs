@@ -23,7 +23,7 @@ public interface IGeneticAlgorithm
 	/// </summary>
 	/// <param name="context">GA検索コンテキスト</param>
 	/// <returns>検索結果のオブジェクト</returns>
-	public Individual Search(GASearchContext context);
+	public GASearchResult Search(GASearchContext context);
 
 	/**
      * <p>内部の状態を初期状態に戻します。</p>

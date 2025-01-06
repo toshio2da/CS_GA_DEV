@@ -4,13 +4,14 @@ using jp.co.tmdgroup.common.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net.NetworkInformation;
 using System.Reflection;
-using static jp.co.tmdgroup.nqueengasample.NQueenGA;
+using static jp.co.tmdgroup.nqueengasample.NQueenGAObserver;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
+using jp.co.tmdgroup.common.GeneticAlgorithm;
 
 public partial class TestForm : Form
 {
-    NQueenGA.NQueenGAParam context = new();
+    NQueenGAObserver.NQueenGAParam context = new();
 
     public TestForm()
     {
@@ -36,9 +37,11 @@ public partial class TestForm : Form
         context.IndividualCnt = Convert.ToInt32(this.numIndividualCnt.Value);
         context.MutationRate = Convert.ToDouble(this.numMutationRate.Value);
 
-        NQueenGA ga = new(context);
+        NQueenGAObserver ga = new(context);
 
-        Individual bestIndividual = ga.SearchQueeen(Report);
+
+		GASearchResult gaSearchResult = ga.SearchQueeen(Report);
+		Individual bestIndividual = gaSearchResult.BestIndividual;
         int[] bextPattern = DataTools.CreateUniqElementArray((int[])bestIndividual.Gene.GetBase());
         int point = (int)bestIndividual.FitnessValue;
 

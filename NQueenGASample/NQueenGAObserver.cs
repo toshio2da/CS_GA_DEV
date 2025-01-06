@@ -2,12 +2,12 @@
 using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
 using jp.co.tmdgroup.common.Utils;
 
-using static jp.co.tmdgroup.nqueengasample.NQueenGA;
+using static jp.co.tmdgroup.nqueengasample.NQueenGAObserver;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace jp.co.tmdgroup.nqueengasample
 {
-	internal class NQueenGA(NQueenGAParam param)
+	internal class NQueenGAObserver(NQueenGAParam param)
 	{
 		internal class NQueenGAParam
 		{
@@ -53,7 +53,7 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// </summary>
 		private int[] bestPattern = [];
 
-		private class GeneticReportableImpl(NQueenGA parent, funcDelegate reportFunc) : IGeneticReportable
+		private class GeneticReportableImpl(NQueenGAObserver parent, funcDelegate reportFunc) : IGeneticReportable
 		{
 			public void Report(Individual surperior)
 			{
@@ -82,7 +82,7 @@ namespace jp.co.tmdgroup.nqueengasample
         /**
 		* 遺伝的アルゴリズムによる探索を行います
 		**/
-        public Individual SearchQueeen(funcDelegate reportFunc)
+        public GASearchResult SearchQueeen(funcDelegate reportFunc)
         {
             NQueenGAModel model = new (param.QueenCnt);
 			GeneticAlgorithm _ga = new (model);
@@ -92,9 +92,10 @@ namespace jp.co.tmdgroup.nqueengasample
 			gaContext.Reporter = new GeneticReportableImpl(this, reportFunc);
 			gaContext.IndividualCnt = param.IndividualCnt;
 			gaContext.MaxGenerationCnt = param.MaxGenerationCnt;
-			Individual _best = _ga.Search(gaContext); // 探索
 
-			return _best;
+			GASearchResult searchResult = _ga.Search(gaContext); // 探索
+
+			return searchResult;
 		}
 	}
 }

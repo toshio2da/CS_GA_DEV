@@ -3,6 +3,7 @@ using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
 using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
 using jp.co.tmdgroup.common.Utils;
 
+using System;
 using System.Diagnostics;
 
 namespace jp.co.tmdgroup.common.GeneticAlgorithm;
@@ -108,13 +109,15 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 	/// <exception cref="IllegalParameterSizeException">遺伝子長が異なります。モデルクラスの値と一致していません。</exception>
 	/// <exception cref="IllegalElementException">個体の中にIndividualクラス又はその派生クラスでないものが含まれています。</exception>
 	/// <exception cref="ArgumentOutOfRangeException">保持世代数を越えた位置を指定しました。</exception>
-	public Individual Search(GASearchContext context)
+	public GASearchResult Search(GASearchContext context)
 	{
 		//------ 状況報告クラスを保持 ------//
 		this.context = context;
 
 		this.Reset();
 
+		GASearchResult ret = new GASearchResult();
+		ret.GenerationCnt = 0;
 		try
 		{
 			//------ 各世代毎の優秀な個体を登録していく ------//
@@ -134,7 +137,8 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 
 					Debug.WriteLine("進化なしで究極個体が発生");
 
-					return individual;
+					ret.BestIndividual = individual;
+					return ret;
 				}
 			}
 			this.context.SetBestIndividual(this.group[0]);
@@ -158,6 +162,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 			for (int index = 0; index < this.context.MaxGenerationCnt; index++)
 			{
 				Debug.WriteLine($"世代{index}/{this.context.MaxGenerationCnt}");
+				ret.GenerationCnt = index;
 
 				//------ 世代毎の一番優秀な個体を登録していく ------//
 				this.context.SetBestIndividual(this.NewGeneration());
@@ -203,12 +208,15 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 			}
 
 
+
 			//------ 最大世代交代数が終わっても究極の個体が見つからなかったのでその中で一番個体を返す ------//
 			Individual lastSuperior = this.context.GetBestIndividual();
 
 			this.context.SearchStatusType = GASearchStatus.DONE_SEARCH;
 			this.context.Reporter.FinishReport(lastSuperior, this.nowGenerationNumber, DateTime.Now.Ticks - this.startingTime);
-			return lastSuperior;
+
+			ret.BestIndividual = lastSuperior;
+			return ret;
 		}
 		catch (ArgumentException exception)
 		{
