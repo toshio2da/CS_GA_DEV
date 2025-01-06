@@ -161,8 +161,8 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 
 			for (int index = 0; index < this.context.MaxGenerationCnt; index++)
 			{
-				Debug.WriteLine($"世代{index + 1}/{this.context.MaxGenerationCnt}");
-				ret.GenerationCnt = index;
+				//Debug.WriteLine($"世代{index + 1}/{this.context.MaxGenerationCnt}");
+				ret.GenerationCnt = index+1;
 
 				//------ 世代毎の一番優秀な個体を登録していく ------//
 				this.context.SetBestIndividual(this.NewGeneration());

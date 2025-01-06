@@ -14,7 +14,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			/// <summary>
 			/// Queenの数
 			/// </summary>
-			public int QueenCnt { get; set; } = 30;
+			public int QueenCnt { get; set; } = 10;
 
 			/// <summary>
 			/// 最大世代交代数
@@ -24,7 +24,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			/// <summary>
 			/// 個体数
 			/// </summary>
-			public int IndividualCnt { get; set; } = 1000;
+			public int IndividualCnt { get; set; } = 100;
 
 			/// <summary>
 			/// 突然変異確立
@@ -67,7 +67,7 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// </summary>
 		private int[] bestPattern = [];
 
-		private class GeneticReportableImpl(NQueenGAObserver parent, funcDelegate reportFunc) : IGeneticReportable
+		private class GeneticReportableImpl(NQueenGAObserver parent) : IGeneticReportable
 		{
 			public void Report(Individual surperior)
 			{
@@ -94,7 +94,7 @@ namespace jp.co.tmdgroup.nqueengasample
         /**
 		* 遺伝的アルゴリズムによる探索を行います
 		**/
-        public GASearchResult SearchQueeen(funcDelegate reportFunc)
+        public GASearchResult SearchQueeen()
         {
             NQueenGAModel model = new (param.QueenCnt);
 			_ga = new (model);

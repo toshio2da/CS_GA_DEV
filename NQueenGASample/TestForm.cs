@@ -11,87 +11,44 @@ using jp.co.tmdgroup.common.GeneticAlgorithm;
 
 public partial class TestForm : Form
 {
-    NQueenGAObserver.NQueenGAParam context = new();
+	NQueenGAObserver.NQueenGAParam param = new();
 
-    public TestForm()
-    {
-        InitializeComponent();
-    }
+	public TestForm()
+	{
+		InitializeComponent();
+	}
 
-    private void TestForm_Load(object sender, EventArgs e)
-    {
-        numQueenCnt.Value = Convert.ToDecimal(context.QueenCnt);
-        numGenerationChangeCnt.Value = Convert.ToDecimal(context.MaxGenerationCnt);
-        numIndividualCnt.Value = Convert.ToDecimal(context.IndividualCnt);
-        numMutationRate.Value = Convert.ToDecimal(context.MutationRate);
+	private async void TestForm_Load(object sender, EventArgs e)
+	{
+		await this.InitializeAsync();
 
-        this.boardCtrl1.SetNQueenCount(Convert.ToInt32(this.numQueenCnt.Value));
-    }
+		numQueenCnt.Value = Convert.ToDecimal(param.QueenCnt);
+		numGenerationChangeCnt.Value = Convert.ToDecimal(param.MaxGenerationCnt);
+		numIndividualCnt.Value = Convert.ToDecimal(param.IndividualCnt);
+		numMutationRate.Value = Convert.ToDecimal(param.MutationRate);
+	}
 
-    private async void btnSearch_Click(object sender, EventArgs e)
-    {
-        txtPoint.Text = "";
+	async Task InitializeAsync()
+	{
+		await webView.EnsureCoreWebView2Async(null);
+	}
 
-        context.QueenCnt = Convert.ToInt32(this.numQueenCnt.Value);
-        context.MaxGenerationCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
-        context.IndividualCnt = Convert.ToInt32(this.numIndividualCnt.Value);
-        context.MutationRate = Convert.ToDouble(this.numMutationRate.Value);
-        ga = new(context);
+	private async void btnSearch_Click(object sender, EventArgs e)
+	{
+		param.QueenCnt = Convert.ToInt32(this.numQueenCnt.Value);
+		param.MaxGenerationCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
+		param.IndividualCnt = Convert.ToInt32(this.numIndividualCnt.Value);
+		param.MutationRate = Convert.ToDouble(this.numMutationRate.Value);
 
-        timer1.Interval = 100;
-        timer1.Start();
-        lastPoint = 0;
-        btnSearch.Enabled = false;
-        stopWatch.Start();
-        btnStop.Enabled = true;
+		NQueenGAObserver ga = new(param);
+		GASearchResult gaSearchResult = ga.SearchQueeen();
+		this.ShowHtml(gaSearchResult);
+	}
 
-        await Task.Run(() =>
-        {
-            ga.SearchQueeen();
-        });
-        timer1.Stop();
-        btnSearch.Enabled = true;
-        btnStop.Enabled = false;
-        stopWatch.Stop();
-        stopWatch.Reset();
-
-        //int[] bextPattern = DataTools.CreateUniqElementArray(context.BestPattern);
-        //int point = context.Point;
-
-        //Report(bextPattern, point);
-    }
-        NQueenGAObserver ga = new(context);
-
-
-		GASearchResult gaSearchResult = ga.SearchQueeen(Report);
-		Individual bestIndividual = gaSearchResult.BestIndividual;
-        int[] bextPattern = DataTools.CreateUniqElementArray((int[])bestIndividual.Gene.GetBase());
-        int point = (int)bestIndividual.FitnessValue;
-
-    private Stopwatch stopWatch = new Stopwatch();
-    private int lastPoint = 0;
-    private void timer1_Tick(object sender, EventArgs e)
-    {
-        txtTime.Text = ((double)stopWatch.ElapsedMilliseconds / 1000).ToString("0.00000");
-
-        if (lastPoint < context.Point)
-        {
-            this.Report();
-            lastPoint = context.Point;
-        }
-    }
-
-    private void Report()
-    {
-        txtPoint.Text = context.Point.ToString();
-        txtGenerationNumber.Text = context.GenerationNumber.ToString();
-
-        this.boardCtrl1.SetResult(context.BestPattern.ToList());
-    }
-
-    private void numQueenCnt_ValueChanged(object sender, EventArgs e)
-    {
-        this.boardCtrl1.SetNQueenCount(Convert.ToInt32(this.numQueenCnt.Value));
-    }
+	private void ShowHtml(GASearchResult gaSearchResult)
+	{
+		string html = new NQueenToHtmlConverter(gaSearchResult).ToHtml(this.webView.Width - 100);
+		this.webView.NavigateToString(html);
+	}
 }
 

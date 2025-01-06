@@ -1,5 +1,8 @@
 ﻿namespace jp.co.tmdgroup.nqueengasample;
 
+using jp.co.tmdgroup.common.GeneticAlgorithm;
+using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
+
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -13,31 +16,28 @@ using System.Text;
  * @version 1.0
  */
 
-public class NQueenToHtml
+public class NQueenToHtmlConverter(GASearchResult gaSearchResult)
 {
 
-	public NQueenToHtml()
+	public String ToHtml(int webViewWidth)
 	{
-	}
+		var gene = (int[])gaSearchResult.BestIndividual.Gene.GetBase();
 
-
-	public static String ToHtml(int[] gene, int webViewWidth)
-	{
-
-		StringBuilder buffer = new();
 		int w = Math.Abs(webViewWidth / gene.Length);
 
+		StringBuilder buffer = new();
+
+		buffer.Append($"<h3>スコア：{gaSearchResult.BestIndividual.FitnessValue}</h3>");
+		buffer.Append($"<h3>世代交代数：{gaSearchResult.GenerationCnt}</h3>");
 		buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"" + webViewWidth.ToString() + "\">  <tbody>");
 
 		for (int rowIndex = 0; rowIndex < gene.Length; rowIndex++)
 		{
-
 			buffer.Append("<tr height='" + w.ToString() + "'>");
 			for (int columnIndex = 0; columnIndex < gene.Length; columnIndex++)
 			{
 				if (gene[rowIndex] == columnIndex)
 				{
-					//buffer.Append("<img src=\"queen.bmp\">");
 					buffer.Append("<td valign=\"top\" align=\"center\" style='background-color:black'>");
 				}
 				else

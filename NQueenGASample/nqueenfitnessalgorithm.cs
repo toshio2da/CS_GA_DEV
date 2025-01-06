@@ -58,15 +58,15 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 			for (int baseIndex = 0; baseIndex < gene.Length; baseIndex++)
 			{
 
-                //------ 縦を調査(自分と違う塩基が自分と同じ値を持っていると縦が重なっている ------//
-                //CreateUniqElementArrayで致死遺伝子（縦が重なるパターン）を削除しているので以下のチェ㏍は不要
-                //if (index != baseIndex && myValue == gene[baseIndex])
-                //{
-                //	fitnessValue -= 50;
-                //}
+				//------ 縦を調査(自分と違う塩基が自分と同じ値を持っていると縦が重なっている ------//
+				//CreateUniqElementArrayで致死遺伝子（縦が重なるパターン）を削除しているので以下のチェ㏍は不要
+				//if (index != baseIndex && myValue == gene[baseIndex])
+				//{
+				//	fitnessValue -= 50;
+				//}
 
-                //------ 斜めを調査(自分との位置の差と値の差が同じ場合は斜めで重なっている ------//
-                if (index != baseIndex && Math.Abs(index - baseIndex) == Math.Abs(myValue - gene[baseIndex]))
+				//------ 斜めを調査(自分との位置の差と値の差が同じ場合は斜めで重なっている ------//
+				if (index != baseIndex && Math.Abs(index - baseIndex) == Math.Abs(myValue - gene[baseIndex]))
 				{
 
 					fitnessValue -= 50;
