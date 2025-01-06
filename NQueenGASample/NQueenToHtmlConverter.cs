@@ -2,6 +2,7 @@
 
 using jp.co.tmdgroup.common.GeneticAlgorithm;
 using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
+using jp.co.tmdgroup.common.Utils;
 
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -21,14 +22,19 @@ public class NQueenToHtmlConverter(GASearchResult gaSearchResult)
 
 	public String ToHtml(int webViewWidth)
 	{
-		var gene = (int[])gaSearchResult.BestIndividual.Gene.GetBase();
+		int[] gene = (int[])(gaSearchResult.BestIndividual.Gene.GetBase());
+		gene = DataTools.CreateUniqElementArray(gene);
 
 		int w = Math.Abs(webViewWidth / gene.Length);
+
+		TimeSpan span = TimeSpan.FromTicks(gaSearchResult.EndTime.Ticks - gaSearchResult.StartTime.Ticks);
 
 		StringBuilder buffer = new();
 
 		buffer.Append($"<h3>スコア：{gaSearchResult.BestIndividual.FitnessValue}</h3>");
 		buffer.Append($"<h3>世代交代数：{gaSearchResult.GenerationCnt}</h3>");
+		buffer.Append($"<h4>経過時間：{span.ToString(@"hh\:mm\:ss\.fff")}</h4>");
+
 		buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"" + webViewWidth.ToString() + "\">  <tbody>");
 
 		for (int rowIndex = 0; rowIndex < gene.Length; rowIndex++)

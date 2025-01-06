@@ -15,5 +15,9 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm
 		public Individual BestIndividual { get; internal set; }
 
 		public int GenerationCnt{ get; internal set; }
+
+		public DateTime StartTime{ get; internal set; }
+
+		public DateTime EndTime { get; internal set; }
 	}
 }

@@ -8,24 +8,22 @@ using System.Diagnostics;
 
 namespace jp.co.tmdgroup.common.GeneticAlgorithm;
 
-/**
- /// <p>遺伝的アルゴリズムにより様々な組み合わせ問題の準最適解を高速に検索します。</p>
- /// 遺伝的アルゴリズムは様々な問題の解候補を遺伝子配列として表現し、その遺伝子を持つ個体を
- /// 多数存在させ、淘汰、交叉、突然変異などを用いて準最適解を検索する自然界をモチーフにした手法です。<br>
- /// Nクイーン問題、巡回サラリーマン問題など、式を用いた解法が困難な場合に非常に有効な手法です。<br>
- /// 本クラスはモデルクラスによってその挙動を定めます。<br>
- /// モデルクラスはGeneticAlgorithmModelインタフェースの実装クラスによってなされます。<br>
- /// モデルクラスにより柔軟なカスタマイズを容易に行うことができます。<br>
- /// <br>
- /// <br>
- /// <br>
- /// <p>タイトル: Genetic Algorithm Library</p>
- /// <p>説明: 汎用的な遺伝的アルゴリズムライブラリ</p>
- /// <p>著作権: Copyright (c) 2002  森本寛</p>
- /// <p>会社名: 株式会社東京マイクロデータ</p>
- /// @author 森本寛
- /// @version 1.0 (2002/11/01)
- */
+/// <p>遺伝的アルゴリズムにより様々な組み合わせ問題の準最適解を高速に検索します。</p>
+/// 遺伝的アルゴリズムは様々な問題の解候補を遺伝子配列として表現し、その遺伝子を持つ個体を
+/// 多数存在させ、淘汰、交叉、突然変異などを用いて準最適解を検索する自然界をモチーフにした手法です。<br>
+/// Nクイーン問題、巡回サラリーマン問題など、式を用いた解法が困難な場合に非常に有効な手法です。<br>
+/// 本クラスはモデルクラスによってその挙動を定めます。<br>
+/// モデルクラスはGeneticAlgorithmModelインタフェースの実装クラスによってなされます。<br>
+/// モデルクラスにより柔軟なカスタマイズを容易に行うことができます。<br>
+/// <br>
+/// <br>
+/// <br>
+/// <p>タイトル: Genetic Algorithm Library</p>
+/// <p>説明: 汎用的な遺伝的アルゴリズムライブラリ</p>
+/// <p>著作権: Copyright (c) 2002  森本寛</p>
+/// <p>会社名: 株式会社東京マイクロデータ</p>
+/// @author 森本寛
+/// @version 1.0 (2002/11/01)
 
 public class GeneticAlgorithm : IGeneticAlgorithm
 {
@@ -114,9 +112,11 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 		//------ 状況報告クラスを保持 ------//
 		this.context = context;
 
+		//集合をリセット
 		this.Reset();
 
 		GASearchResult ret = new GASearchResult();
+		ret.StartTime = DateTime.Now;
 		ret.GenerationCnt = 0;
 		try
 		{
@@ -162,7 +162,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 			for (int index = 0; index < this.context.MaxGenerationCnt; index++)
 			{
 				//Debug.WriteLine($"世代{index + 1}/{this.context.MaxGenerationCnt}");
-				ret.GenerationCnt = index+1;
+				ret.GenerationCnt = index + 1;
 
 				//------ 世代毎の一番優秀な個体を登録していく ------//
 				this.context.SetBestIndividual(this.NewGeneration());
@@ -183,11 +183,11 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 					break;
 				}
 
-                //------ 新しい進化があったかどうかを調べる ------//
-                Individual bestIndividual = this.context.GetBestIndividual();
+				//------ 新しい進化があったかどうかを調べる ------//
+				Individual bestIndividual = this.context.GetBestIndividual();
 				bestIndividual.GenerationNumber = this.nowGenerationNumber;
 
-                bestFitnessValue = bestIndividual.FitnessValue;
+				bestFitnessValue = bestIndividual.FitnessValue;
 				if (lastBestFitnessValue != bestFitnessValue)
 				{
 					lastBestFitnessValue = bestFitnessValue;
@@ -197,10 +197,10 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 					lastEvolutionTime = DateTime.Now.Ticks;
 
 					// レポート
-                    this.context.SearchStatusType = GASearchStatus.DONE_SEARCH;
-                    this.context.Reporter.Report(bestIndividual);
-                }
-                else
+					this.context.SearchStatusType = GASearchStatus.DONE_SEARCH;
+					this.context.Reporter.Report(bestIndividual);
+				}
+				else
 				{
 					lastEvolutionGeneration++;
 					if ((this.StopSearchGeneration > 0) && lastEvolutionGeneration > this.StopSearchGeneration)
@@ -244,6 +244,10 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 		catch (OutOfBoundsGeneException exception)
 		{
 			throw new ArgumentOutOfRangeException("保持世代を越えたアクセスがありました。", exception);
+		}
+		finally
+		{
+			ret.EndTime = DateTime.Now;
 		}
 	}
 
@@ -320,9 +324,6 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 		//------ 今の世代の中で一番優秀な個体を登録 ------//
 		return bestIndividual;
 	}
-
-
-
 
 	/**
      /// <p>保持集団を初期状態に戻します。<p>

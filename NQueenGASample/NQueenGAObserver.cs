@@ -30,18 +30,6 @@ namespace jp.co.tmdgroup.nqueengasample
 			/// 突然変異確立
 			/// </summary>
 			public double MutationRate { get; set; } = 0.95;
-
-			public int Point { get; set; } = 0;
-
-            /// <summary>
-            /// 世代
-            /// </summary>
-            public int GenerationNumber { get; set; } = 0;
-
-            /// <summary>
-            /// 探索結果
-            /// </summary>
-            public int[] BestPattern { get; set; }
         }
 
 		/// <summary>
@@ -62,20 +50,12 @@ namespace jp.co.tmdgroup.nqueengasample
         private GASearchStatus status = GASearchStatus.WAIT_FOR_SEARCH;
 
 
-		/// <summary>
-		/// 探索結果
-		/// </summary>
-		private int[] bestPattern = [];
 
 		private class GeneticReportableImpl(NQueenGAObserver parent) : IGeneticReportable
 		{
 			public void Report(Individual surperior)
 			{
 				parent.status = GASearchStatus.SEARCHING;
-                parent.nQueenGAParam.BestPattern = DataTools.CreateUniqElementArray((int[])surperior.Gene.GetBase());
-                parent.nQueenGAParam.GenerationNumber = (int)surperior.GenerationNumber;
-                parent.nQueenGAParam.Point = (int)surperior.FitnessValue;
-                parent.nQueenGAParam.GenerationNumber = surperior.GenerationNumber;
                 //parent.bestPattern = (int[])surperior.Gene.GetBase();
                 //owner.mapPanel.canvas.repaint();
             }
@@ -83,9 +63,6 @@ namespace jp.co.tmdgroup.nqueengasample
             public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
 			{
 				parent.status = GASearchStatus.DONE_SEARCH;
-                parent.nQueenGAParam.BestPattern = DataTools.CreateUniqElementArray((int[])lastSurperior.Gene.GetBase());
-                parent.nQueenGAParam.Point = (int)lastSurperior.FitnessValue;
-                parent.nQueenGAParam.GenerationNumber = lastSurperior.GenerationNumber;
                 //parent.bestPattern = (int[])lastSurperior.Gene.GetBase();
                 //owner.mapPanel.canvas.repaint();
             }
