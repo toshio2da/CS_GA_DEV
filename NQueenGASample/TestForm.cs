@@ -28,7 +28,7 @@ public partial class TestForm : Form
         this.boardCtrl1.SetNQueenCount(Convert.ToInt32(this.numQueenCnt.Value));
     }
 
-    private void btnSearch_Click(object sender, EventArgs e)
+    private async void btnSearch_Click(object sender, EventArgs e)
     {
         txtPoint.Text = "";
 
@@ -36,7 +36,30 @@ public partial class TestForm : Form
         context.MaxGenerationCnt = Convert.ToInt32(this.numGenerationChangeCnt.Value);
         context.IndividualCnt = Convert.ToInt32(this.numIndividualCnt.Value);
         context.MutationRate = Convert.ToDouble(this.numMutationRate.Value);
+        ga = new(context);
 
+        timer1.Interval = 100;
+        timer1.Start();
+        lastPoint = 0;
+        btnSearch.Enabled = false;
+        stopWatch.Start();
+        btnStop.Enabled = true;
+
+        await Task.Run(() =>
+        {
+            ga.SearchQueeen();
+        });
+        timer1.Stop();
+        btnSearch.Enabled = true;
+        btnStop.Enabled = false;
+        stopWatch.Stop();
+        stopWatch.Reset();
+
+        //int[] bextPattern = DataTools.CreateUniqElementArray(context.BestPattern);
+        //int point = context.Point;
+
+        //Report(bextPattern, point);
+    }
         NQueenGAObserver ga = new(context);
 
 
@@ -45,20 +68,30 @@ public partial class TestForm : Form
         int[] bextPattern = DataTools.CreateUniqElementArray((int[])bestIndividual.Gene.GetBase());
         int point = (int)bestIndividual.FitnessValue;
 
-        Report(bextPattern, point);
+    private Stopwatch stopWatch = new Stopwatch();
+    private int lastPoint = 0;
+    private void timer1_Tick(object sender, EventArgs e)
+    {
+        txtTime.Text = ((double)stopWatch.ElapsedMilliseconds / 1000).ToString("0.00000");
+
+        if (lastPoint < context.Point)
+        {
+            this.Report();
+            lastPoint = context.Point;
+        }
     }
 
-    private void Report(int[] bestPattern, int point)
+    private void Report()
     {
-        txtPoint.Text = point.ToString();
+        txtPoint.Text = context.Point.ToString();
+        txtGenerationNumber.Text = context.GenerationNumber.ToString();
 
-        this.boardCtrl1.SetResult(bestPattern.ToList());
+        this.boardCtrl1.SetResult(context.BestPattern.ToList());
     }
 
     private void numQueenCnt_ValueChanged(object sender, EventArgs e)
     {
         this.boardCtrl1.SetNQueenCount(Convert.ToInt32(this.numQueenCnt.Value));
     }
-
 }
 

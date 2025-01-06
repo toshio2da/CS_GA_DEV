@@ -27,7 +27,12 @@ partial class TestForm
     /// </summary>
     private void InitializeComponent()
     {
+        components = new System.ComponentModel.Container();
         panel1 = new Panel();
+        txtTime = new TextBox();
+        label7 = new Label();
+        txtGenerationNumber = new TextBox();
+        label6 = new Label();
         txtPoint = new TextBox();
         label5 = new Label();
         btnSearch = new Button();
@@ -41,6 +46,8 @@ partial class TestForm
         label1 = new Label();
         panel2 = new Panel();
         boardCtrl1 = new NQueen.View.BoardCtrl();
+        timer1 = new System.Windows.Forms.Timer(components);
+        btnStop = new Button();
         panel1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)numMutationRate).BeginInit();
         ((System.ComponentModel.ISupportInitialize)numIndividualCnt).BeginInit();
@@ -51,6 +58,11 @@ partial class TestForm
         // 
         // panel1
         // 
+        panel1.Controls.Add(btnStop);
+        panel1.Controls.Add(txtTime);
+        panel1.Controls.Add(label7);
+        panel1.Controls.Add(txtGenerationNumber);
+        panel1.Controls.Add(label6);
         panel1.Controls.Add(txtPoint);
         panel1.Controls.Add(label5);
         panel1.Controls.Add(btnSearch);
@@ -65,8 +77,42 @@ partial class TestForm
         panel1.Dock = DockStyle.Left;
         panel1.Location = new Point(0, 0);
         panel1.Name = "panel1";
-        panel1.Size = new Size(275, 637);
+        panel1.Size = new Size(275, 437);
         panel1.TabIndex = 0;
+        // 
+        // txtTime
+        // 
+        txtTime.Location = new Point(135, 291);
+        txtTime.Name = "txtTime";
+        txtTime.Size = new Size(89, 23);
+        txtTime.TabIndex = 13;
+        txtTime.TextAlign = HorizontalAlignment.Right;
+        // 
+        // label7
+        // 
+        label7.AutoSize = true;
+        label7.Location = new Point(135, 273);
+        label7.Name = "label7";
+        label7.Size = new Size(81, 15);
+        label7.TabIndex = 12;
+        label7.Text = "経過時間(Sec)";
+        // 
+        // txtGenerationNumber
+        // 
+        txtGenerationNumber.Location = new Point(135, 233);
+        txtGenerationNumber.Name = "txtGenerationNumber";
+        txtGenerationNumber.Size = new Size(89, 23);
+        txtGenerationNumber.TabIndex = 11;
+        txtGenerationNumber.TextAlign = HorizontalAlignment.Right;
+        // 
+        // label6
+        // 
+        label6.AutoSize = true;
+        label6.Location = new Point(135, 215);
+        label6.Name = "label6";
+        label6.Size = new Size(43, 15);
+        label6.TabIndex = 10;
+        label6.Text = "世代数";
         // 
         // txtPoint
         // 
@@ -180,7 +226,7 @@ partial class TestForm
         panel2.Dock = DockStyle.Fill;
         panel2.Location = new Point(275, 0);
         panel2.Name = "panel2";
-        panel2.Size = new Size(496, 637);
+        panel2.Size = new Size(438, 437);
         panel2.TabIndex = 1;
         // 
         // boardCtrl1
@@ -189,14 +235,29 @@ partial class TestForm
         boardCtrl1.Location = new Point(0, 0);
         boardCtrl1.Margin = new Padding(4, 4, 4, 4);
         boardCtrl1.Name = "boardCtrl1";
-        boardCtrl1.Size = new Size(496, 637);
+        boardCtrl1.Size = new Size(438, 437);
         boardCtrl1.TabIndex = 0;
+        // 
+        // timer1
+        // 
+        timer1.Tick += timer1_Tick;
+        // 
+        // btnStop
+        // 
+        btnStop.Enabled = false;
+        btnStop.Location = new Point(21, 195);
+        btnStop.Name = "btnStop";
+        btnStop.Size = new Size(75, 23);
+        btnStop.TabIndex = 14;
+        btnStop.Text = "中断";
+        btnStop.UseVisualStyleBackColor = true;
+        btnStop.Click += btnStop_Click;
         // 
         // TestForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(771, 637);
+        ClientSize = new Size(713, 437);
         Controls.Add(panel2);
         Controls.Add(panel1);
         Name = "TestForm";
@@ -228,4 +289,10 @@ partial class TestForm
     private NQueen.View.BoardCtrl boardCtrl1;
     private TextBox txtPoint;
     private Label label5;
+    private System.Windows.Forms.Timer timer1;
+    private TextBox txtTime;
+    private Label label7;
+    private TextBox txtGenerationNumber;
+    private Label label6;
+    private Button btnStop;
 }
