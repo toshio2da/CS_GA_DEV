@@ -13,7 +13,7 @@
  * @author 森本寛
  * @version 1.0 (2002/10/16)
  */
-public interface IGene
+public interface ITypedGene<T>
 {
 
 
@@ -26,13 +26,15 @@ public interface IGene
 
 
 
+    Type GeneType { get; }
+
 	/**
      * <p>遺伝子の塩基配列を返します。</p>
      * この塩基配列を使って適応度の算出などを行います。<br>
      *
      * @return 遺伝子配列
      */
-	object GetBase();
+	T[] GetBase();
 
 
 
@@ -47,7 +49,7 @@ public interface IGene
      * @throws IllegalGenoSizeException  遺伝子断片の合計遺伝子長が本遺伝子の遺伝子長と一致しません(遺伝子不足又は過多)
      * @throws IllegalGenoTypeException  遺伝子断片の塩基タイプが本遺伝子の塩基タイプと一致しません
      */
-	void CreateGene(object[] piecesOfGene);
+	void CreateGene(T[] piecesOfGene);
 
 
 
@@ -64,7 +66,7 @@ public interface IGene
      * @return  抜き出された部分遺伝子断片です
      * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
      */
-	IGene GetSubGene(int firstGenoIndex, int lastGenoIndex);
+	ITypedGene<T> GetSubGene(int firstGenoIndex, int lastGenoIndex);
 
 
 
@@ -86,7 +88,7 @@ public interface IGene
 	*/
 	void MutateOneGene(int genoIndex);
 
-    /**
+	/**
 	  * <p>指定した場所の遺伝子に逆位を行います。</p>
 	  * 逆位とは指定した場所の遺伝子の順番を反転させる操作を指します。<br>
 	  * あまり一般的に用いられるGAオペレーションではありません。

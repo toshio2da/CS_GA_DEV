@@ -56,15 +56,11 @@ namespace jp.co.tmdgroup.nqueengasample
 			public void Report(Individual surperior)
 			{
 				parent.status = GASearchStatus.SEARCHING;
-                //parent.bestPattern = (int[])surperior.Gene.GetBase();
-                //owner.mapPanel.canvas.repaint();
             }
 
             public void FinishReport(Individual lastSurperior, int resultGenerationNumber, long computationTime)
 			{
 				parent.status = GASearchStatus.DONE_SEARCH;
-                //parent.bestPattern = (int[])lastSurperior.Gene.GetBase();
-                //owner.mapPanel.canvas.repaint();
             }
         }
 

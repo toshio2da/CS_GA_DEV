@@ -17,7 +17,7 @@ using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
  * @author 森本寛
  * @version 1.0 (2002/10/30)
  */
-public class NumberIndividualModel : AbstractIndividualModel
+public class NumberIndividualModel : AbstractIndividualModel<int>
 {
 	/// <summary>
 	/// コンストラクタ
@@ -26,27 +26,13 @@ public class NumberIndividualModel : AbstractIndividualModel
 	public NumberIndividualModel(int genoSize) : base(genoSize) { }
 
 	/// <summary>
-	/// 遺伝子の塩基タイプがこの個体モデルにおいて正しいかどうかをチェックします
-	/// </summary>
-	/// <remarks>
-	///　渡された遺伝子が整数型の塩基タイプを持つかチェックします。<br>
-	///　整数型塩基タイプでなければfalseを返します。
-	/// </remarks>
-	/// <param name="gene">チェックしたい遺伝子です</param>
-	/// <returns>正しければtrue, 不正であればfalseを返します</returns>
-	public override bool IsLegalGenoType(IGene gene)
-	{
-		return (gene.GetBase() is bool[]);
-	}
-
-	/// <summary>
 	/// 新しい整数配列遺伝子を生成し、返します。各個体は本メソッドより遺伝子を生成します
 	/// </summary>
 	/// <remarks>
 	/// 生成される遺伝子はgetGenoSize()メソッドで返される遺伝子長のものです
 	/// </remarks>
 	/// <returns>新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値</returns>
-	public override IGene CreateNewGene()
+	public override ITypedGene<int> CreateNewGene()
 	{
 		//------ 新しく整数配列遺伝子を生成 ------//
 		return new NumberGene(this.GenoSize);

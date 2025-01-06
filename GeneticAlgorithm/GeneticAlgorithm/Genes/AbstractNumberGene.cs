@@ -5,26 +5,23 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm.Genes
 {
 	public abstract class AbstractNumberGene : IGene
 	{
-
-		//==================================================//
-		//------------------- メンバ変数 --------------------//
-		//==================================================//
-
 		/** 塩基表現。整数値遺伝子 */
 		protected int[] baseData;
 
 
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		/// <param name="size">遺伝子の長さ</param>
 		public AbstractNumberGene(int size)
 		{
 			baseData = new int[size];
 		}
 
-		/**
-		 * <p>コピーコンストラクタです。</p>
-		 * 引数で渡した配列がそのまま使用されます。<br>
-		 *
-		 * @param gene  遺伝子整数値塩基配列
-		 */
+		/// <summary>
+		/// コピーコンストラクタ
+		/// </summary>
+		/// <param name="gene">遺伝子整数値塩基配列</param>
 		public AbstractNumberGene(int[] gene)
 		{
 			baseData = gene;

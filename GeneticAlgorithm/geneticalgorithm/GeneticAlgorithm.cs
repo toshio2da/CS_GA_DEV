@@ -3,7 +3,6 @@ using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
 using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
 using jp.co.tmdgroup.common.Utils;
 
-using System;
 using System.Diagnostics;
 
 namespace jp.co.tmdgroup.common.GeneticAlgorithm;

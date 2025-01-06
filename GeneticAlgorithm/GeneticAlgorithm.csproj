@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="GeneticAlgorithm\Genes\AbstractNumberGene.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="GeneticAlgorithm\GeneticStatus.jbx" />
   </ItemGroup>
 
