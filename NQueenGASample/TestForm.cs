@@ -1,13 +1,6 @@
 namespace jp.co.tmdgroup.nqueengasample;
-
-using jp.co.tmdgroup.common.Utils;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Net.NetworkInformation;
-using System.Reflection;
-using static jp.co.tmdgroup.nqueengasample.NQueenGAObserver;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
-using jp.co.tmdgroup.common.GeneticAlgorithm;
+using GALib.Core;
+using GALib.Core.Utils;
 
 public partial class TestForm : Form
 {
@@ -31,15 +24,12 @@ public partial class TestForm : Form
 	}
 
 
-	private void test()
-	{
-		object[] array = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-		int[] indexes = { 2, 4, 8 };
-
-		var result = DataTools.ArraySplits(array, indexes);
-
-	}
+	//private void test()
+	//{
+	//	object[] array = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	//	int[] indexes = { 2, 4, 8 };
+	//	var result = DataTools.ArraySplits(array, indexes);
+	//}
 
 
 	async Task InitializeAsync()

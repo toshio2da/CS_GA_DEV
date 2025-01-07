@@ -1,10 +1,8 @@
 ﻿namespace jp.co.tmdgroup.nqueengasample;
 
-using jp.co.tmdgroup.common.GeneticAlgorithm;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
-using jp.co.tmdgroup.common.Utils;
+using GALib.Core;
+using GALib.Core.Utils;
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticAlgorithm", "GeneticAlgorithm\GeneticAlgorithm.csproj", "{CB957F99-97DC-4C10-90EB-B7071DAB9697}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GALib", "GeneticAlgorithm\GALib.csproj", "{CB957F99-97DC-4C10-90EB-B7071DAB9697}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NQueenGASample", "NQueenGASample\NQueenGASample.csproj", "{452EC9A0-05F9-4863-B71F-2C5E6603EEBC}"
 EndProject

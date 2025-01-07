@@ -1,12 +1,8 @@
 ﻿namespace jp.co.tmdgroup.nqueengasample;
 
-using jp.co.tmdgroup.common.GeneticAlgorithm;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Crossovers;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Exceptions;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Fitnesses;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Selections;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Survivals;
+using GALib.Core;
+using GALib.Impls.Models;
+using GALib.Impls.Plugins;
 
 /**
  * <p>代表的なNP完全問題であるN-Queen問題を遺伝的アルゴリズムで解くモデルクラスです。</p>

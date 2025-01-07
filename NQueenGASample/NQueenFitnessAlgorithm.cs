@@ -1,8 +1,8 @@
 ﻿namespace jp.co.tmdgroup.nqueengasample;
 
-using jp.co.tmdgroup.common.GeneticAlgorithm.Fitnesses;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
-using jp.co.tmdgroup.common.Utils;
+using GALib.Core.Plugins;
+using GALib.Core.Models;
+using GALib.Core.Utils;
 
 /**
  * <p>N-Queen問題において各個体の適応度を算出します。</p>

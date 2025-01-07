@@ -1,9 +1,7 @@
-﻿using jp.co.tmdgroup.common.GeneticAlgorithm;
-using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
-using jp.co.tmdgroup.common.Utils;
+﻿using GALib.Core;
+using GALib.Core.Models;
 
 using static jp.co.tmdgroup.nqueengasample.NQueenGAObserver;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace jp.co.tmdgroup.nqueengasample
 {
