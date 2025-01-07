@@ -38,8 +38,10 @@ public class LimitedNumberGene : AbstractTypedGene<int>
 		this.RandumReconstruct();
 	}
 
-
-	public override Type GeneType => typeof(LimitedNumberGene);
+	protected override AbstractTypedGene<int> GetNewGeneInstance()
+	{
+		return new LimitedNumberGene(GenoSize, limitNumber);
+	}
 
 	protected override int GetMutateValue()
 	{

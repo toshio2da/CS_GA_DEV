@@ -40,22 +40,24 @@ public class TwoPointCrossover : ICrossoverAlgorithm
 	/// 子供2体の合計遺伝子は親の合計遺伝子と等しくなります。<br>
 	/// つまり子供2体で親の同じ遺伝子は共有されません。<br>
 	/// </remarks>
-	/// <param name="ga">メインGAアルゴリズム</param>
 	/// <param name="perentCandidates">親候補集団。この中からランダムに親を選びます。</param>
 	/// <param name="childrenNumber">生成する子集団の数。偶数でなければなりません。</param>
 	/// <returns>生成された子集団</returns>
 
-	public List<Individual> Crossover(IGeneticAlgorithm ga, List<Individual> perentCandidates, int childrenNumber)
+	public List<Individual> Crossover(List<Individual> perentCandidates, int childrenNumber)
 	{
 		//------ 必要な情報を取得 ------//
 		Individual sample = perentCandidates[0];  // 個体に関する情報を得るためにサンプルとして取得
 		int geneSize = sample.Gene.GenoSize;       // この集団の個体が持っている遺伝子の長さを取得
 
+		/*
 		//------ 交叉に用いる遺伝子断片の一時的格納場所 ------//
 		object[] sonsGene = new object[3];  // 2点交叉なので3つの部分遺伝子から作成
 		object[] daughtersGene = new object[3];  // 2点交叉なので3つの部分遺伝子から作成
 												 //sonsGene.setSize(3);
 												 //daughtersGene.setSize(3);
+		*/
+
 
 		//------------------------------------------//
 		//------ 親集団と同じ数の子集団を生成 ------//
@@ -73,6 +75,12 @@ public class TwoPointCrossover : ICrossoverAlgorithm
 			int crossoverPoint2 = (int)(3 + (RandomGenerator.Random * geneSize - 4));                      // ランダムに交叉点を決定[3 - (size-4)]
 			int crossoverPoint1 = (int)(1 + RandomGenerator.Random * (crossoverPoint2 - 2));             // こっちの方が必ず小さくなる
 
+			var result = DataTools.Crossover(father, mother, crossoverPoint1, crossoverPoint2);
+			children.Add(result.son);                                                          // 息子を追加
+			children.Add(result.daughter);                                                     // 娘を追加
+
+
+			/*
 
 			//------ 両親から部分遺伝子を搾取 ------//
 			IGene fathersLeftGene = father.Gene.GetSubGene(0, crossoverPoint1);                    // 父の左側の部分遺伝子
@@ -105,6 +113,7 @@ public class TwoPointCrossover : ICrossoverAlgorithm
 			//------ 生成した子供を次世代の集団に追加 ------//
 			children.Add(son);                                                          // 息子を追加
 			children.Add(daughter);                                                     // 娘を追加
+			*/
 		}
 
 

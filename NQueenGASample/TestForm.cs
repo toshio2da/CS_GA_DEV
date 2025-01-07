@@ -20,6 +20,8 @@ public partial class TestForm : Form
 
 	private async void TestForm_Load(object sender, EventArgs e)
 	{
+		//this.test();
+
 		await this.InitializeAsync();
 
 		numQueenCnt.Value = Convert.ToDecimal(param.QueenCnt);
@@ -27,6 +29,18 @@ public partial class TestForm : Form
 		numIndividualCnt.Value = Convert.ToDecimal(param.IndividualCnt);
 		numMutationRate.Value = Convert.ToDecimal(param.MutationRate);
 	}
+
+
+	private void test()
+	{
+		object[] array = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+		int[] indexes = { 2, 4, 8 };
+
+		var result = DataTools.ArraySplits(array, indexes);
+
+	}
+
 
 	async Task InitializeAsync()
 	{

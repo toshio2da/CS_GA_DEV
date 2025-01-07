@@ -276,7 +276,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 		List<Individual> new_group = this.model.SelectionAlgorithm.Select(this.group);
 
 		//------ 交叉を行う。生存しなかった親は全て入れ替える ------//
-		List<Individual> children = this.model.CrossoverAlgorithm.Crossover(this, new_group, new_group.Count - survivors.Count);
+		List<Individual> children = this.model.CrossoverAlgorithm.Crossover(new_group, new_group.Count - survivors.Count);
 
 		//------ 突然変異を子集団の各塩基に対して行う。突然変異率が0.0の場合は行わない ------//
 		double mutationProbability = this.model.MutationProbability;

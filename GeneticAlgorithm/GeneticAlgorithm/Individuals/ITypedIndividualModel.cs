@@ -19,12 +19,8 @@ using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
  * @author 森本寛
  * @version 1.0 (2002/10/16)
  */
-public interface IIndividualModel
+public interface ITypedIndividualModel<TBase> : IIndividualModel
 {
-	/// <summary>
-	/// 自己遺伝子の遺伝子長を取得します
-	/// </summary>
-	public int GenoSize{ get; }
 
 	/// <summary>
 	/// 新しい整数配列遺伝子を生成し、返します。各個体は本メソッドより遺伝子を生成します
@@ -33,6 +29,6 @@ public interface IIndividualModel
 	/// 生成される遺伝子はgetGenoSize()メソッドで返される遺伝子長のものです
 	/// </remarks>
 	/// <returns>新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値</returns>
-	public IGene CreateNewGene();
+	public ITypedGene<TBase> CreateNewTypedGene();
 
 }

@@ -33,13 +33,16 @@ public class NumberGene : AbstractTypedGene<int>
 	///// コンストラクタ
 	///// </summary>
 	///// <param name="size">遺伝子の長さ</param>
-	public NumberGene(int size) : base(size) {
-
+	public NumberGene(int size) : base(size)
+	{
 		//------ 乱数で初期化 ------//
 		this.RandumReconstruct();
 	}
 
-	public override Type GeneType => typeof(NumberGene);
+	protected override AbstractTypedGene<int> GetNewGeneInstance()
+	{
+		return new NumberGene(GenoSize);
+	}
 
 	protected override int GetMutateValue()
 	{

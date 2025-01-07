@@ -15,86 +15,51 @@
  */
 public interface IGene
 {
-
-
-	/**
-     * <p>自己遺伝子の遺伝子長を返します。</p>
-     *
-     * @return 自己遺伝子の遺伝子長です。
-     */
+	/// <summary>
+	/// 自己遺伝子の遺伝子長を返します
+	/// </summary>
 	int GenoSize { get; }
 
+	/// <summary>
+	/// 遺伝子の塩基配列を返します
+	/// </summary>
+	/// <returns>遺伝子配列</returns>
+	T[] GetBase<T>();
 
+	/// <summary>
+	///  遺伝子の塩基配列を設定します
+	/// </summary>
+	/// <param name="baseData">遺伝子配列</param>
+	void SetBase(object[] baseData);
 
-	/**
-     * <p>遺伝子の塩基配列を返します。</p>
-     * この塩基配列を使って適応度の算出などを行います。<br>
-     *
-     * @return 遺伝子配列
-     */
-	object GetBase();
-
-
-
-
-	/**
-     * <p>遺伝子断片から個体の遺伝子を生成します。</p>
-     * 渡された遺伝子断片をつなぎ合わせ、生成された遺伝子を自分の遺伝子として保持します。<br>
-     * 遺伝子断片の塩基タイプは遺伝子クラスの塩基タイプと一致している必要があります。<br>
-     * 遺伝子断片はVectorの順番通りに融合されます。<br>
-     *
-     * @param piecesOfGene  融合する遺伝子断片、塩基タイプは一致していなければないけません
-     * @throws IllegalGenoSizeException  遺伝子断片の合計遺伝子長が本遺伝子の遺伝子長と一致しません(遺伝子不足又は過多)
-     * @throws IllegalGenoTypeException  遺伝子断片の塩基タイプが本遺伝子の塩基タイプと一致しません
-     */
-	void CreateGene(object[] piecesOfGene);
-
-
-
-	/**
-     * <p>自己遺伝子の部分遺伝子断片を返します</p>
-     * 部分遺伝子を返すことで交叉を行うことができます。<br>
-     * 部分遺伝子は初端と終端を指定することで抜き出します。<br>
-     * 初端と終端の遺伝子も返される部分遺伝子断片に含まれます。<br>
-     * 例えば、getSubGene(0, 5) とした場合の返される遺伝子断片の長さは6となります。<br>
-     * getSubGene(1,1)とすることで1塩基を抜き出すこともできます。<br>
-     *
-     * @param firstGenoIndex  抜き出す遺伝子断片の初端を指定します
-     * @param lastGenoIndex  抜き出す遺伝子断片の終端を指定します
-     * @return  抜き出された部分遺伝子断片です
-     * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
-     */
-	IGene GetSubGene(int firstGenoIndex, int lastGenoIndex);
-
-
-
-	/**
-     * <p>自己遺伝子を全てランダムなもので再構築します。</p>
-     * 個体遺伝子の初期化などに用いられます。<br>
-     */
+	/// <summary>
+	/// 自己遺伝子を全てランダムなもので再構築します
+	/// </summary>
+	/// <remarks>
+	/// 個体遺伝子の初期化などに用いられます
+	/// </remarks>
 	void RandumReconstruct();
 
 
-
-	/**
-	* <p>1塩基に対して突然変異を起こします。</p>
-	* 自己遺伝子内の指定塩基に対して突然変位を行います。<br>
-	* 突然変位は遺伝子の塩基タイプによって異なります。<br>
-	*
-	* @param genoIndex  突然変異を起こさせる塩基の場所を指定します(0\uFF5E)
-	* @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
-	*/
+	/// <summary>
+	/// 1塩基に対して突然変異を起こします
+	/// </summary>
+	/// <remarks>
+	/// 自己遺伝子内の指定塩基に対して突然変位を行います。<br>
+	/// 突然変位は遺伝子の塩基タイプによって異なります。<br>
+	/// </remarks>
+	/// <param name="genoIndex">塩基インデックス</param>
 	void MutateOneGene(int genoIndex);
 
-    /**
-	  * <p>指定した場所の遺伝子に逆位を行います。</p>
-	  * 逆位とは指定した場所の遺伝子の順番を反転させる操作を指します。<br>
-	  * あまり一般的に用いられるGAオペレーションではありません。
-	  *
-	  * @param firstGenoIndex  抜き出す遺伝子断片の初端を指定します
-	  * @param lastGenoIndex  抜き出す遺伝子断片の終端を指定します
-	  * @throws OutOfBoundsGeneException  遺伝子長範囲内に収まらない場所を指定した場合に送出されます
-	  */
+	/// <summary>
+	/// 指定した場所の遺伝子に逆位を行います
+	/// </summary>
+	/// <remarks>
+	/// 逆位とは指定した場所の遺伝子の順番を反転させる操作を指します。<br>
+	/// あまり一般的に用いられるGAオペレーションではありません。
+	/// </remarks>
+	/// <param name="firstGenoIndex">抜き出す遺伝子断片の初端を指定します</param>
+	/// <param name="lastGenoIndex">抜き出す遺伝子断片の終端を指定します</param>
 	void InverseSubGene(int firstGenoIndex, int lastGenoIndex);
 
 }

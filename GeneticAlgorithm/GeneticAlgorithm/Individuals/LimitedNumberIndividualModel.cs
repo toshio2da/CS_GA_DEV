@@ -33,6 +33,12 @@ public class LimitedNumberIndividualModel : AbstractIndividualModel<int>
 		this.limitNumber = limitNumber;
 	}
 
+	public override IGene CreateNewGene()
+	{
+		//------ 新しく整数配列遺伝子を生成 ------//
+		return new LimitedNumberGene(this.GenoSize, this.limitNumber);
+	}
+
 	/// <summary>
 	/// 新しい整数配列遺伝子を生成し、返します。各個体は本メソッドより遺伝子を生成します
 	/// </summary>
@@ -40,7 +46,7 @@ public class LimitedNumberIndividualModel : AbstractIndividualModel<int>
 	/// 生成される遺伝子はgetGenoSize()メソッドで返される遺伝子長のものです
 	/// </remarks>
 	/// <returns>新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値</returns>
-	public override ITypedGene<int> CreateNewGene()
+	public override ITypedGene<int> CreateNewTypedGene()
 	{
 		//------ 新しく整数配列遺伝子を生成 ------//
 		return new LimitedNumberGene(this.GenoSize, this.limitNumber);

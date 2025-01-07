@@ -44,7 +44,7 @@ public class NQueenFitnessAlgorithm : IFitnessAlgorithm
 	{
 
 		//------ 遺伝子情報の組み替え。致死遺伝子の削除 ------//
-		int[] gene = DataTools.CreateUniqElementArray((int[])individual.Gene.GetBase());
+		int[] gene = DataTools.CreateUniqElementArray(individual.Gene.GetBase<int>());
 		//int[] gene = (int[])individual.Gene.GetBase();
 		int fitnessValue = (int)this.BestFitnessValue;              // 適応度を保持
 

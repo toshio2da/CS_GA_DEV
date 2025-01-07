@@ -22,7 +22,7 @@ public class NQueenToHtmlConverter(GASearchResult gaSearchResult)
 
 	public String ToHtml(int webViewWidth)
 	{
-		int[] gene = (int[])(gaSearchResult.BestIndividual.Gene.GetBase());
+		int[] gene = gaSearchResult.BestIndividual.Gene.GetBase<int>();
 		gene = DataTools.CreateUniqElementArray(gene);
 
 		int w = Math.Abs(webViewWidth / gene.Length);

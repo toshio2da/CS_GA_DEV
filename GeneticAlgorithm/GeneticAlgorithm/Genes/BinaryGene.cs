@@ -31,7 +31,10 @@ public class BinaryGene : AbstractTypedGene<bool>
 		this.RandumReconstruct();
 	}
 
-	public override Type GeneType => typeof(BinaryGene);
+	protected override AbstractTypedGene<bool> GetNewGeneInstance()
+	{
+		return new BinaryGene(GenoSize);
+	}
 
 	protected override bool GetMutateValue()
 	{

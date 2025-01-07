@@ -2,7 +2,7 @@
 
 namespace jp.co.tmdgroup.common.GeneticAlgorithm.Individuals
 {
-	public abstract class AbstractIndividualModel<TBase>: IIndividualModel<TBase>
+	public abstract class AbstractIndividualModel<TBase>: IIndividualModel,ITypedIndividualModel<TBase>
 	{
 		public AbstractIndividualModel(int genoSize)
 		{
@@ -14,6 +14,8 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm.Individuals
 		/// </summary>
 		public int GenoSize { get; private set; }
 
-		public abstract ITypedGene<TBase> CreateNewGene();
+		public abstract IGene CreateNewGene();
+
+		public abstract ITypedGene<TBase> CreateNewTypedGene();
 	}
 }
