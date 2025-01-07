@@ -29,15 +29,36 @@ using System;
 
 public class NumberGene : AbstractTypedGene<int>
 {
-	///// <summary>
-	///// コンストラクタ
-	///// </summary>
-	///// <param name="size">遺伝子の長さ</param>
-	public NumberGene(int size) : base(size)
-	{
-		//------ 乱数で初期化 ------//
-		this.RandumReconstruct();
-	}
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="geneSize">遺伝子の長さ</param>
+	public NumberGene(int geneSize) : base(geneSize) { }
+
+	/// <summary>
+	/// コピーコンストラクタ
+	/// </summary>
+	/// <param name="gene">遺伝子</param>
+	public NumberGene(IGene gene) : base(gene) { }
+
+	/// <summary>
+	/// コピーコンストラクタ
+	/// </summary>
+	/// <param name="gene">遺伝子</param>
+	public NumberGene(ITypedGene<int> gene) : base(gene) { }
+
+	/// <summary>
+	/// コピーコンストラクタ
+	/// </summary>
+	/// <param name="baseData">遺伝子配列</param>
+	public NumberGene(int[] baseData) : base(baseData) { }
+
+	/// <summary>
+	/// コピーコンストラクタ
+	/// </summary>
+	/// <param name="baseData">遺伝子配列</param>
+	public NumberGene(object[] baseData) : base(baseData) { }
+
 
 	protected override AbstractTypedGene<int> GetNewGeneInstance()
 	{

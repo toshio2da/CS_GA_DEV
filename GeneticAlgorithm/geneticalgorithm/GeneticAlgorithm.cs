@@ -340,7 +340,7 @@ public class GeneticAlgorithm : IGeneticAlgorithm
 		for (int index = 0; index < this.context.IndividualCnt; index++)
 		{
 			//------ 個体を準に生成 ------//
-			this.group.Add(new Individual(this.model.IndividualModel));
+			this.group.Add(this.model.IndividualModel.CreateNewIndividual());
 		}
 	}
 

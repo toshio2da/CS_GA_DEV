@@ -60,10 +60,8 @@ namespace jp.co.tmdgroup.common.Utils
 			Debug.WriteLine(String.Join("\t", childGenArray[1].Select(e => Convert.ToString(e))));
 
 
-
-			(Individual son, Individual daughter) ret = (new Individual(father.IndividualModel), new Individual(mother.IndividualModel));
-			ret.son.Gene.SetBase(childGenArray[0]);
-			ret.daughter.Gene.SetBase(childGenArray[1]);
+			//戻り値タプル
+			(Individual son, Individual daughter) ret = (father.IndividualModel.CreateNewIndividual(childGenArray[0]), mother.IndividualModel.CreateNewIndividual(childGenArray[1]));
 
 			return ret;
 		}

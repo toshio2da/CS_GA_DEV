@@ -2,13 +2,12 @@
 
 using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
 
-/**
- * <p>2値塩基タイプを持つ個体の個体モデルです。抽象クラスです。</p>
- * 個体モデルのうち、2値塩基タイプの個体モデルの基底クラスです。<br>
- * 塩基タイプチェックメソッド isLegalGenoType()は実装済みです。<br>
- * 遺伝子長チェックメソッドは構築時に与えたサイズを返します。<br>
- */
-
+/// <summary>
+/// <p>2値塩基タイプを持つ個体の個体モデルです。抽象クラスです。</p>
+/// 個体モデルのうち、2値塩基タイプの個体モデルの基底クラスです。<br>
+/// 塩基タイプチェックメソッド isLegalGenoType()は実装済みです。<br>
+/// 遺伝子長チェックメソッドは構築時に与えたサイズを返します。<br>
+/// </summary>
 public class BinaryIndividualModel : AbstractIndividualModel<bool>
 {
 	/// <summary>
@@ -17,22 +16,25 @@ public class BinaryIndividualModel : AbstractIndividualModel<bool>
 	/// <param name="genoSize">自己遺伝子の遺伝子長</param>
 	public BinaryIndividualModel(int genoSize) : base(genoSize) { }
 
-	public override IGene CreateNewGene()
-	{
-		//------ 新しく2値遺伝子を生成、返す ------//
-		return new BinaryGene(this.GenoSize);
-	}
+	public override IGene CreateNewGene()=> new BinaryGene(this.GenoSize);
 
-	/// <summary>
-	/// 新しい整数配列遺伝子を生成し、返します。各個体は本メソッドより遺伝子を生成します
-	/// </summary>
-	/// <remarks>
-	/// 生成される遺伝子はgetGenoSize()メソッドで返される遺伝子長のものです
-	/// </remarks>
-	/// <returns>新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値</returns>
+
+	public override IGene CreateNewGene(IGene gene) => new BinaryGene(gene);
+
+	public override IGene CreateNewGene(bool[] baseData) => new BinaryGene(baseData);
+
+	public override IGene CreateNewGene(object[] baseData) => new BinaryGene(baseData);
+
 	public override ITypedGene<bool> CreateNewTypedGene()
 	{
-		//------ 新しく2値遺伝子を生成、返す ------//
-		return new BinaryGene(this.GenoSize);
+		var ret = new BinaryGene(this.GenoSize);
+		ret.RandumReconstruct();
+		return ret;
 	}
+
+	public override ITypedGene<bool> CreateNewTypedGene(ITypedGene<bool> gene) => new BinaryGene(gene);
+
+	public override ITypedGene<bool> CreateNewTypedGene(bool[] baseData) => new BinaryGene(baseData);
+
+	public override ITypedGene<bool> CreateNewTypedGene(object[] baseData) => new BinaryGene(baseData);
 }

@@ -4,6 +4,8 @@ using jp.co.tmdgroup.common.GeneticAlgorithm.Exceptions;
 using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
 using jp.co.tmdgroup.common.Utils;
 
+using System.Drawing;
+
 /// <summary>
 /// <p>限定された範囲の正の整数を塩基として持つ遺伝子クラスです。</p>
 /// 範囲限定の整数遺伝子は広い用途に用いられます。<br>
@@ -27,15 +29,46 @@ public class LimitedNumberGene : AbstractTypedGene<int>
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="size">遺伝子の長さ</param>
-	/// <param name="limitNumber">指定範囲です。負の値が渡されたときはその絶対を使用します。</param>
-	public LimitedNumberGene(int size, int limitNumber) : base(size)
+	/// <param name="geneSize">遺伝子の長さ</param>
+	public LimitedNumberGene(int geneSize, int limitNumber) : base(geneSize)
 	{
-		//------ 限定範囲を保持。負の整数の場合は絶対値を使用 ------//
 		this.limitNumber = Math.Abs(limitNumber);
+	}
 
-		//------ 乱数で初期化 ------//
-		this.RandumReconstruct();
+	/// <summary>
+	/// コピーコンストラクタ
+	/// </summary>
+	/// <param name="gene">遺伝子</param>
+	public LimitedNumberGene(IGene gene, int limitNumber) : base(gene)
+	{
+		this.limitNumber = Math.Abs(limitNumber);
+	}
+
+	/// <summary>
+	/// コピーコンストラクタ
+	/// </summary>
+	/// <param name="gene">遺伝子</param>
+	public LimitedNumberGene(ITypedGene<int> gene, int limitNumber) : base(gene)
+	{
+		this.limitNumber = Math.Abs(limitNumber);
+	}
+
+	/// <summary>
+	/// コピーコンストラクタ
+	/// </summary>
+	/// <param name="baseData">遺伝子配列</param>
+	public LimitedNumberGene(int[] baseData, int limitNumber) : base(baseData)
+	{
+		this.limitNumber = Math.Abs(limitNumber);
+	}
+
+	/// <summary>
+	/// コピーコンストラクタ
+	/// </summary>
+	/// <param name="baseData">遺伝子配列</param>
+	public LimitedNumberGene(object[] baseData, int limitNumber) : base(baseData)
+	{
+		this.limitNumber = Math.Abs(limitNumber);
 	}
 
 	protected override AbstractTypedGene<int> GetNewGeneInstance()

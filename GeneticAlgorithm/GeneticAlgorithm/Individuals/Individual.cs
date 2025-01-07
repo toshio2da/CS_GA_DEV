@@ -28,18 +28,16 @@ using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
 public class Individual : IComparable
 {
 	/** 自己を表現する遺伝子。様々な塩基タイプがあります。*/
-	protected IGene gene = null!;
+	private IGene _gene = null!;
 
 
 	/** 個体の遺伝子モデルを決定するモデルクラスです。*/
-	protected IIndividualModel individualModel;
+	private IIndividualModel _individualModel;
 
-	/**
-     * 適応されているIndividualModeクラスを返します。
-     *
-     * @return 適応されているモデルクラス
-     */
-	public IIndividualModel IndividualModel => individualModel;
+	/// <summary>
+	/// 適応されているIndividualModeクラスを返します
+	/// </summary>
+	public IIndividualModel IndividualModel => _individualModel;
 
 
 	/// <summary>
@@ -61,40 +59,18 @@ public class Individual : IComparable
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="individualModel">個体の設定情報を記述するモデルクラス</param>
-	public Individual(IIndividualModel individualModel)
+	/// <param name="gene">遺伝子</param>
+	private Individual(IIndividualModel individualModel, IGene gene)
 	{
 		//------ モデルクラスを設定 ------//
-		this.individualModel = individualModel;                  // 遺伝子長・タイプを決定。
-
-
-		//------ ランダムな遺伝子を取得・保持 ------//
-		gene = this.individualModel.CreateNewGene();        // モデルクラスに生成させる
+		this._individualModel = individualModel;                  // 遺伝子長・タイプを決定。
+		this._gene = gene;
 	}
-
-
 
 	/// <summary>
 	/// >個体の保持する遺伝子を取得します
 	/// </summary>
-	public IGene Gene => gene;
-
-	/// <summary>
-	/// 個体の遺伝子情報を設定・更新します
-	/// </summary>
-	/// <param name="gene">新しく設定する遺伝子</param>
-	/// <exception cref="IllegalGenoSizeException"></exception>
-	protected void SetGene(IGene gene)
-	{
-		//------ 設定する遺伝子情報が正しいかチェック ------//
-		if (individualModel.GenoSize != gene.GenoSize)
-		{
-			// 遺伝子長がモデルと一致しないので例外を送出
-			throw new IllegalGenoSizeException();                              
-		}
-
-		//------ 問題がないので遺伝子を設定 ------//
-		this.gene = gene;
-	}
+	public IGene Gene => _gene;
 
 	/// <summary>
 	/// ンタフェースComparableの実装メソッドです。ソートに利用されます。
@@ -113,12 +89,12 @@ public class Individual : IComparable
 		if (FitnessValue > targetFitnessValue)
 		{
 			// 対象よりも適応度が高いので負の数を返す（適応度の高い個体ほど小さいと評価される)
-			return -1; 
+			return -1;
 		}
 		else
 		{
 			// 対象と同じであればゼロ、自分の適応度が大きければ正の数を返す
-			return FitnessValue == targetFitnessValue ? 0 : 1;           
+			return FitnessValue == targetFitnessValue ? 0 : 1;
 		}
 	}
 }

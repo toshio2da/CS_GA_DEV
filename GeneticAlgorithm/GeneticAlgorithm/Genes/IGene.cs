@@ -30,7 +30,7 @@ public interface IGene
 	///  遺伝子の塩基配列を設定します
 	/// </summary>
 	/// <param name="baseData">遺伝子配列</param>
-	void SetBase(object[] baseData);
+	void SetBase<T>(T[] baseData);
 
 	/// <summary>
 	/// 自己遺伝子を全てランダムなもので再構築します

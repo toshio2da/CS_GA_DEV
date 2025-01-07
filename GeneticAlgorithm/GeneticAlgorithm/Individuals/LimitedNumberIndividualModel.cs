@@ -26,29 +26,35 @@ public class LimitedNumberIndividualModel : AbstractIndividualModel<int>
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="genoSize">自己遺伝子の遺伝子長</param>
+	/// <param name="size">自己遺伝子の遺伝子長</param>
 	/// <param name="limitNumber">指定範囲です。負の値が渡されたときはその絶対を使用します</param>
-	public LimitedNumberIndividualModel(int genoSize, int limitNumber) : base(genoSize)
+	public LimitedNumberIndividualModel(int size, int limitNumber) : base(size)
 	{
 		this.limitNumber = limitNumber;
 	}
 
-	public override IGene CreateNewGene()
-	{
-		//------ 新しく整数配列遺伝子を生成 ------//
-		return new LimitedNumberGene(this.GenoSize, this.limitNumber);
-	}
+	public override IGene CreateNewGene() => new LimitedNumberGene(this.GenoSize, this.limitNumber);
 
-	/// <summary>
-	/// 新しい整数配列遺伝子を生成し、返します。各個体は本メソッドより遺伝子を生成します
-	/// </summary>
-	/// <remarks>
-	/// 生成される遺伝子はgetGenoSize()メソッドで返される遺伝子長のものです
-	/// </remarks>
-	/// <returns>新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値</returns>
+	public override IGene CreateNewGene(IGene gene) => new LimitedNumberGene(gene, this.limitNumber);
+
+	public override IGene CreateNewGene(int[] baseData) => new LimitedNumberGene(baseData, this.limitNumber);
+
+	public override IGene CreateNewGene(object[] baseData) => new LimitedNumberGene(baseData, this.limitNumber);
+
+
 	public override ITypedGene<int> CreateNewTypedGene()
 	{
-		//------ 新しく整数配列遺伝子を生成 ------//
-		return new LimitedNumberGene(this.GenoSize, this.limitNumber);
+		var ret = new LimitedNumberGene(this.GenoSize, this.limitNumber);
+		ret.RandumReconstruct();
+		return ret;
 	}
+
+	public override ITypedGene<int> CreateNewTypedGene(ITypedGene<int> gene) => new LimitedNumberGene(gene, this.limitNumber);
+
+
+	public override ITypedGene<int> CreateNewTypedGene(int[] baseData) => new LimitedNumberGene(baseData, this.limitNumber);
+
+
+	public override ITypedGene<int> CreateNewTypedGene(object[] baseData) => new LimitedNumberGene(baseData, this.limitNumber);
+
 }

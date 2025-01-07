@@ -3,20 +3,20 @@
 using jp.co.tmdgroup.common.GeneticAlgorithm;
 using jp.co.tmdgroup.common.GeneticAlgorithm.Genes;
 
-/**
- * <p>整数型塩基タイプを持つ個体の個体モデルです。</p>
- * 個体モデルのうち、整数型塩基タイプの個体モデルクラスです。<br>
- * 遺伝子長は構築時に与えます。<br>
- * <br>
- * <br>
- * <br>
- * <p>タイトル: Genetic Algorithm Library</p>
- * <p>説明: 汎用的な遺伝的アルゴリズムライブラリの構築</p>
- * <p>著作権: Copyright (c) 2002  森本寛</p>
- * <p>会社名: 株式会社東京マイクロデータ</p>
- * @author 森本寛
- * @version 1.0 (2002/10/30)
- */
+/// <summary>
+/// <p>整数型塩基タイプを持つ個体の個体モデルです。</p>
+/// 個体モデルのうち、整数型塩基タイプの個体モデルクラスです。<br>
+/// 遺伝子長は構築時に与えます。<br>
+/// <br>
+/// <br>
+/// <br>
+/// <p>タイトル: Genetic Algorithm Library</p>
+/// <p>説明: 汎用的な遺伝的アルゴリズムライブラリの構築</p>
+/// <p>著作権: Copyright (c) 2002  森本寛</p>
+/// <p>会社名: 株式会社東京マイクロデータ</p>
+/// @author 森本寛
+/// @version 1.0 (2002/10/30)
+/// </summary>
 public class NumberIndividualModel : AbstractIndividualModel<int>
 {
 	/// <summary>
@@ -30,15 +30,40 @@ public class NumberIndividualModel : AbstractIndividualModel<int>
 		return new NumberGene(this.GenoSize);
 	}
 
-	/// <summary>
-	/// 新しい整数配列遺伝子を生成し、返します。各個体は本メソッドより遺伝子を生成します
-	/// </summary>
-	/// <remarks>
-	/// 生成される遺伝子はgetGenoSize()メソッドで返される遺伝子長のものです
-	/// </remarks>
-	/// <returns>新しく生成された遺伝子。遺伝子長はgetGenoSize()で返される値</returns>
+	public override IGene CreateNewGene(IGene gene)
+	{
+		return new NumberGene(gene);
+	}
+
+	public override IGene CreateNewGene(int[] baseData)
+	{
+		return new NumberGene(baseData);
+	}
+
+	public override IGene CreateNewGene(object[] baseData)
+	{
+		return new NumberGene(baseData);
+	}
+
 	public override ITypedGene<int> CreateNewTypedGene()
 	{
-		return new NumberGene(this.GenoSize);
+		var ret = new NumberGene(this.GenoSize);
+		ret.RandumReconstruct();
+		return ret;
+	}
+
+	public override ITypedGene<int> CreateNewTypedGene(ITypedGene<int> gene)
+	{
+		return new NumberGene(gene);
+	}
+
+	public override ITypedGene<int> CreateNewTypedGene(int[] baseData)
+	{
+		return new NumberGene(baseData);
+	}
+
+	public override ITypedGene<int> CreateNewTypedGene(object[] baseData)
+	{
+		return new NumberGene(baseData);
 	}
 }

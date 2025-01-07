@@ -26,11 +26,39 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm.Genes
 		/// <summary>
 		/// コピーコンストラクタ
 		/// </summary>
-		/// <param name="gene">遺伝子整数値塩基配列</param>
-		public AbstractTypedGene(TBase[] gene)
+		/// <param name="gene">遺伝子</param>
+		public AbstractTypedGene(IGene gene)
 		{
-			baseData = gene;
+			baseData = gene.GetBase<TBase>();
 		}
+
+		/// <summary>
+		/// コピーコンストラクタ
+		/// </summary>
+		/// <param name="gene">遺伝子</param>
+		public AbstractTypedGene(ITypedGene<TBase> gene)
+		{
+			baseData = gene.GetTypedBase();
+		}
+
+		/// <summary>
+		/// コピーコンストラクタ
+		/// </summary>
+		/// <param name="baseData">遺伝子配列</param>
+		public AbstractTypedGene(TBase[] baseData)
+		{
+			this.baseData = baseData;
+		}
+
+		/// <summary>
+		/// コピーコンストラクタ
+		/// </summary>
+		/// <param name="baseData">遺伝子配列</param>
+		public AbstractTypedGene(object[] baseData)
+		{
+			this.baseData = baseData.Select(e => (TBase)Convert.ChangeType(e, typeof(TBase))).ToArray();
+		}
+
 
 		/// <summary>
 		/// 突然変異の為の値を返す為にサブクラスで実装されます
@@ -52,16 +80,16 @@ namespace jp.co.tmdgroup.common.GeneticAlgorithm.Genes
 		/// <returns>遺伝子配列</returns>
 		public T[] GetBase<T>()
 		{
-			return Array.ConvertAll<TBase, T>(this.baseData, t => (T)Convert.ChangeType(t, typeof(T)));
+			return this.baseData.Select(e => (T)Convert.ChangeType(e, typeof(T))).ToArray();
 		}
 
 		/// <summary>
 		///  遺伝子の塩基配列を設定します
 		/// </summary>
 		/// <param name="baseData">遺伝子配列</param>
-		public void SetBase(object[] baseData)
+		public void SetBase<T>(T[] baseData)
 		{
-			this.baseData = Array.ConvertAll<object, TBase>(baseData, t => (TBase)Convert.ChangeType(t, typeof(TBase)));
+			this.baseData = baseData.Select(e => (TBase)Convert.ChangeType(e, typeof(TBase))).ToArray();
 		}
 
 		/// <summary>
