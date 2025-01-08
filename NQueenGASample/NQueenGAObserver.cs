@@ -1,4 +1,4 @@
-﻿using GALib.Core;
+﻿using GALib.Algo;
 using GALib.Core.Models;
 
 using static jp.co.tmdgroup.nqueengasample.NQueenGAObserver;
