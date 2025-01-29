@@ -2,7 +2,7 @@
 
 using jp.co.tmdgroup.common.GeneticAlgorithm;
 using jp.co.tmdgroup.common.GeneticAlgorithm.Individuals;
-
+using jp.co.tmdgroup.common.Utils;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -21,9 +21,11 @@ public class NQueenToHtmlConverter(GASearchResult gaSearchResult)
 
 	public String ToHtml(int webViewWidth)
 	{
-		var gene = (int[])gaSearchResult.BestIndividual.Gene.GetBase();
+		//var gene = (int[])gaSearchResult.BestIndividual.Gene.GetBase();
+		//評価時に遺伝子配列を読み替えて評価しているため、同様の読み替えが必要
+        var gene = DataTools.CreateUniqElementArray((int[])gaSearchResult.BestIndividual.Gene.GetBase());
 
-		int w = Math.Abs(webViewWidth / gene.Length);
+        int w = Math.Abs(webViewWidth / gene.Length);
 
 		StringBuilder buffer = new();
 
