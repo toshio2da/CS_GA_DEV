@@ -1,16 +1,14 @@
-﻿using GALib.Core.Models;
-
-namespace GALib.Core.Utils
+﻿namespace GALib.Core.Utils
 {
 	public static class DataTools
 	{
 
-		public static (Individual son, Individual daughter) Crossover(Individual father, Individual mother, params int[] splitIndexes)
+		public static (Individual son, Individual daughter) Crossover(IIndividualFactory individualFactory, Individual father, Individual mother, params int[] splitIndexes)
 		{
 			//重複の除去とソート
 			int[] _splitIndexes = splitIndexes.Distinct().OrderBy(e => e).ToArray();
 
-			int geneSize = father.IndividualModel.GenoSize;
+			int geneSize = father.Gene.GenoSize;
 			if (_splitIndexes.Length <= 0 || _splitIndexes.Length > geneSize)
 			{
 				throw new Exception($"サイズ{geneSize}の遺伝子は{_splitIndexes}に分割できません");
@@ -58,7 +56,7 @@ namespace GALib.Core.Utils
 
 
 			//戻り値タプル
-			(Individual son, Individual daughter) ret = (father.IndividualModel.CreateNewIndividual(childGenArray[0]), mother.IndividualModel.CreateNewIndividual(childGenArray[1]));
+			(Individual son, Individual daughter) ret = (individualFactory.CreateNewIndividual(childGenArray[0]), individualFactory.CreateNewIndividual(childGenArray[1]));
 
 			return ret;
 		}

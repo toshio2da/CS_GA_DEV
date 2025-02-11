@@ -14,6 +14,7 @@
     <Compile Remove="mainform.cs" />
     <Compile Remove="mappanel.cs" />
     <Compile Remove="nqueen.cs" />
+    <Compile Remove="NQueenGAObserver.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GALib.Core\GALib.Core.csproj" />
-    <ProjectReference Include="..\GALib.Impls\GALib.Impls.csproj" />
+    <ProjectReference Include="..\GALib\GALib.csproj" />
     <ProjectReference Include="..\GeneticAlgorithm\GALib.csproj" />
   </ItemGroup>
 

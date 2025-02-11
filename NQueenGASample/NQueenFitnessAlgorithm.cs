@@ -1,4 +1,4 @@
-﻿using GALib.Core.Models;
+﻿using GALib.Core;
 using GALib.Core.Plugins;
 using GALib.Core.Utils;
 
@@ -20,7 +20,7 @@ namespace jp.co.tmdgroup.nqueengasample
 	 * @author 森本寛
 	 * @version 1.0
 	 */
-	public class NQueenFitnessAlgorithm : IFitnessAlgorithm
+	public class NQueenFitnessAlgorithm : IFitness
 	{
 
 		/// <summary>

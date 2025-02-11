@@ -1,7 +1,7 @@
 ﻿
+using GALib;
 using GALib.Core;
-using GALib.Impls.Models;
-using GALib.Impls.Plugins;
+using GALib.Plugins;
 
 namespace jp.co.tmdgroup.nqueengasample
 {
@@ -55,16 +55,18 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// </summary>
 		/// <param name="N">次数</param>
 		public NQueenGAModel(int N)
+			: base(new LimitedNumberIndividualFactory(N, N), new NQueenFitnessAlgorithm())
 		{
 			//------ 次数Nを設定 ------//
 			this.N = N;
 
-			//------ 各モデルインスタンスを作成・保持 ------//
-			this.IndividualModel = new LimitedNumberIndividualModel(this.N, this.N);  // 限定整数配列遺伝子を使用
-			this.FitnessAlgorithm = new NQueenFitnessAlgorithm();   //
-			this.SelectionAlgorithm = new TournamentMethod(2);      // トーナメント方式。トーナメントサイズはデフォルトの2.
-			this.SurvivalAlgorithm = new EliteStrategy(0.95);      // エリート戦略による生存方式を採用。
+			this.SelectionAlgorithm = new TournamentSelection(2);      // トーナメント方式。トーナメントサイズはデフォルトの2.
+			this.SurviveAlgorithm = new EliteStrategySurvive(0.95);      // エリート戦略による生存方式を採用。
 			this.CrossoverAlgorithm = new OnePointCrossover();
+
+			this.MutationAlgorithm = new DefaultMutation();
+			this.InverseAlgorithm = new DefaultInverse();
+
 		}
 	}
 }

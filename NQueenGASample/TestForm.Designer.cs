@@ -39,6 +39,7 @@ partial class TestForm
 		label1 = new Label();
 		panel2 = new Panel();
 		webView = new Microsoft.Web.WebView2.WinForms.WebView2();
+		btnSearch2 = new Button();
 		panel1.SuspendLayout();
 		((System.ComponentModel.ISupportInitialize)numMutationRate).BeginInit();
 		((System.ComponentModel.ISupportInitialize)numIndividualCnt).BeginInit();
@@ -50,6 +51,7 @@ partial class TestForm
 		// 
 		// panel1
 		// 
+		panel1.Controls.Add(btnSearch2);
 		panel1.Controls.Add(btnSearch);
 		panel1.Controls.Add(numMutationRate);
 		panel1.Controls.Add(label4);
@@ -174,6 +176,16 @@ partial class TestForm
 		webView.TabIndex = 0;
 		webView.ZoomFactor = 1D;
 		// 
+		// btnSearch2
+		// 
+		btnSearch2.Location = new Point(21, 197);
+		btnSearch2.Name = "btnSearch2";
+		btnSearch2.Size = new Size(75, 23);
+		btnSearch2.TabIndex = 8;
+		btnSearch2.Text = "検索";
+		btnSearch2.UseVisualStyleBackColor = true;
+		btnSearch2.Click += btnSearch2_Click;
+		// 
 		// TestForm
 		// 
 		AutoScaleDimensions = new SizeF(7F, 15F);
@@ -210,4 +222,5 @@ partial class TestForm
     private Panel panel2;
     private System.Windows.Forms.Timer timer1;
 	private Microsoft.Web.WebView2.WinForms.WebView2 webView;
+	private Button btnSearch2;
 }

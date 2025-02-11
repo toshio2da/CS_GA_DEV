@@ -1,7 +1,6 @@
-﻿
-using GALib.Algo;
-using GALib.Core.Utils;
-
+﻿using GALib.Core.Utils;
+using GALib.Search;
+using GALib.GAModel;
 using System.Text;
 
 
@@ -31,7 +30,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			StringBuilder buffer = new();
 
 			buffer.Append($"<h3>スコア：{gaSearchResult.BestIndividual.FitnessValue}</h3>");
-			buffer.Append($"<h3>世代交代数：{gaSearchResult.GenerationCnt}</h3>");
+			buffer.Append($"<h3>世代交代数：{gaSearchResult.GenerationCount}</h3>");
 			buffer.Append($"<h4>経過時間：{span.ToString(@"hh\:mm\:ss\.fff")}</h4>");
 
 			buffer.Append("<table cellpadding=\"0\" cellspacing=\"0\" border=\"2\" width=\"" + webViewWidth.ToString() + "\">  <tbody>");
