@@ -106,12 +106,12 @@ namespace jp.co.tmdgroup.nqueengasample
 				new LimitedNumberIndividualFactory(this.gaParam.QueenCnt, this.gaParam.QueenCnt),
 				new NQueenFitnessAlgorithm()
 				)
-			.SetSelectionAlgorithm(new TournamentSelection(2))  // トーナメント方式。トーナメントサイズはデフォルトの2.
+			.SetSelectionAlgorithm(new TournamentSelection(this.gaParam.TournamentSize))  // トーナメント方式。トーナメントサイズはデフォルトの2.
 			.SetSurviveAlgorithm(new EliteStrategySurvive(this.gaParam.GenerationGap))   // エリート戦略による生存方式を採用
 			.SetCrossoverAlgorithm(new OnePointCrossover())
 
 			.SetMutationAlgorithm(new DefaultMutation())
-			.SetMutationProbability(1.0 / this.gaParam.IndividualCnt)
+			.SetMutationProbability(this.gaParam.MutationProbability) //1.0 / this.gaParam.IndividualCnt)
 
 			.SetInverseAlgorithm(new DefaultInverse())
 			.SetInverseProbability(0)
@@ -193,7 +193,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			/// <summary>
 			/// 突然変異確立
 			/// </summary>
-			public double MutationProbability { get; set; } = 0.95;
+			public double MutationProbability { get; set; } = 0.05;
 
 			/// <summary>
 			/// トーナメントサイズ
