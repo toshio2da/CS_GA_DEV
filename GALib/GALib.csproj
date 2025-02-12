@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GALib.Core\GALib.Core.csproj" />
-    <ProjectReference Include="..\GALib.Impls\GALib.Impls.csproj" />
   </ItemGroup>
 
 </Project>

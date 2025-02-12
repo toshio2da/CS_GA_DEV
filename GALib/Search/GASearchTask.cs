@@ -29,8 +29,10 @@ namespace GALib.Search
 
 			this._searchResult = new GASearchResult();
 			this._searchState = new GASearchState();
-
 		}
+
+		public IGASearchObservable? Observable { get; set; } = null;
+
 
 		public async Task<GASearchResult> SearchAsync(CancellationToken cancellationToken = default)
 		{
@@ -47,6 +49,8 @@ namespace GALib.Search
 			_searchState.SuperiorIndividuals.Clear();
 
 			_searchState.GenerationCount = 0;
+
+			this.Observable?.SendNext(GASearchEventTypes.SearchStart, _searchState);//イベント発火
 			try
 			{
 				CheckCancel();
@@ -62,6 +66,9 @@ namespace GALib.Search
 				//候補を設定
 				_searchState.SuperiorIndividuals.AddIndividual(group.GetBestIndividual());
 
+				//イベント発火
+				this.Observable?.SendNext(GASearchEventTypes.GenerationChanged, _searchState);
+
 				//最大世代交代数まで繰り返す 
 				for (; _searchState.GenerationCount < _searchParam.MaxGenerationCount; _searchState.GenerationCount++)
 				{
@@ -76,24 +83,37 @@ namespace GALib.Search
 					//候補を設定
 					_searchState.SuperiorIndividuals.AddIndividual(group.GetBestIndividual());
 					CheckCancel();
+
+					//イベント発火
+					this.Observable?.SendNext(GASearchEventTypes.GenerationChanged, _searchState);
 				}
 
 				// 最大世代交代数が終わっても究極の個体が見つからなかったのでその中で一番個体を返す
+				//イベント発火
+				this.Observable?.SendNext(GASearchEventTypes.SearchEnd, _searchState);
+
 			}
 			catch (OperationCanceledException ex) when (ex.CancellationToken == _ultimateCancelToken.Token)
 			{
 				Debug.WriteLine("究極の個体が出現しました。検索を終了します");
 				_searchResult.IsCanceled = true;
+				//イベント発火
+				this.Observable?.SendNext(GASearchEventTypes.UltimateSearched, _searchState);
 			}
 			catch (OperationCanceledException ex)
 			{
 				Debug.WriteLine("検索中断が要求されました");
 				_searchResult.IsCanceled = true;
+				//イベント発火
+				this.Observable?.SendNext(GASearchEventTypes.UserCancel, _searchState);
 			}
 			catch (Exception ex)
 			{
 				Debug.WriteLine(ex.Message);
 				Debug.WriteLine(ex.StackTrace);
+
+				//イベント発火
+				this.Observable?.SendError(ex);
 				throw;
 			}
 			finally
@@ -103,6 +123,9 @@ namespace GALib.Search
 				_searchResult.SearchParam = _searchParam;
 				_searchResult.LastSearchState = _searchState;
 				_searchResult.EndTime = DateTime.Now;
+
+				//イベント発火
+				this.Observable?.SendCompleted();
 			}
 
 			return _searchResult;

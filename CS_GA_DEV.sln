@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GALib.Core", "GALib.Core\GA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GALib", "GALib\GALib.csproj", "{34CD9938-A507-4EAC-9281-3FBF632EF2FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GALib.Forms", "GALib.Forms\GALib.Forms.csproj", "{EBD7A0F5-D6A9-491A-8677-492ADC3C22C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{34CD9938-A507-4EAC-9281-3FBF632EF2FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34CD9938-A507-4EAC-9281-3FBF632EF2FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34CD9938-A507-4EAC-9281-3FBF632EF2FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD7A0F5-D6A9-491A-8677-492ADC3C22C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD7A0F5-D6A9-491A-8677-492ADC3C22C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD7A0F5-D6A9-491A-8677-492ADC3C22C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD7A0F5-D6A9-491A-8677-492ADC3C22C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
