@@ -28,6 +28,9 @@ partial class TestForm
 	private void InitializeComponent()
 	{
 		panel1 = new Panel();
+		pnlProgress = new Panel();
+		lblSearchMessage = new Label();
+		searchProgressBar = new ProgressBar();
 		numTournamentSize = new NumericUpDown();
 		label6 = new Label();
 		numGenerationGap = new NumericUpDown();
@@ -44,6 +47,7 @@ partial class TestForm
 		panel2 = new Panel();
 		webView = new Microsoft.Web.WebView2.WinForms.WebView2();
 		panel1.SuspendLayout();
+		pnlProgress.SuspendLayout();
 		((System.ComponentModel.ISupportInitialize)numTournamentSize).BeginInit();
 		((System.ComponentModel.ISupportInitialize)numGenerationGap).BeginInit();
 		((System.ComponentModel.ISupportInitialize)numMutationProbability).BeginInit();
@@ -56,6 +60,7 @@ partial class TestForm
 		// 
 		// panel1
 		// 
+		panel1.Controls.Add(pnlProgress);
 		panel1.Controls.Add(numTournamentSize);
 		panel1.Controls.Add(label6);
 		panel1.Controls.Add(numGenerationGap);
@@ -74,6 +79,33 @@ partial class TestForm
 		panel1.Name = "panel1";
 		panel1.Size = new Size(275, 437);
 		panel1.TabIndex = 0;
+		// 
+		// pnlProgress
+		// 
+		pnlProgress.Controls.Add(lblSearchMessage);
+		pnlProgress.Controls.Add(searchProgressBar);
+		pnlProgress.Dock = DockStyle.Bottom;
+		pnlProgress.Location = new Point(0, 316);
+		pnlProgress.Name = "pnlProgress";
+		pnlProgress.Size = new Size(275, 121);
+		pnlProgress.TabIndex = 13;
+		// 
+		// lblSearchMessage
+		// 
+		lblSearchMessage.AutoSize = true;
+		lblSearchMessage.Location = new Point(3, 40);
+		lblSearchMessage.Name = "lblSearchMessage";
+		lblSearchMessage.Size = new Size(7, 15);
+		lblSearchMessage.TabIndex = 1;
+		lblSearchMessage.Text = "\r\n";
+		// 
+		// searchProgressBar
+		// 
+		searchProgressBar.Dock = DockStyle.Top;
+		searchProgressBar.Location = new Point(0, 0);
+		searchProgressBar.Name = "searchProgressBar";
+		searchProgressBar.Size = new Size(275, 23);
+		searchProgressBar.TabIndex = 0;
 		// 
 		// numTournamentSize
 		// 
@@ -165,12 +197,12 @@ partial class TestForm
 		label3.TabIndex = 4;
 		label3.Text = "個体数";
 		// 
-		// numGenerationChangeCnt
+		// numGenerationCnt
 		// 
 		numGenerationCnt.Location = new Point(135, 51);
 		numGenerationCnt.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
 		numGenerationCnt.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
-		numGenerationCnt.Name = "numGenerationChangeCnt";
+		numGenerationCnt.Name = "numGenerationCnt";
 		numGenerationCnt.Size = new Size(89, 23);
 		numGenerationCnt.TabIndex = 3;
 		numGenerationCnt.TextAlign = HorizontalAlignment.Right;
@@ -236,6 +268,8 @@ partial class TestForm
 		Load += TestForm_Load;
 		panel1.ResumeLayout(false);
 		panel1.PerformLayout();
+		pnlProgress.ResumeLayout(false);
+		pnlProgress.PerformLayout();
 		((System.ComponentModel.ISupportInitialize)numTournamentSize).EndInit();
 		((System.ComponentModel.ISupportInitialize)numGenerationGap).EndInit();
 		((System.ComponentModel.ISupportInitialize)numMutationProbability).EndInit();
@@ -266,4 +300,7 @@ partial class TestForm
 	private Label label5;
 	private NumericUpDown numTournamentSize;
 	private Label label6;
+	private Panel pnlProgress;
+	private ProgressBar searchProgressBar;
+	private Label lblSearchMessage;
 }

@@ -23,7 +23,7 @@ namespace GALib.Search
 
 		public void SendNext(GASearchEventTypes type, GASearchState state)
 		{
-			var args = new GASearchEventArgument(GASearchEventTypes.SearchStart, state);
+			var args = new GASearchEventArgument(type, state);
 			foreach (var observer in _observers)
 			{
 				observer.OnNext(args);

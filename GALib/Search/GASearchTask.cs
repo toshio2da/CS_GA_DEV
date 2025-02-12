@@ -67,12 +67,20 @@ namespace GALib.Search
 				IIndividualGroup group = this.CreateInitGeneration();
 				CheckCancel();
 
+				//世代の評価
+				this.EvaluateGeneration(group);
+				CheckCancel();
+
 				//イベント発火
 				this.Observable?.SendNext(GASearchEventTypes.GenerationChanged, _searchState);
 
 				//最大世代交代数まで繰り返す 
 				for (; _searchState.GenerationCount < _searchParam.MaxGenerationCount; _searchState.GenerationCount++)
 				{
+					//次世代を生成
+					group = this.CreateNextGeneration(group);
+					CheckCancel();
+
 					//世代の評価
 					this.EvaluateGeneration(group);
 					CheckCancel();
@@ -80,9 +88,6 @@ namespace GALib.Search
 					//イベント発火
 					this.Observable?.SendNext(GASearchEventTypes.GenerationChanged, _searchState);
 
-					//次世代を生成
-					group = this.CreateNextGeneration(group);
-					CheckCancel();
 				}
 
 				// 最大世代交代数が終わっても究極の個体が見つからなかったのでその中で一番個体を返す
@@ -161,7 +166,7 @@ namespace GALib.Search
 		/// <param name="generation"></param>
 		private void EvaluateGeneration(IIndividualGroup generation)
 		{
-			int cnt = 0;
+			//int cnt = 0;
 
 			try
 			{

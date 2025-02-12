@@ -24,6 +24,63 @@ namespace jp.co.tmdgroup.nqueengasample
 		{
 			await this.InitializeAsync();
 			this.ToForm(this.gaParam);
+
+			this.InitEvents();
+		}
+
+		#region 進捗イベント表示
+
+		private void InitEvents()
+		{
+			gaSearchObserver.SearchStart += GaSearchObserver_SearchStart;
+			gaSearchObserver.GenerationChanged += GaSearchObserver_GenerationChanged;
+			gaSearchObserver.UltimateSearched += GaSearchObserver_UltimateSearched;
+			gaSearchObserver.SearchEnd += GaSearchObserver_SearchEnd;
+			gaSearchObserver.Error += GaSearchObserver_Error;
+			gaSearchObserver.Completed += GaSearchObserver_Completed;
+		}
+
+		private void GaSearchObserver_SearchStart(object? arg1, GASearchState arg2)
+		{
+			this.btnSearch.Enabled = false;
+
+			this.lblSearchMessage.ForeColor = Color.Black;
+			this.lblSearchMessage.Text = "検索を開始しました";
+
+			this.searchProgressBar.Minimum = 0;
+			this.searchProgressBar.Maximum = gaParam.MaxGenerationCnt;
+			this.searchProgressBar.Value = 0;
+
+		}
+
+		private void GaSearchObserver_GenerationChanged(object? arg1, GASearchState arg2)
+		{
+			this.searchProgressBar.Value = arg2.GenerationCount;
+			this.searchProgressBar.Refresh();
+		}
+
+		private void GaSearchObserver_UltimateSearched(object? arg1, GASearchState arg2)
+		{
+			this.lblSearchMessage.ForeColor = Color.Blue;
+			this.lblSearchMessage.Text = "ハイスコアが検出されました";
+		}
+
+		private void GaSearchObserver_SearchEnd(object? arg1, GASearchState arg2)
+		{
+			this.lblSearchMessage.ForeColor = Color.Green;
+			this.lblSearchMessage.Text = "検索が終了しました";
+		}
+
+		private void GaSearchObserver_Error(object? arg1, Exception arg2)
+		{
+			this.lblSearchMessage.ForeColor = Color.Red;
+			this.lblSearchMessage.Text = $"検索中にエラーが発生しました\r\n{arg2.Message}";
+		}
+
+
+		private void GaSearchObserver_Completed(object? obj)
+		{
+			this.btnSearch.Enabled = true;
 		}
 
 		async Task InitializeAsync()
@@ -31,13 +88,19 @@ namespace jp.co.tmdgroup.nqueengasample
 			await webView.EnsureCoreWebView2Async(null);
 		}
 
+		#endregion
 
-
+		/// <summary>
+		/// 検索処理
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void btnSearch_Click(object sender, EventArgs e)
 		{
 			//GA検索パラメータを画面から取得
 			this.FromForm(this.gaParam);
 
+			#region GAModelBuilder を使用した場合
 			//GAModelをビルド
 			IGAModel gaModel = GAModelBuilder.GetBuilder(
 				new LimitedNumberIndividualFactory(this.gaParam.QueenCnt, this.gaParam.QueenCnt),
@@ -54,7 +117,11 @@ namespace jp.co.tmdgroup.nqueengasample
 			.SetInverseProbability(0)
 
 			.BuildWithDefault();
+			#endregion
 
+			#region GAModelをクラスで定義した場合
+			//IGAModel gaModel = new NQueenGAModel();
+			#endregion
 
 
 			//GA検索パラメータを設定
@@ -64,10 +131,10 @@ namespace jp.co.tmdgroup.nqueengasample
 
 			//GA検索タスクを生成
 			GASearchTask task = new GASearchTask(gaModel, searchParam);
-			task.Observable = new GASearchObservable();
 
-			//イベントオブザーバーを設定
-			task.Observable.Subscribe(gaSearchObserver);
+			//GA検索の進捗をしる為の設定
+			task.Observable = new GASearchObservable();//イベント通知側（オブザーバブル）を設定
+			task.Observable.Subscribe(gaSearchObserver);//イベント受取側（オブザーバー）を設定
 
 			//検索開始
 			var gaSearchResult = await task.SearchAsync();
