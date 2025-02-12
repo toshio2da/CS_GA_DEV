@@ -24,27 +24,31 @@ namespace GALib.Plugins
 	public class EliteStrategySurvive : ISurvive
 	{
 
-		public double GenerationGap { get; set; }
-
+		/// <summary>
+		/// 世代間ギャップ
+		/// </summary>
+		public double GenerationGap { get; set; } = 0.95;
 
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public EliteStrategySurvive() : base() { }
+		public EliteStrategySurvive() { }
 
+		/// <summary>
+		/// ヘルパコンストラクタ
+		/// </summary>
+		/// <param name="generationGap">世代間ギャップ</param>
 		public EliteStrategySurvive(double generationGap)
 		{
 			GenerationGap = generationGap;
 		}
-
-
 
 		public List<Individual> Survive(List<Individual> survivors)
 		{
 			//ソートを行う
 			survivors = survivors.OrderByDescending(e => e.FitnessValue).ToList();
 
-			//------ 世代間ギャップによって決められた数だけ順に抽出 ------//
+			// 世代間ギャップによって決められた数だけ順に抽出
 			int eliteNumber = (int)(survivors.Count * (1.0 - GenerationGap));  // 生き残るエリートの数を計算
 
 			List<Individual> elites = [.. survivors.GetRange(0, eliteNumber)];

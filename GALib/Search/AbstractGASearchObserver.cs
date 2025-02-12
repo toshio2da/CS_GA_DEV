@@ -17,25 +17,25 @@ namespace GALib.Search
 					OnSearchStart(args.State);
 					break;
 				case GASearchEventTypes.GenerationChanged:
-					GenerationChanged(args.State);
+					OnGenerationChanged(args.State);
 					break;
 				case GASearchEventTypes.SearchEnd:
-					SearchEnd(args.State);
+					OnSearchEnd(args.State);
 					break;
 				case GASearchEventTypes.UltimateSearched:
-					UltimateSearched(args.State);
+					OnUltimateSearched(args.State);
 					break;
 				case GASearchEventTypes.UserCancel:
-					UserCancel(args.State);
+					OnUserCancel(args.State);
 					break;
 			}
 		}
 
 		public virtual void OnSearchStart(GASearchState state) { }
-		public virtual void GenerationChanged(GASearchState state) { }
-		public virtual void SearchEnd(GASearchState state) { }
-		public virtual void UltimateSearched(GASearchState state) { }
-		public virtual void UserCancel(GASearchState state) { }
+		public virtual void OnGenerationChanged(GASearchState state) { }
+		public virtual void OnSearchEnd(GASearchState state) { }
+		public virtual void OnUltimateSearched(GASearchState state) { }
+		public virtual void OnUserCancel(GASearchState state) { }
 
 		public virtual void OnCompleted() { }
 		public virtual void OnError(Exception error) { }

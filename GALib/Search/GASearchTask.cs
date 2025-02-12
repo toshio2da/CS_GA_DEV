@@ -46,7 +46,15 @@ namespace GALib.Search
 			this._mainCancelToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _ultimateCancelToken.Token);
 
 			_searchResult.StartTime = DateTime.Now;
-			_searchState.SuperiorIndividuals.Clear();
+			if (_searchState.SuperiorIndividuals == null)
+			{
+				_searchState.SuperiorIndividuals = IndividualGroup.CreateInstance(_gaModel.OrderType);
+			}
+			else
+			{
+				_searchState.SuperiorIndividuals.Clear();
+			}
+
 
 			_searchState.GenerationCount = 0;
 
@@ -59,33 +67,22 @@ namespace GALib.Search
 				IIndividualGroup group = this.CreateInitGeneration();
 				CheckCancel();
 
-				//第一世代の評価
-				this.EvaluateGeneration(group);
-				CheckCancel();
-
-				//候補を設定
-				_searchState.SuperiorIndividuals.AddIndividual(group.GetBestIndividual());
-
 				//イベント発火
 				this.Observable?.SendNext(GASearchEventTypes.GenerationChanged, _searchState);
 
 				//最大世代交代数まで繰り返す 
 				for (; _searchState.GenerationCount < _searchParam.MaxGenerationCount; _searchState.GenerationCount++)
 				{
-					//次世代を生成
-					group = this.CreateNextGeneration(group);
-					CheckCancel();
-
-					//次世代の評価
+					//世代の評価
 					this.EvaluateGeneration(group);
-					CheckCancel();
-
-					//候補を設定
-					_searchState.SuperiorIndividuals.AddIndividual(group.GetBestIndividual());
 					CheckCancel();
 
 					//イベント発火
 					this.Observable?.SendNext(GASearchEventTypes.GenerationChanged, _searchState);
+
+					//次世代を生成
+					group = this.CreateNextGeneration(group);
+					CheckCancel();
 				}
 
 				// 最大世代交代数が終わっても究極の個体が見つからなかったのでその中で一番個体を返す
@@ -93,19 +90,22 @@ namespace GALib.Search
 				this.Observable?.SendNext(GASearchEventTypes.SearchEnd, _searchState);
 
 			}
-			catch (OperationCanceledException ex) when (ex.CancellationToken == _ultimateCancelToken.Token)
+			catch (OperationCanceledException ex) when (ex.CancellationToken == _mainCancelToken.Token)
 			{
-				Debug.WriteLine("究極の個体が出現しました。検索を終了します");
-				_searchResult.IsCanceled = true;
-				//イベント発火
-				this.Observable?.SendNext(GASearchEventTypes.UltimateSearched, _searchState);
-			}
-			catch (OperationCanceledException ex)
-			{
-				Debug.WriteLine("検索中断が要求されました");
-				_searchResult.IsCanceled = true;
-				//イベント発火
-				this.Observable?.SendNext(GASearchEventTypes.UserCancel, _searchState);
+				if (this._ultimateCancelToken.IsCancellationRequested)
+				{
+					Debug.WriteLine("究極の個体が出現しました。検索を終了します");
+					_searchResult.IsCanceled = true;
+					//イベント発火
+					this.Observable?.SendNext(GASearchEventTypes.UltimateSearched, _searchState);
+				}
+				else
+				{
+					Debug.WriteLine("ユーザによって検索中断が要求されました");
+					_searchResult.IsCanceled = true;
+					//イベント発火
+					this.Observable?.SendNext(GASearchEventTypes.UserCancel, _searchState);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -143,19 +143,13 @@ namespace GALib.Search
 			//並列で初期個体を生成
 			Parallel.For(0, _searchParam.IndividualCount, index =>
 			{
-				try
-				{
-					//キャンセル済をチェック
-					_mainCancelToken.Token.ThrowIfCancellationRequested();
+				//Debug.WriteLine($"初期個体生成:{index}:");
 
+				//キャンセル済をチェック
+				_mainCancelToken.Token.ThrowIfCancellationRequested();
+
+				lock (initGeneration.Individuals)
 					initGeneration.Individuals.Add(_gaModel.IndividualFactory.CreateNewIndividual());
-				}
-				catch (OperationCanceledException) { } // キャンセルされた
-				catch (AggregateException)
-				{
-					// 他の例外
-					throw;
-				}
 			});
 
 			return initGeneration;
@@ -167,32 +161,39 @@ namespace GALib.Search
 		/// <param name="generation"></param>
 		private void EvaluateGeneration(IIndividualGroup generation)
 		{
-			generation
+			int cnt = 0;
+
+			try
+			{
+				generation
 				.AsParallel()
 				.WithCancellation(_mainCancelToken.Token)
 				.ForAll(individual =>
 				{
-					try
+					//キャンセル済をチェック
+					_mainCancelToken.Token.ThrowIfCancellationRequested();
+
+					//適応度を算出
+					individual.FitnessValue = _gaModel.FitnessAlgorithm.GetFitnessValue(individual);
+
+					//Debug.WriteLine($"{cnt}:[{individual.FitnessValue}]");
+					//Interlocked.Add(ref cnt, 1);
+
+					//究極の個体が現れたらキャンセル
+					if (individual.FitnessValue == _gaModel.FitnessAlgorithm.BestFitnessValue)
 					{
-						//キャンセル済をチェック
-						_mainCancelToken.Token.ThrowIfCancellationRequested();
-
-						//適応度を算出
-						individual.FitnessValue = _gaModel.FitnessAlgorithm.GetFitnessValue(individual);
-
-						//究極の個体が現れたらキャンセル
-						if (individual.FitnessValue == _gaModel.FitnessAlgorithm.BestFitnessValue)
+						if (!_ultimateCancelToken.IsCancellationRequested && _ultimateCancelToken.Token.CanBeCanceled)
 						{
 							_ultimateCancelToken.Cancel();
 						}
 					}
-					catch (OperationCanceledException) { } // キャンセルされた
-					catch (AggregateException)
-					{
-						// 他の例外
-						throw;
-					}
 				});
+			}
+			finally
+			{
+				//候補を設定
+				_searchState.SuperiorIndividuals.AddIndividual(generation.GetBestIndividual());
+			}
 		}
 
 

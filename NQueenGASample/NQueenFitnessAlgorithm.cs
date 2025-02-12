@@ -68,7 +68,6 @@ namespace jp.co.tmdgroup.nqueengasample
 					//------ 斜めを調査(自分との位置の差と値の差が同じ場合は斜めで重なっている ------//
 					if (index != baseIndex && Math.Abs(index - baseIndex) == Math.Abs(myValue - gene[baseIndex]))
 					{
-
 						fitnessValue -= 50;
 					}
 				}

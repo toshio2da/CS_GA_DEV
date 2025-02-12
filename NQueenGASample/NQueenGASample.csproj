@@ -22,8 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GALib\GALib.csproj" />
-    <ProjectReference Include="..\GeneticAlgorithm\GALib.csproj" />
+    <ProjectReference Include="..\GALib.Forms\GALib.Forms.csproj" />
   </ItemGroup>
 
 </Project>

@@ -28,22 +28,27 @@ partial class TestForm
 	private void InitializeComponent()
 	{
 		panel1 = new Panel();
+		numTournamentSize = new NumericUpDown();
+		label6 = new Label();
+		numGenerationGap = new NumericUpDown();
+		label5 = new Label();
 		btnSearch = new Button();
-		numMutationRate = new NumericUpDown();
+		numMutationProbability = new NumericUpDown();
 		label4 = new Label();
 		numIndividualCnt = new NumericUpDown();
 		label3 = new Label();
-		numGenerationChangeCnt = new NumericUpDown();
+		numGenerationCnt = new NumericUpDown();
 		label2 = new Label();
 		numQueenCnt = new NumericUpDown();
 		label1 = new Label();
 		panel2 = new Panel();
 		webView = new Microsoft.Web.WebView2.WinForms.WebView2();
-		btnSearch2 = new Button();
 		panel1.SuspendLayout();
-		((System.ComponentModel.ISupportInitialize)numMutationRate).BeginInit();
+		((System.ComponentModel.ISupportInitialize)numTournamentSize).BeginInit();
+		((System.ComponentModel.ISupportInitialize)numGenerationGap).BeginInit();
+		((System.ComponentModel.ISupportInitialize)numMutationProbability).BeginInit();
 		((System.ComponentModel.ISupportInitialize)numIndividualCnt).BeginInit();
-		((System.ComponentModel.ISupportInitialize)numGenerationChangeCnt).BeginInit();
+		((System.ComponentModel.ISupportInitialize)numGenerationCnt).BeginInit();
 		((System.ComponentModel.ISupportInitialize)numQueenCnt).BeginInit();
 		panel2.SuspendLayout();
 		((System.ComponentModel.ISupportInitialize)webView).BeginInit();
@@ -51,13 +56,16 @@ partial class TestForm
 		// 
 		// panel1
 		// 
-		panel1.Controls.Add(btnSearch2);
+		panel1.Controls.Add(numTournamentSize);
+		panel1.Controls.Add(label6);
+		panel1.Controls.Add(numGenerationGap);
+		panel1.Controls.Add(label5);
 		panel1.Controls.Add(btnSearch);
-		panel1.Controls.Add(numMutationRate);
+		panel1.Controls.Add(numMutationProbability);
 		panel1.Controls.Add(label4);
 		panel1.Controls.Add(numIndividualCnt);
 		panel1.Controls.Add(label3);
-		panel1.Controls.Add(numGenerationChangeCnt);
+		panel1.Controls.Add(numGenerationCnt);
 		panel1.Controls.Add(label2);
 		panel1.Controls.Add(numQueenCnt);
 		panel1.Controls.Add(label1);
@@ -67,26 +75,66 @@ partial class TestForm
 		panel1.Size = new Size(275, 437);
 		panel1.TabIndex = 0;
 		// 
+		// numTournamentSize
+		// 
+		numTournamentSize.Location = new Point(135, 149);
+		numTournamentSize.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+		numTournamentSize.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+		numTournamentSize.Name = "numTournamentSize";
+		numTournamentSize.Size = new Size(89, 23);
+		numTournamentSize.TabIndex = 12;
+		numTournamentSize.TextAlign = HorizontalAlignment.Right;
+		numTournamentSize.Value = new decimal(new int[] { 2, 0, 0, 0 });
+		// 
+		// label6
+		// 
+		label6.AutoSize = true;
+		label6.Location = new Point(21, 151);
+		label6.Name = "label6";
+		label6.Size = new Size(85, 15);
+		label6.TabIndex = 11;
+		label6.Text = "トーナメントサイズ";
+		// 
+		// numGenerationGap
+		// 
+		numGenerationGap.DecimalPlaces = 2;
+		numGenerationGap.Location = new Point(135, 178);
+		numGenerationGap.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+		numGenerationGap.Name = "numGenerationGap";
+		numGenerationGap.Size = new Size(89, 23);
+		numGenerationGap.TabIndex = 10;
+		numGenerationGap.TextAlign = HorizontalAlignment.Right;
+		numGenerationGap.Value = new decimal(new int[] { 95, 0, 0, 131072 });
+		// 
+		// label5
+		// 
+		label5.AutoSize = true;
+		label5.Location = new Point(21, 180);
+		label5.Name = "label5";
+		label5.Size = new Size(78, 15);
+		label5.TabIndex = 9;
+		label5.Text = "世代間ギャップ";
+		// 
 		// btnSearch
 		// 
-		btnSearch.Location = new Point(21, 154);
+		btnSearch.Location = new Point(21, 236);
 		btnSearch.Name = "btnSearch";
 		btnSearch.Size = new Size(75, 23);
-		btnSearch.TabIndex = 1;
+		btnSearch.TabIndex = 8;
 		btnSearch.Text = "検索";
 		btnSearch.UseVisualStyleBackColor = true;
 		btnSearch.Click += btnSearch_Click;
 		// 
-		// numMutationRate
+		// numMutationProbability
 		// 
-		numMutationRate.DecimalPlaces = 2;
-		numMutationRate.Location = new Point(135, 109);
-		numMutationRate.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
-		numMutationRate.Name = "numMutationRate";
-		numMutationRate.Size = new Size(89, 23);
-		numMutationRate.TabIndex = 7;
-		numMutationRate.TextAlign = HorizontalAlignment.Right;
-		numMutationRate.Value = new decimal(new int[] { 95, 0, 0, 131072 });
+		numMutationProbability.DecimalPlaces = 2;
+		numMutationProbability.Location = new Point(135, 109);
+		numMutationProbability.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+		numMutationProbability.Name = "numMutationProbability";
+		numMutationProbability.Size = new Size(89, 23);
+		numMutationProbability.TabIndex = 7;
+		numMutationProbability.TextAlign = HorizontalAlignment.Right;
+		numMutationProbability.Value = new decimal(new int[] { 95, 0, 0, 131072 });
 		// 
 		// label4
 		// 
@@ -119,14 +167,14 @@ partial class TestForm
 		// 
 		// numGenerationChangeCnt
 		// 
-		numGenerationChangeCnt.Location = new Point(135, 51);
-		numGenerationChangeCnt.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-		numGenerationChangeCnt.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
-		numGenerationChangeCnt.Name = "numGenerationChangeCnt";
-		numGenerationChangeCnt.Size = new Size(89, 23);
-		numGenerationChangeCnt.TabIndex = 3;
-		numGenerationChangeCnt.TextAlign = HorizontalAlignment.Right;
-		numGenerationChangeCnt.Value = new decimal(new int[] { 500, 0, 0, 0 });
+		numGenerationCnt.Location = new Point(135, 51);
+		numGenerationCnt.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+		numGenerationCnt.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+		numGenerationCnt.Name = "numGenerationChangeCnt";
+		numGenerationCnt.Size = new Size(89, 23);
+		numGenerationCnt.TabIndex = 3;
+		numGenerationCnt.TextAlign = HorizontalAlignment.Right;
+		numGenerationCnt.Value = new decimal(new int[] { 500, 0, 0, 0 });
 		// 
 		// label2
 		// 
@@ -176,16 +224,6 @@ partial class TestForm
 		webView.TabIndex = 0;
 		webView.ZoomFactor = 1D;
 		// 
-		// btnSearch2
-		// 
-		btnSearch2.Location = new Point(21, 197);
-		btnSearch2.Name = "btnSearch2";
-		btnSearch2.Size = new Size(75, 23);
-		btnSearch2.TabIndex = 8;
-		btnSearch2.Text = "検索";
-		btnSearch2.UseVisualStyleBackColor = true;
-		btnSearch2.Click += btnSearch2_Click;
-		// 
 		// TestForm
 		// 
 		AutoScaleDimensions = new SizeF(7F, 15F);
@@ -198,9 +236,11 @@ partial class TestForm
 		Load += TestForm_Load;
 		panel1.ResumeLayout(false);
 		panel1.PerformLayout();
-		((System.ComponentModel.ISupportInitialize)numMutationRate).EndInit();
+		((System.ComponentModel.ISupportInitialize)numTournamentSize).EndInit();
+		((System.ComponentModel.ISupportInitialize)numGenerationGap).EndInit();
+		((System.ComponentModel.ISupportInitialize)numMutationProbability).EndInit();
 		((System.ComponentModel.ISupportInitialize)numIndividualCnt).EndInit();
-		((System.ComponentModel.ISupportInitialize)numGenerationChangeCnt).EndInit();
+		((System.ComponentModel.ISupportInitialize)numGenerationCnt).EndInit();
 		((System.ComponentModel.ISupportInitialize)numQueenCnt).EndInit();
 		panel2.ResumeLayout(false);
 		((System.ComponentModel.ISupportInitialize)webView).EndInit();
@@ -212,15 +252,18 @@ partial class TestForm
 	private Panel panel1;
 	private NumericUpDown numQueenCnt;
 	private Label label1;
-	private NumericUpDown numMutationRate;
+	private NumericUpDown numMutationProbability;
 	private Label label4;
 	private NumericUpDown numIndividualCnt;
 	private Label label3;
-	private NumericUpDown numGenerationChangeCnt;
+	private NumericUpDown numGenerationCnt;
 	private Label label2;
 	private Button btnSearch;
     private Panel panel2;
     private System.Windows.Forms.Timer timer1;
 	private Microsoft.Web.WebView2.WinForms.WebView2 webView;
-	private Button btnSearch2;
+	private NumericUpDown numGenerationGap;
+	private Label label5;
+	private NumericUpDown numTournamentSize;
+	private Label label6;
 }

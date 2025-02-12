@@ -32,6 +32,18 @@ namespace GALib.Core.GAModel
 			return this.gaModel;
 		}
 
+
+		public GAModelBuilder SetMutationProbability(double mutationProbability)
+		{
+			gaModel.MutationProbability = mutationProbability;
+			return this;
+		}
+		public GAModelBuilder SetInverseProbability(double inverseProbability)
+		{
+			gaModel.InverseProbability = inverseProbability;
+			return this;
+		}
+
 		#region プラグイン
 		public GAModelBuilder SetIndividualFactory(IIndividualFactory individualFactory)
 		{
