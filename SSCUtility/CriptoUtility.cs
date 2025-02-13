@@ -11,7 +11,7 @@ namespace SSCUtility
     {
         public static byte[] GetHash(int[] src)
         {
-            List<byte> bytes = new();
+            List<byte> bytes = [];
             src.Select(e => BitConverter.GetBytes(e))
                 .ToList()
                 .ForEach(e => bytes.AddRange(e));
