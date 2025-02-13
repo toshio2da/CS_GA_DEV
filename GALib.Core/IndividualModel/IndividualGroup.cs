@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GALib.Core
+namespace GALib.Core.IndividualModel
 {
 	public abstract class IndividualGroup : IIndividualGroup
 	{
@@ -26,7 +26,7 @@ namespace GALib.Core
 
 		protected IndividualGroup(OrderTypes orderType)
 		{
-			this.OrderType = orderType;
+			OrderType = orderType;
 		}
 
 		public OrderTypes OrderType { get; private set; }
@@ -55,8 +55,8 @@ namespace GALib.Core
 
 		public Individual? GetBestIndividual()
 		{
-			double bestFitnessValue = this.GetBestFitnessValue();
-			return this.Individuals.Where(e => e.FitnessValue == bestFitnessValue).FirstOrDefault();
+			double bestFitnessValue = GetBestFitnessValue();
+			return Individuals.Where(e => e.FitnessValue == bestFitnessValue).FirstOrDefault();
 		}
 
 		public abstract double GetBestFitnessValue();

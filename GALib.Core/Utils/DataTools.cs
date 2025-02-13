@@ -1,4 +1,6 @@
-﻿namespace GALib.Core.Utils
+﻿using GALib.Core.IndividualModel;
+
+namespace GALib.Core.Utils
 {
 	public static class DataTools
 	{

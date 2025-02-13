@@ -1,4 +1,4 @@
-﻿namespace GALib.Core
+﻿namespace GALib.Core.IndividualModel
 {
 	/// <summary>
 	/// <p>個体クラスIndividualの挙動を設定するモデルクラスの基底クラスです。</p>
@@ -17,18 +17,24 @@
 	/// @author 森本寛
 	/// @version 1.0 (2002/10/16)
 	/// </summary>
-	public interface ITypedIndividualFactory<TBase> : IIndividualFactory
+	public interface IIndividualFactory
 	{
-		public Individual CreateNewIndividual(ITypedGene<TBase> gene);
+		/// <summary>
+		/// 自己遺伝子の遺伝子長を取得します
+		/// </summary>
+		public int GenoSize { get; }
 
-		public Individual CreateNewIndividual(TBase[] baseData);
+		public Individual CreateNewIndividual();
 
-		public ITypedGene<TBase> CreateNewTypedGene();
+		public Individual CreateNewIndividual(IGene gene);
 
-		public ITypedGene<TBase> CreateNewTypedGene(ITypedGene<TBase> gene);
+		public Individual CreateNewIndividual(object[] baseData);
 
-		public ITypedGene<TBase> CreateNewTypedGene(TBase[] baseData);
+		public IGene CreateNewGene();
 
-		public ITypedGene<TBase> CreateNewTypedGene(object[] baseData);
+		public IGene CreateNewGene(IGene gene);
+
+		public IGene CreateNewGene(object[] baseData);
+
 	}
 }

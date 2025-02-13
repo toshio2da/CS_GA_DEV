@@ -1,4 +1,6 @@
-﻿namespace GALib.Core.Plugins
+﻿using GALib.Core.IndividualModel;
+
+namespace GALib.Core.Plugins
 {
 	/**
      * <p>適応度に応じて個体の淘汰を行うクラスのインタフェースです。</p>

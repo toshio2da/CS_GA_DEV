@@ -1,4 +1,4 @@
-﻿using GALib.Core;
+﻿using GALib.Core.IndividualModel;
 
 namespace GALib.Search
 {

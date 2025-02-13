@@ -1,4 +1,4 @@
-﻿namespace GALib.Core
+﻿namespace GALib.Core.IndividualModel
 {
 	/// <summary>
 	/// <p> 個体を表現します。自己遺伝子と、その適応度を保持します。</p>

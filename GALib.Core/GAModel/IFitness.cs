@@ -1,4 +1,6 @@
-﻿namespace GALib.Core.Plugins
+﻿using GALib.Core.IndividualModel;
+
+namespace GALib.Core.Plugins
 {
 	/**
      * <p>個体の適応度を算出するクラスのインタフェースです。</p>

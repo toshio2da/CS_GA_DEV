@@ -1,4 +1,5 @@
 ﻿using GALib.Core.GAModel.Json;
+using GALib.Core.IndividualModel;
 using GALib.Core.Plugins;
 
 using System;

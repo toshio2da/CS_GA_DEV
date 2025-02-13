@@ -1,4 +1,4 @@
-﻿using GALib.Core;
+﻿using GALib.Core.IndividualModel;
 using GALib.Core.Plugins;
 
 namespace GALib.Plugins

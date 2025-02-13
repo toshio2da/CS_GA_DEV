@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GALib.Core
+namespace GALib.Core.IndividualModel
 {
 	public abstract class AbstractTypedGene<TBase> : ITypedGene<TBase>
 	{

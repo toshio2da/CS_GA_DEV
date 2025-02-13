@@ -1,7 +1,7 @@
-﻿using GALib.Core;
+﻿using GALib.Core.IndividualModel;
 using GALib.Core.Utils;
 
-namespace GALib
+namespace GALib.IndividualModel
 {
 	/// <summary>
 	/// <p>限定された範囲の正の整数を塩基として持つ遺伝子クラスです。</p>

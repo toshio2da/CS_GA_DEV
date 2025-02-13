@@ -1,4 +1,4 @@
-﻿namespace GALib.Core
+﻿namespace GALib.Core.IndividualModel
 {
 	/**
 	 * <p>個体の持つ遺伝子情報を持つクラスのインタフェースです。</p>

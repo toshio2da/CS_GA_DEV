@@ -1,7 +1,7 @@
-﻿using GALib.Core;
+﻿using GALib.Core.IndividualModel;
 using GALib.Core.Utils;
 
-namespace GALib
+namespace GALib.IndividualModel
 {
 
 	/// <summary>

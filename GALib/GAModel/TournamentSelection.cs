@@ -1,6 +1,6 @@
 ﻿using GALib.Core.Plugins;
 using GALib.Core.Utils;
-using GALib.Core;
+using GALib.Core.IndividualModel;
 
 namespace GALib.Plugins
 {

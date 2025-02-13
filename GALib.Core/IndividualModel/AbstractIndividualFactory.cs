@@ -1,4 +1,4 @@
-﻿namespace GALib.Core
+﻿namespace GALib.Core.IndividualModel
 {
 	public abstract class AbstractIndividualFactory<TBase> : IIndividualFactory, ITypedIndividualFactory<TBase>
 	{

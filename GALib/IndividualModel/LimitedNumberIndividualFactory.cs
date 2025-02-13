@@ -1,6 +1,6 @@
-﻿using GALib.Core;
+﻿using GALib.Core.IndividualModel;
 
-namespace GALib
+namespace GALib.IndividualModel
 {
 	/// <summary>
 	/// <p>範囲限定の整数型塩基タイプを持つ個体の個体モデルです。</p>

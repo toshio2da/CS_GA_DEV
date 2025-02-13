@@ -1,4 +1,6 @@
-﻿namespace GALib.Core.Plugins
+﻿using GALib.Core.IndividualModel;
+
+namespace GALib.Core.Plugins
 {
 	/**
 	 * <p>遺伝的アルゴリズムの基本操作、交叉を行うクラスのインタフェースです。</p>

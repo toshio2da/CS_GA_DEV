@@ -1,4 +1,6 @@
-﻿namespace GALib.Core.Plugins
+﻿using GALib.Core.IndividualModel;
+
+namespace GALib.Core.Plugins
 {
 	public interface IMutation
 	{

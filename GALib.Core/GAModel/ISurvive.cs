@@ -1,4 +1,6 @@
-﻿namespace GALib.Core.Plugins
+﻿using GALib.Core.IndividualModel;
+
+namespace GALib.Core.Plugins
 {
 	/**
 	 * <p>世代交代時に親集団の生存を決めるクラスのインタフェースです。</p>

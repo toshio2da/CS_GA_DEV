@@ -1,5 +1,5 @@
-﻿using GALib.Core;
-using GALib.Core.GAModel;
+﻿using GALib.Core.GAModel;
+using GALib.Core.IndividualModel;
 
 using System.Diagnostics;
 

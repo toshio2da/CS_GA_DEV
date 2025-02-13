@@ -1,4 +1,5 @@
-﻿using GALib.Core.Plugins;
+﻿using GALib.Core.IndividualModel;
+using GALib.Core.Plugins;
 
 using System;
 using System.Collections.Generic;

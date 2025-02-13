@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GALib.Core
+namespace GALib.Core.IndividualModel
 {
 	public enum OrderTypes
 	{
@@ -22,7 +22,7 @@ namespace GALib.Core
 		OrderTypes OrderType { get; }
 
 		List<Individual> Individuals { get; }
-		
+
 		void AddIndividual(Individual individual);
 
 		void AddIndividuals(IEnumerable<Individual> individuals);

@@ -1,7 +1,7 @@
-﻿using GALib.Core;
+﻿using GALib.Core.IndividualModel;
 using GALib.Core.Utils;
 
-namespace GALib
+namespace GALib.IndividualModel
 {
 	/// <summary>
 	/// <p>正の整数配列で遺伝子を表す遺伝子型です。</p>
