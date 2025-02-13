@@ -29,9 +29,30 @@ namespace GALib.Plugins
 	public class TwoPointCrossover : ICrossover
 	{
 		/// <summary>
+		/// 交叉点1
+		/// </summary>
+		public int? CrossoverPoint1 { get; set; } = null;
+
+		/// <summary>
+		/// 交叉点2
+		/// </summary>
+		public int? CrossoverPoint2 { get; set; } = null;
+
+		/// <summary>
 		/// コンストラクタ
 		/// </summary>
 		public TwoPointCrossover() { }
+
+		/// <summary>
+		/// ヘルパコンストラクタ
+		/// </summary>
+		/// <param name="crossoverPoint1"></param>
+		/// <param name="crossoverPoint2"></param>
+		public TwoPointCrossover(int crossoverPoint1, int crossoverPoint2)
+		{
+			CrossoverPoint1 = crossoverPoint1;
+			CrossoverPoint2 = crossoverPoint2;
+		}
 
 		/// <summary>
 		/// 親候補集団から交叉を行い、子集団を生成します
@@ -73,8 +94,8 @@ namespace GALib.Plugins
 
 
 				//------ 交叉点をランダムに生成(Left, Middle, Rightは必ず ------//
-				int crossoverPoint2 = (int)(3 + (RandomGenerator.Random * geneSize - 4));                      // ランダムに交叉点を決定[3 - (size-4)]
-				int crossoverPoint1 = (int)(1 + RandomGenerator.Random * (crossoverPoint2 - 2));             // こっちの方が必ず小さくなる
+				int crossoverPoint2 = this.CrossoverPoint2 ?? (int)(3 + (RandomGenerator.Random * geneSize - 4));                      // ランダムに交叉点を決定[3 - (size-4)]
+				int crossoverPoint1 = this.CrossoverPoint1 ?? (int)(1 + RandomGenerator.Random * (crossoverPoint2 - 2));             // こっちの方が必ず小さくなる
 
 				var result = DataTools.Crossover(individualFactory, father, mother, crossoverPoint1, crossoverPoint2);
 				children.Add(result.son);                                                          // 息子を追加

@@ -28,9 +28,23 @@ namespace GALib.Plugins
 	public class OnePointCrossover : ICrossover
 	{
 		/// <summary>
+		/// 交叉点1
+		/// </summary>
+		public int? CrossoverPoint1 { get; set; } = null;
+
+		/// <summary>
 		/// コンストラクタ
 		/// </summary>
 		public OnePointCrossover() { }
+
+		/// <summary>
+		/// ヘルパコンストラクタ
+		/// </summary>
+		/// <param name="crossoverPoint1"></param>
+		public OnePointCrossover(int crossoverPoint1)
+		{
+			CrossoverPoint1 = crossoverPoint1;
+		}
 
 		/// <summary>
 		/// 親候補集団から交叉を行い、子集団を生成します
@@ -68,7 +82,7 @@ namespace GALib.Plugins
 				Individual mother = perentCandidates[(int)(RandomGenerator.Random * perentCandidates.Count)];   // 母を選ぶ
 
 				//------ 交叉点をランダムに生成 ------//
-				int crossoverPoint = (int)(1 + (RandomGenerator.Random * geneSize - 2));                     // ランダムに交叉点を決定[1 - (size-1)]
+				int crossoverPoint = this.CrossoverPoint1 ?? (int)(1 + (RandomGenerator.Random * geneSize - 2));                     // ランダムに交叉点を決定[1 - (size-1)]
 
 				var result = DataTools.Crossover(individualFactory, father, mother, crossoverPoint);
 				children.Add(result.son);                                                          // 息子を追加
