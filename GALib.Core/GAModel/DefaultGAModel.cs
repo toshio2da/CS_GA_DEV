@@ -12,8 +12,8 @@ namespace GALib.Core.GAModel
 	public class DefaultGAModel : AbstractGAModel
 	{
 
-		public DefaultGAModel(IIndividualFactory individualFactory, IFitness fitnessAlgorithm)
-		: base(individualFactory, fitnessAlgorithm) { }
+		public DefaultGAModel()
+		: base() { }
 
 	}
 }

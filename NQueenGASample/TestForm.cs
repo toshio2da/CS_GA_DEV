@@ -5,18 +5,20 @@ using GALib.GAModel;
 using GALib.Forms;
 using GALib.Plugins;
 using System.Runtime.CompilerServices;
+using GALib.Core.IndividualModel;
+using GALib.IndividualModel;
 
 namespace jp.co.tmdgroup.nqueengasample
 {
 	public partial class TestForm : Form
 	{
-		private UIGASearchObserver gaSearchObserver = null!;
+		private UIGASearchObserver<int> gaSearchObserver = null!;
 		private NQueenGAParam gaParam = new NQueenGAParam();
 
 		public TestForm()
 		{
 			InitializeComponent();
-			gaSearchObserver = new UIGASearchObserver(this);
+			gaSearchObserver = new UIGASearchObserver<int>(this);
 		}
 
 
@@ -40,7 +42,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			gaSearchObserver.Completed += GaSearchObserver_Completed;
 		}
 
-		private void GaSearchObserver_SearchStart(object? arg1, GASearchState arg2)
+		private void GaSearchObserver_SearchStart(object? arg1, GASearchState<int> arg2)
 		{
 			this.btnSearch.Enabled = false;
 
@@ -53,19 +55,19 @@ namespace jp.co.tmdgroup.nqueengasample
 
 		}
 
-		private void GaSearchObserver_GenerationChanged(object? arg1, GASearchState arg2)
+		private void GaSearchObserver_GenerationChanged(object? arg1, GASearchState<int> arg2)
 		{
 			this.searchProgressBar.Value = arg2.GenerationCount;
 			this.searchProgressBar.Refresh();
 		}
 
-		private void GaSearchObserver_UltimateSearched(object? arg1, GASearchState arg2)
+		private void GaSearchObserver_UltimateSearched(object? arg1, GASearchState<int> arg2)
 		{
 			this.lblSearchMessage.ForeColor = Color.Blue;
 			this.lblSearchMessage.Text = "ハイスコアが検出されました";
 		}
 
-		private void GaSearchObserver_SearchEnd(object? arg1, GASearchState arg2)
+		private void GaSearchObserver_SearchEnd(object? arg1, GASearchState<int> arg2)
 		{
 			this.lblSearchMessage.ForeColor = Color.Green;
 			this.lblSearchMessage.Text = "検索が終了しました";
@@ -101,50 +103,50 @@ namespace jp.co.tmdgroup.nqueengasample
 			this.FromForm(this.gaParam);
 
 			#region GAModelBuilder を使用した場合
-			//GAModelをビルド
-			IGAModel gaModel = GAModelBuilder.GetBuilder(
-				new LimitedNumberIndividualFactory(this.gaParam.QueenCnt, this.gaParam.QueenCnt),
-				new NQueenFitnessAlgorithm()
-				)
-			.SetSelectionAlgorithm(new TournamentSelection(this.gaParam.TournamentSize))  // トーナメント方式。トーナメントサイズはデフォルトの2.
-			.SetSurviveAlgorithm(new EliteStrategySurvive(this.gaParam.GenerationGap))   // エリート戦略による生存方式を採用
-			.SetCrossoverAlgorithm(new OnePointCrossover())
+			////GAModelをビルド
+			//IGAModel gaModel = GAModelBuilder.GetBuilder()
+			//.SetSelectionAlgorithm(new TournamentSelection(this.gaParam.TournamentSize))  // トーナメント方式。トーナメントサイズはデフォルトの2.
+			//.SetSurviveAlgorithm(new EliteStrategySurvive(this.gaParam.GenerationGap))   // エリート戦略による生存方式を採用
+			//.SetCrossoverAlgorithm(new OnePointCrossover())
 
-			.SetMutationAlgorithm(new DefaultMutation())
-			.SetMutationProbability(this.gaParam.MutationProbability) //1.0 / this.gaParam.IndividualCnt)
+			//.SetMutationAlgorithm(new DefaultMutation())
+			//.SetMutationProbability(this.gaParam.MutationProbability) //1.0 / this.gaParam.IndividualCnt)
 
-			.SetInverseAlgorithm(new DefaultInverse())
-			.SetInverseProbability(0)
+			//.SetInverseAlgorithm(new DefaultInverse())
+			//.SetInverseProbability(0)
 
-			.BuildWithDefault();
+			//.BuildWithDefault();
 			#endregion
 
 			#region GAModelをクラスで定義した場合
-			//IGAModel gaModel = new NQueenGAModel();
+			IGAModel gaModel = new NQueenGAModel();
 			#endregion
+
+			//IndividualModelを作成
+			IIndividualModel<int> individualModel = new NQueenIndividualModel(this.gaParam.QueenCnt);
+
+			//GA検索タスクを生成
+			GASearchTask<int> task = new GASearchTask<int>(gaModel, individualModel);
+
+			//GA検索の進捗の設定
+			task.Observable = new GASearchObservable<int>();//イベント通知側（オブザーバブル）を設定
+			task.Observable.Subscribe(gaSearchObserver);//イベント受取側（オブザーバー）を設定
 
 
 			//GA検索パラメータを設定
 			GASearchParam searchParam = new GASearchParam();
 			searchParam.IndividualCount = this.gaParam.QueenCnt;
 			searchParam.MaxGenerationCount = this.gaParam.MaxGenerationCnt;
-
-			//GA検索タスクを生成
-			GASearchTask task = new GASearchTask(gaModel, searchParam);
-
-			//GA検索の進捗をしる為の設定
-			task.Observable = new GASearchObservable();//イベント通知側（オブザーバブル）を設定
-			task.Observable.Subscribe(gaSearchObserver);//イベント受取側（オブザーバー）を設定
-
+			
 			//検索開始
-			var gaSearchResult = await task.SearchAsync();
+			var gaSearchResult = await task.SearchAsync(searchParam);
 
 			//結果をHTML表示
 			this.ShowHtml(gaSearchResult);
 		}
 
 
-		private void ShowHtml(GASearchResult gaSearchResult)
+		private void ShowHtml(GASearchResult<int> gaSearchResult)
 		{
 			string html = new NQueenToHtmlConverter(gaSearchResult).ToHtml(this.webView.Size);
 			this.webView.NavigateToString(html);

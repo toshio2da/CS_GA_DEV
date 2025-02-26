@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,15 @@ using static System.Windows.Forms.AxHost;
 
 namespace GALib.Forms
 {
-	public class UIGASearchObserver : AbstractGASearchObserver
+	public class UIGASearchObserver<TBase> : AbstractGASearchObserver<TBase>
 	{
-		public event Action<object?, GASearchEventArgument>? GASearchNext;
+		public event Action<object?, GASearchEventArgument<TBase>>? GASearchNext;
 
-		public event Action<object?, GASearchState>? SearchStart;
-		public event Action<object?, GASearchState>? GenerationChanged;
-		public event Action<object?, GASearchState>? SearchEnd;
-		public event Action<object?, GASearchState>? UltimateSearched;
-		public event Action<object?, GASearchState>? UserCancel;
+		public event Action<object?, GASearchState<TBase>>? SearchStart;
+		public event Action<object?, GASearchState<TBase>>? GenerationChanged;
+		public event Action<object?, GASearchState<TBase>>? SearchEnd;
+		public event Action<object?, GASearchState<TBase>>? UltimateSearched;
+		public event Action<object?, GASearchState<TBase>>? UserCancel;
 
 		public event Action<object?>? Completed;
 		public event Action<object?, Exception>? Error;
@@ -29,7 +30,7 @@ namespace GALib.Forms
 			_control = control;
 		}
 
-		private void Invoker(Action<object?, GASearchState>? act, GASearchState state)
+		private void Invoker(Action<object?, GASearchState<TBase>>? act, GASearchState<TBase> state)
 		{
 			if (act == null) return;
 
@@ -46,7 +47,7 @@ namespace GALib.Forms
 			}
 		}
 
-		private void Invoker(Action<object?, GASearchEventArgument>? act, GASearchEventArgument args)
+		private void Invoker(Action<object?, GASearchEventArgument<TBase>>? act, GASearchEventArgument<TBase> args)
 		{
 			if (act == null) return;
 
@@ -98,23 +99,23 @@ namespace GALib.Forms
 		}
 
 
-		public override void OnSearchStart(GASearchState state)
+		public override void OnSearchStart(GASearchState<TBase> state)
 		{
 			this.Invoker(this.SearchStart, state);
 		}
-		public override void OnGenerationChanged(GASearchState state)
+		public override void OnGenerationChanged(GASearchState<TBase> state)
 		{
 			this.Invoker(this.GenerationChanged, state);
 		}
-		public override void OnSearchEnd(GASearchState state)
+		public override void OnSearchEnd(GASearchState<TBase> state)
 		{
 			this.Invoker(this.SearchEnd, state);
 		}
-		public override void OnUltimateSearched(GASearchState state)
+		public override void OnUltimateSearched(GASearchState<TBase> state)
 		{
 			this.Invoker(this.UltimateSearched, state);
 		}
-		public override void OnUserCancel(GASearchState state)
+		public override void OnUserCancel(GASearchState<TBase> state)
 		{
 			this.Invoker(this.UserCancel, state);
 		}

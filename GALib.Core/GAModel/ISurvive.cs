@@ -48,6 +48,6 @@ namespace GALib.Core.Plugins
 		/// </remarks>
 		/// <param name="survivors">生き残りの親集団</param>
 		/// <returns>次世代に引き継がれる親集団</returns>
-		List<Individual> Survive(List<Individual> survivors);
+		List<Individual<TBase>> Survive<TBase>(List<Individual<TBase>> survivors);
 	}
 }

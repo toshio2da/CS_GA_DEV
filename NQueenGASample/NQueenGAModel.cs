@@ -44,29 +44,19 @@ namespace jp.co.tmdgroup.nqueengasample
 	/// @version 1.0   (2002/11/03)
 	/// </remarks>
 
-	public class NQueenGAModel : AbstractGAModel
+	internal class NQueenGAModel : AbstractGAModel
 	{
-		/** N-Queen問題のN。この数だけ盤ができ、クイーンが配置される。 */
-		private int N;
-
-
 		/// <summary>
 		/// ヘルパコンストラクタ
 		/// </summary>
 		/// <param name="N">次数</param>
-		public NQueenGAModel(int N)
-			: base(new LimitedNumberIndividualFactory(N, N), new NQueenFitnessAlgorithm())
+		public NQueenGAModel() : base()
 		{
-			//------ 次数Nを設定 ------//
-			this.N = N;
-
 			this.SelectionAlgorithm = new TournamentSelection(2);      // トーナメント方式。トーナメントサイズはデフォルトの2.
 			this.SurviveAlgorithm = new EliteStrategySurvive(0.95);      // エリート戦略による生存方式を採用。
 			this.CrossoverAlgorithm = new OnePointCrossover();
-
 			this.MutationAlgorithm = new DefaultMutation();
 			this.InverseAlgorithm = new DefaultInverse();
-
 		}
 	}
 }

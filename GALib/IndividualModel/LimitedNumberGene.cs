@@ -18,7 +18,7 @@ namespace GALib.IndividualModel
 	/// @author 森本寛
 	/// @version 1.0 (2002/11/01)
 	/// </summary>
-	public class LimitedNumberGene : AbstractTypedGene<int>
+	public class LimitedNumberGene : AbstractGene<int>
 	{
 		/** 塩基の取りうる指定範囲 */
 		protected int limitNumber;
@@ -36,16 +36,7 @@ namespace GALib.IndividualModel
 		/// コピーコンストラクタ
 		/// </summary>
 		/// <param name="gene">遺伝子</param>
-		internal LimitedNumberGene(IGene gene, int limitNumber) : base(gene)
-		{
-			this.limitNumber = Math.Abs(limitNumber);
-		}
-
-		/// <summary>
-		/// コピーコンストラクタ
-		/// </summary>
-		/// <param name="gene">遺伝子</param>
-		internal LimitedNumberGene(ITypedGene<int> gene, int limitNumber) : base(gene)
+		internal LimitedNumberGene(IGene<int> gene, int limitNumber) : base(gene)
 		{
 			this.limitNumber = Math.Abs(limitNumber);
 		}
@@ -68,9 +59,9 @@ namespace GALib.IndividualModel
 			this.limitNumber = Math.Abs(limitNumber);
 		}
 
-		protected override AbstractTypedGene<int> GetNewGeneInstance()
+		protected override AbstractGene<int> GetNewGeneInstance()
 		{
-			return new LimitedNumberGene(GenoSize, limitNumber);
+			return new LimitedNumberGene(GeneSize, limitNumber);
 		}
 
 		protected override int GetMutateValue()

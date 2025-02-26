@@ -31,6 +31,6 @@ namespace GALib.Core.Plugins
 		/// <param name="perentCandidates">親候補集団。この中からランダムに親を選びます。</param>
 		/// <param name="childrenNumber">生成する子集団の数。偶数でなければなりません。</param>
 		/// <returns>生成された子集団</returns>
-		public List<Individual> Crossover(IIndividualFactory individualFactory, List<Individual> perentCandidates, int childrenNumber); //throws IllegalIndividualException;
+		public List<Individual<TBase>> Crossover<TBase>(IIndividualFactory<TBase> individualFactory, List<Individual<TBase>> perentCandidates, int childrenNumber); //throws IllegalIndividualException;
 	}
 }

@@ -21,49 +21,22 @@ namespace GALib.IndividualModel
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		/// <param name="genoSize">自己遺伝子の遺伝子長</param>
-		public NumberIndividualFactory(int genoSize) : base(genoSize) { }
+		/// <param name="geneSize">自己遺伝子の遺伝子長</param>
+		public NumberIndividualFactory(int geneSize) : base(geneSize) { }
 
-		public override IGene CreateNewGene()
+		public override IGene<int> CreateNewGene() => new NumberGene(GeneSize);
+		
+		public override IGene<int> CreateNewGene(IGene<int> gene)=>new NumberGene(gene);
+		
+		public override IGene<int> CreateNewGene(int[] baseData)=> new NumberGene(baseData);
+		
+		public override IGene<int> CreateNewGene(object[] baseData)=>new NumberGene(baseData);
+		
+		public override IGene<int> CreateNewRandumGene()
 		{
-			return new NumberGene(GenoSize);
-		}
-
-		public override IGene CreateNewGene(IGene gene)
-		{
-			return new NumberGene(gene);
-		}
-
-		public override IGene CreateNewGene(int[] baseData)
-		{
-			return new NumberGene(baseData);
-		}
-
-		public override IGene CreateNewGene(object[] baseData)
-		{
-			return new NumberGene(baseData);
-		}
-
-		public override ITypedGene<int> CreateNewTypedGene()
-		{
-			var ret = new NumberGene(GenoSize);
+			var ret = new NumberGene(GeneSize);
 			ret.RandumReconstruct();
 			return ret;
-		}
-
-		public override ITypedGene<int> CreateNewTypedGene(ITypedGene<int> gene)
-		{
-			return new NumberGene(gene);
-		}
-
-		public override ITypedGene<int> CreateNewTypedGene(int[] baseData)
-		{
-			return new NumberGene(baseData);
-		}
-
-		public override ITypedGene<int> CreateNewTypedGene(object[] baseData)
-		{
-			return new NumberGene(baseData);
 		}
 	}
 }

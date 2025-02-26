@@ -10,6 +10,6 @@ namespace GALib.Core.Plugins
 {
 	public interface IInverse
 	{
-		void Inverse(List<Individual> individualList, double inverseProbability);
+		void Inverse<TBase>(List<Individual<TBase>> individualList, double inverseProbability);
 	}
 }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace GALib.Search
 {
-	public class ConsoleGaSerchObserver : AbstractGASearchObserver
+	public class ConsoleGaSerchObserver<TBase> : AbstractGASearchObserver<TBase>
 	{
 
-		public override void OnNext(GASearchEventArgument args)
+		public override void OnNext(GASearchEventArgument<TBase> args)
 		{
 			Console.WriteLine($"\t{args.Type} : GenerationCount={args.State.GenerationCount}");
 		}

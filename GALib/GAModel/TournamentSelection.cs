@@ -73,11 +73,11 @@ namespace GALib.Plugins
 		/// </remarks>
 		/// <param name="group">淘汰を行う親集合。要素は全てIndividualかその派生クラスである必要があります。</param>
 		/// <returns>子集合候補。この集合を用いて新しい世代を創生します</returns>
-		public List<Individual> Selection(List<Individual> group)
+		public List<Individual<TBase>> Selection<TBase>(List<Individual<TBase>> group)
 		{
 			//元の親集合の数になるまで繰り返す
-			List<Individual> candidates = []; // 最終的に選ばれた子集団候補者
-			List<Individual> preLiminary = [];// 予選候補者。この中で適応度の一番高いものが候補者となる。
+			List<Individual<TBase>> candidates = []; // 最終的に選ばれた子集団候補者
+			List<Individual<TBase>> preLiminary = [];// 予選候補者。この中で適応度の一番高いものが候補者となる。
 			for (int index = 0; index < group.Count; index++)
 			{
 

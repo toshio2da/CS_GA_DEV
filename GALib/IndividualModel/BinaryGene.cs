@@ -20,7 +20,7 @@ namespace GALib.IndividualModel
 	/// @author 森本寛
 	/// @version 1.0 (2002/10/16)
 	/// </summary>
-	public class BinaryGene : AbstractTypedGene<bool>
+	public class BinaryGene : AbstractGene<bool>
 	{
 		/// <summary>
 		/// コンストラクタ
@@ -32,13 +32,7 @@ namespace GALib.IndividualModel
 		/// コピーコンストラクタ
 		/// </summary>
 		/// <param name="gene">遺伝子</param>
-		internal BinaryGene(IGene gene) : base(gene) { }
-
-		/// <summary>
-		/// コピーコンストラクタ
-		/// </summary>
-		/// <param name="gene">遺伝子</param>
-		internal BinaryGene(ITypedGene<bool> gene) : base(gene) { }
+		internal BinaryGene(IGene<bool> gene) : base(gene) { }
 
 		/// <summary>
 		/// コピーコンストラクタ
@@ -53,14 +47,17 @@ namespace GALib.IndividualModel
 		/// <param name="baseData">遺伝子配列</param>
 		public BinaryGene(bool[] baseData) : base(baseData) { }
 
-		protected override AbstractTypedGene<bool> GetNewGeneInstance()
+
+		protected override AbstractGene<bool> GetNewGeneInstance()
 		{
-			return new BinaryGene(GenoSize);
+			return new BinaryGene(GeneSize);
 		}
 
 		protected override bool GetMutateValue()
 		{
 			return RandomGenerator.Random < 0.5;                         // 0.5未満だったら
 		}
+
+
 	}
 }

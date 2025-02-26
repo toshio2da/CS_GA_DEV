@@ -17,25 +17,25 @@ namespace GALib.Core.IndividualModel
 		/// </summary>
 		ASC,
 	}
-	public interface IIndividualGroup : IEnumerable<Individual>
+	public interface IIndividualGroup<TBase> : IEnumerable<Individual<TBase>>
 	{
 		OrderTypes OrderType { get; }
 
-		List<Individual> Individuals { get; }
+		List<Individual<TBase>> Individuals { get; }
 
-		void AddIndividual(Individual individual);
+		void AddIndividual(Individual<TBase>? individual);
 
-		void AddIndividuals(IEnumerable<Individual> individuals);
+		void AddIndividuals(IEnumerable<Individual<TBase>> individuals);
 
-		Individual GetBestIndividual();
+		Individual<TBase>? GetBestIndividual();
 
 		double GetBestFitnessValue();
 
-		Individual GetIndividual(int index);
+		Individual<TBase> GetIndividual(int index);
 
 		void Clear();
 
-		IOrderedEnumerable<Individual> GetOrderedEnumerable();
+		IOrderedEnumerable<Individual<TBase>> GetOrderedEnumerable();
 
 		void InnerSort();
 	}

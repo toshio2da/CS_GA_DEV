@@ -15,7 +15,7 @@ namespace jp.co.tmdgroup.nqueengasample
 	 * @version 1.0
 	 */
 
-	public class NQueenToHtmlConverter(GASearchResult gaSearchResult)
+	public class NQueenToHtmlConverter(GASearchResult<int> gaSearchResult)
 	{
 
 		private const int MIN_CELL_XY = 26;
@@ -23,7 +23,7 @@ namespace jp.co.tmdgroup.nqueengasample
 		public String ToHtml(Size webViewSize)
 		{
 
-			int[] gene = gaSearchResult.BestIndividual.Gene.GetBase<int>();
+			int[] gene = gaSearchResult.BestIndividual.Gene.GetBase();
 			gene = DataTools.CreateUniqElementArray(gene);
 
 			int tableXY = Math.Min(webViewSize.Width, webViewSize.Height);

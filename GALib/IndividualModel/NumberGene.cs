@@ -24,7 +24,7 @@ namespace GALib.IndividualModel
 	/// @version 1.0 (2002/10/30)
 	/// </summary>
 
-	public class NumberGene : AbstractTypedGene<int>
+	public class NumberGene : AbstractGene<int>
 	{
 		/// <summary>
 		/// コンストラクタ
@@ -36,13 +36,7 @@ namespace GALib.IndividualModel
 		/// コピーコンストラクタ
 		/// </summary>
 		/// <param name="gene">遺伝子</param>
-		internal NumberGene(IGene gene) : base(gene) { }
-
-		/// <summary>
-		/// コピーコンストラクタ
-		/// </summary>
-		/// <param name="gene">遺伝子</param>
-		internal NumberGene(ITypedGene<int> gene) : base(gene) { }
+		internal NumberGene(IGene<int> gene) : base(gene) { }
 
 		/// <summary>
 		/// コピーコンストラクタ
@@ -57,9 +51,9 @@ namespace GALib.IndividualModel
 		internal NumberGene(object[] baseData) : base(baseData) { }
 
 
-		protected override AbstractTypedGene<int> GetNewGeneInstance()
+		protected override AbstractGene<int> GetNewGeneInstance()
 		{
-			return new NumberGene(GenoSize);
+			return new NumberGene(GeneSize);
 		}
 
 		protected override int GetMutateValue()

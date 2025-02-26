@@ -35,21 +35,12 @@ namespace GALib.Core
 		/// <summary>
 		/// 遺伝子の各塩基が突然変異を起こす確率を取得または設定します
 		/// </summary>
-		public virtual double MutationProbability { get; set; }// = 1.0 / this.IndividualFactory.GenoSize;
+		public virtual double MutationProbability { get; set; }// = 1.0 / this.IndividualFactory.GeneSize;
 
 		/// <summary>
 		/// 個体の遺伝子に逆位が起こる確率を取得または設定します
 		/// </summary>
 		public virtual double InverseProbability { get; set; }// => 0.0;//------ 逆位操作は行わない ------//
-
-		public AbstractGAModel(IIndividualFactory individualFactory, IFitness fitnessAlgorithm)
-		{
-			IndividualFactory = individualFactory;
-			FitnessAlgorithm = fitnessAlgorithm;
-		}
-
-		public IIndividualFactory IndividualFactory { get; set; } = null!;
-		public IFitness FitnessAlgorithm { get; set; } = null!;
 
 		public ISelection? SelectionAlgorithm { get; set; } = null;
 		public ISurvive? SurviveAlgorithm { get; set; } = null;

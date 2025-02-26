@@ -57,16 +57,16 @@ namespace GALib.Plugins
 		/// <param name="perentCandidates">親候補集団。この中からランダムに親を選びます。</param>
 		/// <param name="childrenNumber">生成する子集団の数。偶数でなければなりません。</param>
 		/// <returns>生成された子集団</returns>
-		public List<Individual> Crossover(IIndividualFactory individualFactory, List<Individual> perentCandidates, int childrenNumber)
+		public List<Individual<TBase>> Crossover<TBase>(IIndividualFactory<TBase> individualFactory, List<Individual<TBase>> perentCandidates, int childrenNumber)
 		{
 			//------ 必要な情報を取得 ------//
-			Individual sample = perentCandidates[0];  // 個体に関する情報を得るためにサンプルとして取得
-			int geneSize = sample.Gene.GenoSize;       // この集団の個体が持っている遺伝子の長さを取得
+			Individual<TBase> sample = perentCandidates[0];  // 個体に関する情報を得るためにサンプルとして取得
+			int geneSize = sample.Gene.GeneSize;       // この集団の個体が持っている遺伝子の長さを取得
 
 			//------------------------------------------//
 			//------ 親集団と同じ数の子集団を生成 ------//
 			//------------------------------------------//
-			List<Individual> children = new(perentCandidates.Count);                           // 生成する子集団
+			List<Individual<TBase>> children = new(perentCandidates.Count);                           // 生成する子集団
 
 			/*
 			object[] sonsGene = new object[2];       // 1点交叉なので2つの部分遺伝子から作成
@@ -78,8 +78,8 @@ namespace GALib.Plugins
 			for (int childIndex = 0; childIndex < childrenNumber / 2; childIndex++)
 			{
 				//------ ランダムに親を2体選ぶ ------//
-				Individual father = perentCandidates[(int)(RandomGenerator.Random * perentCandidates.Count)];   // 父を選ぶ
-				Individual mother = perentCandidates[(int)(RandomGenerator.Random * perentCandidates.Count)];   // 母を選ぶ
+				Individual<TBase> father = perentCandidates[(int)(RandomGenerator.Random * perentCandidates.Count)];   // 父を選ぶ
+				Individual<TBase> mother = perentCandidates[(int)(RandomGenerator.Random * perentCandidates.Count)];   // 母を選ぶ
 
 				//------ 交叉点をランダムに生成 ------//
 				int crossoverPoint = this.CrossoverPoint1 ?? (int)(1 + (RandomGenerator.Random * geneSize - 2));                     // ランダムに交叉点を決定[1 - (size-1)]

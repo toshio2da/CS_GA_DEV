@@ -15,11 +15,11 @@ namespace GALib.Search
 		UserCancel,
 	}
 
-	public class GASearchEventArgument
+	public class GASearchEventArgument<TBase>
 	{
 
 
-		internal GASearchEventArgument(GASearchEventTypes type, GASearchState state)
+		internal GASearchEventArgument(GASearchEventTypes type, GASearchState<TBase> state)
 		{
 			this.Type = type;
 			this.State = state;
@@ -28,6 +28,6 @@ namespace GALib.Search
 
 		public GASearchEventTypes Type { get; internal set; }
 
-		public GASearchState State { get; internal set; }
+		public GASearchState<TBase> State { get; internal set; }
 	}
 }

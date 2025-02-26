@@ -2,53 +2,54 @@
 using GALib.Core.IndividualModel;
 
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace GALib.Search
 {
-	public class GASearchTask
+	public class GASearchTask<TBase>
 	{
 		private IGAModel _gaModel;
+		private IIndividualModel<TBase> _individualModel;
 
-		private GASearchResult _searchResult = null!;
+		private GASearchResult<TBase> _searchResult = null!;
 
-		private GASearchState _searchState = null!;
+		private GASearchState<TBase> _searchState = null!;
 
 		private GASearchParam _searchParam = null!;
-
-		//究極個体出現によるキャンセル
-		private CancellationTokenSource _ultimateCancelToken = new CancellationTokenSource();
 
 		//複数のキャンセルトークンを結合
 		private CancellationTokenSource _mainCancelToken = null!;
 
 
-		public GASearchTask(IGAModel gaModel, GASearchParam searchParam)
+		public GASearchTask(IGAModel gaModel, IIndividualModel<TBase> individualModel)
 		{
 			this._gaModel = gaModel;
+			this._individualModel = individualModel;
+
+			this._searchResult = new GASearchResult<TBase>();
+			this._searchState = new GASearchState<TBase>();
+		}
+
+		public IGASearchObservable<TBase>? Observable { get; set; } = null;
+
+
+		public async Task<GASearchResult<TBase>> SearchAsync(GASearchParam searchParam, CancellationToken cancellationToken = default)
+		{
+			return await Task.Run<GASearchResult<TBase>>(() => this.Search(searchParam, cancellationToken));
+		}
+
+
+		public GASearchResult<TBase> Search(GASearchParam searchParam, CancellationToken cancellationToken = default)
+		{
 			this._searchParam = searchParam;
 
-			this._searchResult = new GASearchResult();
-			this._searchState = new GASearchState();
-		}
-
-		public IGASearchObservable? Observable { get; set; } = null;
-
-
-		public async Task<GASearchResult> SearchAsync(CancellationToken cancellationToken = default)
-		{
-			return await Task.Run<GASearchResult>(() => this.Search(cancellationToken));
-		}
-
-
-		public GASearchResult Search(CancellationToken cancellationToken = default)
-		{
 			//複数のキャンセルトークンを結合
-			this._mainCancelToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _ultimateCancelToken.Token);
+			this._mainCancelToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _individualModel.UltimateCancelToken.Token);
 
 			_searchResult.StartTime = DateTime.Now;
 			if (_searchState.SuperiorIndividuals == null)
 			{
-				_searchState.SuperiorIndividuals = IndividualGroup.CreateInstance(_gaModel.OrderType);
+				_searchState.SuperiorIndividuals = IndividualGroup<TBase>.CreateInstance(_gaModel.OrderType);
 			}
 			else
 			{
@@ -64,11 +65,13 @@ namespace GALib.Search
 				CheckCancel();
 
 				//第一世代の生成
-				IIndividualGroup group = this.CreateInitGeneration();
+				IIndividualGroup<TBase> group = IndividualGroup<TBase>.CreateInstance(_gaModel.OrderType);
+				group.AddIndividuals(_individualModel.CreateInitIndividuals(searchParam.IndividualCount, _mainCancelToken));
+
 				CheckCancel();
 
 				//世代の評価
-				this.EvaluateGeneration(group);
+				this.EvaluateIndividuals(group);
 				CheckCancel();
 
 				//イベント発火
@@ -78,11 +81,11 @@ namespace GALib.Search
 				for (; _searchState.GenerationCount < _searchParam.MaxGenerationCount; _searchState.GenerationCount++)
 				{
 					//次世代を生成
-					group = this.CreateNextGeneration(group);
+					group = this.CreateNextindividualGroup(group);
 					CheckCancel();
 
 					//世代の評価
-					this.EvaluateGeneration(group);
+					this.EvaluateIndividuals(group);
 					CheckCancel();
 
 					//イベント発火
@@ -97,7 +100,7 @@ namespace GALib.Search
 			}
 			catch (OperationCanceledException ex) when (ex.CancellationToken == _mainCancelToken.Token)
 			{
-				if (this._ultimateCancelToken.IsCancellationRequested)
+				if (this._individualModel.UltimateCancelToken.IsCancellationRequested)
 				{
 					Debug.WriteLine("究極の個体が出現しました。検索を終了します");
 					_searchResult.IsCanceled = true;
@@ -138,96 +141,49 @@ namespace GALib.Search
 
 
 		/// <summary>
-		/// 第一世代の生成
-		/// </summary>
-		/// <param name="searchParam"></param>
-		private IIndividualGroup CreateInitGeneration()
-		{
-			IIndividualGroup initGeneration = IndividualGroup.CreateInstance(_gaModel.OrderType);
-
-			//並列で初期個体を生成
-			Parallel.For(0, _searchParam.IndividualCount, index =>
-			{
-				//Debug.WriteLine($"初期個体生成:{index}:");
-
-				//キャンセル済をチェック
-				_mainCancelToken.Token.ThrowIfCancellationRequested();
-
-				lock (initGeneration.Individuals)
-					initGeneration.Individuals.Add(_gaModel.IndividualFactory.CreateNewIndividual());
-			});
-
-			return initGeneration;
-		}
-
-		/// <summary>
 		/// 指定された世代内の個体を評価します
 		/// </summary>
-		/// <param name="generation"></param>
-		private void EvaluateGeneration(IIndividualGroup generation)
+		/// <param name="individualGroup"></param>
+		private void EvaluateIndividuals(IIndividualGroup<TBase> individualGroup)
 		{
-			//int cnt = 0;
-
 			try
 			{
-				generation
-				.AsParallel()
-				.WithCancellation(_mainCancelToken.Token)
-				.ForAll(individual =>
-				{
-					//キャンセル済をチェック
-					_mainCancelToken.Token.ThrowIfCancellationRequested();
-
-					//適応度を算出
-					individual.FitnessValue = _gaModel.FitnessAlgorithm.GetFitnessValue(individual);
-
-					//Debug.WriteLine($"{cnt}:[{individual.FitnessValue}]");
-					//Interlocked.Add(ref cnt, 1);
-
-					//究極の個体が現れたらキャンセル
-					if (individual.FitnessValue == _gaModel.FitnessAlgorithm.BestFitnessValue)
-					{
-						if (!_ultimateCancelToken.IsCancellationRequested && _ultimateCancelToken.Token.CanBeCanceled)
-						{
-							_ultimateCancelToken.Cancel();
-						}
-					}
-				});
+				_individualModel.EvaluateIndividuals(individualGroup.Individuals, _mainCancelToken);
 			}
 			finally
 			{
 				//候補を設定
-				_searchState.SuperiorIndividuals.AddIndividual(generation.GetBestIndividual());
+				_searchState.SuperiorIndividuals.AddIndividual(individualGroup.GetBestIndividual());
 			}
 		}
 
 
-		private IIndividualGroup CreateNextGeneration(IIndividualGroup currentGeneration)
+		private IIndividualGroup<TBase> CreateNextindividualGroup(IIndividualGroup<TBase> currentGeneration)
 		{
 
 			//生存を行う。優秀な親は次世代集団に残る
-			List<Individual> survivors = _gaModel.SurviveAlgorithm.Survive(currentGeneration.Individuals);
+			List<Individual<TBase>> survivors = _gaModel.SurviveAlgorithm?.Survive(currentGeneration.Individuals) ?? new();
 
 			//淘汰を行う。優秀な個体が多く残る
-			List<Individual> selections = _gaModel.SelectionAlgorithm.Selection(currentGeneration.Individuals) ?? currentGeneration.Individuals;
+			List<Individual<TBase>> selections = _gaModel.SelectionAlgorithm?.Selection(currentGeneration.Individuals) ?? currentGeneration.Individuals;
 
 			//交叉を行う。生存しなかった親は全て入れ替える
-			List<Individual> children = _gaModel.CrossoverAlgorithm.Crossover(_gaModel.IndividualFactory, selections, selections.Count - survivors.Count);
+			List<Individual<TBase>> children = _gaModel.CrossoverAlgorithm.Crossover(_individualModel.IndividualFactory, selections, selections.Count - survivors.Count);
 
 			//突然変異を子集団の各塩基に対して行う。突然変異率が0.0の場合は行わない
-			if (_gaModel.MutationProbability != 0.0)
+			if (_gaModel.MutationAlgorithm != null && _gaModel.MutationProbability != 0.0)
 			{
 				_gaModel.MutationAlgorithm.Mutation(children, _gaModel.MutationProbability);
 			}
 
 			//逆位を子集団の各個人に対して行う。逆位率が0.0の場合は行わない
-			if (_gaModel.InverseProbability != 0.0)
+			if (_gaModel.InverseAlgorithm != null && _gaModel.InverseProbability != 0.0)
 			{
 				_gaModel.InverseAlgorithm.Inverse(children, _gaModel.InverseProbability);
 			}
 
 			//次世代の生成
-			IIndividualGroup nextGeneration = IndividualGroup.CreateInstance(_gaModel.OrderType);
+			IIndividualGroup<TBase> nextGeneration = IndividualGroup<TBase>.CreateInstance(_gaModel.OrderType);
 			nextGeneration.AddIndividuals(children);
 
 			return nextGeneration;

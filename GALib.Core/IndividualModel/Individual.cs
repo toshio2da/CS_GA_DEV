@@ -22,10 +22,10 @@
 	/// @author 森本寛
 	/// @version 1.0 (2002/10/16)
 	/// </summary>
-	public class Individual : IComparable
+	public class Individual<TBase> : IComparable
 	{
 		/** 自己を表現する遺伝子。様々な塩基タイプがあります。*/
-		private IGene _gene = null!;
+		private IGene<TBase> _gene = null!;
 
 		/// <summary>
 		/// 世代
@@ -39,14 +39,14 @@
 		/// 適応度はFitnessクラスによって評価されます。<br>
 		/// Indivisualクラスはその適応度を保持します。<br>
 		/// </remarks>
-		public double FitnessValue { get; set; } = 0.0;
+		public double? FitnessValue { get; set; } = null;
 
 
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
 		/// <param name="gene">遺伝子</param>
-		internal Individual(IGene gene)
+		internal Individual(IGene<TBase> gene)
 		{
 			_gene = gene;
 		}
@@ -54,7 +54,7 @@
 		/// <summary>
 		/// >個体の保持する遺伝子を取得します
 		/// </summary>
-		public IGene Gene => _gene;
+		public IGene<TBase> Gene => _gene;
 
 		/// <summary>
 		/// ンタフェースComparableの実装メソッドです。ソートに利用されます。
@@ -65,11 +65,11 @@
 		{
 			//T.Tsuda
 			if (other == null) return 1;
-			if (other is not Individual) return 1;
+			if (other is not Individual<TBase>) return 1;
 
 
 			//------ 適当度を用いて比較 ------//
-			double targetFitnessValue = ((Individual)other).FitnessValue;
+			double targetFitnessValue = ((Individual<TBase>)other).FitnessValue ?? 0;
 			if (FitnessValue > targetFitnessValue)
 			{
 				// 対象よりも適応度が高いので負の数を返す（適応度の高い個体ほど小さいと評価される)

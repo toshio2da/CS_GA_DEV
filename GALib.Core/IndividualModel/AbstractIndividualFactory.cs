@@ -1,50 +1,35 @@
 ﻿namespace GALib.Core.IndividualModel
 {
-	public abstract class AbstractIndividualFactory<TBase> : IIndividualFactory, ITypedIndividualFactory<TBase>
+	public abstract class AbstractIndividualFactory<TBase> : IIndividualFactory<TBase>
 	{
-		protected AbstractIndividualFactory(int genoSize)
+		protected AbstractIndividualFactory(int geneSize)
 		{
-			GenoSize = genoSize;
+			GeneSize = geneSize;
 		}
 
 		/// <summary>
 		/// 自己遺伝子の遺伝子長を取得します
 		/// </summary>
-		public int GenoSize { get; private set; }
+		public int GeneSize { get; private set; }
+
+		public abstract IGene<TBase> CreateNewGene();
+
+		public abstract IGene<TBase> CreateNewGene(IGene<TBase> gene);
+
+		public abstract IGene<TBase> CreateNewGene(TBase[] baseData);
+
+		public abstract IGene<TBase> CreateNewGene(object[] baseData);
+
+		public abstract IGene<TBase> CreateNewRandumGene();
 
 
-		#region IIndividualFactory 実装
-		public Individual CreateNewIndividual() => new Individual(CreateNewGene());
+		public Individual<TBase> CreateNewIndividual(IGene<TBase> gene) => new Individual<TBase>(gene);
 
-		public Individual CreateNewIndividual(IGene gene) => new Individual(gene);
+		public Individual<TBase> CreateNewIndividual(TBase[] baseData) => new Individual<TBase>(CreateNewGene(baseData));
 
-		public Individual CreateNewIndividual(object[] baseData) => new Individual(CreateNewGene(baseData));
+		public Individual<TBase> CreateNewIndividual(object[] baseData) => new Individual<TBase>(CreateNewGene(baseData));
 
+		public Individual<TBase> CreateNewRandumIndividual() => new Individual<TBase>(CreateNewRandumGene());
 
-		public abstract IGene CreateNewGene();
-
-		public abstract IGene CreateNewGene(IGene gene);
-
-		public abstract IGene CreateNewGene(TBase[] baseData);
-
-		public abstract IGene CreateNewGene(object[] baseData);
-
-		#endregion
-
-
-		#region ITypedIndividualFactory実装
-
-		public Individual CreateNewIndividual(ITypedGene<TBase> gene) => new Individual(CreateNewGene(gene));
-
-		public Individual CreateNewIndividual(TBase[] baseData) => new Individual(CreateNewGene(baseData));
-
-		public abstract ITypedGene<TBase> CreateNewTypedGene();
-
-		public abstract ITypedGene<TBase> CreateNewTypedGene(ITypedGene<TBase> gene);
-
-		public abstract ITypedGene<TBase> CreateNewTypedGene(TBase[] baseData);
-
-		public abstract ITypedGene<TBase> CreateNewTypedGene(object[] baseData);
-		#endregion
 	}
 }

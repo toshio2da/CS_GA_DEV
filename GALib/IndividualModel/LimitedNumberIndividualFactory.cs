@@ -32,29 +32,20 @@ namespace GALib.IndividualModel
 			this.limitNumber = limitNumber;
 		}
 
-		public override IGene CreateNewGene() => new LimitedNumberGene(GenoSize, limitNumber);
+		public override IGene<int> CreateNewGene() => new LimitedNumberGene(GeneSize, limitNumber);
 
-		public override IGene CreateNewGene(IGene gene) => new LimitedNumberGene(gene, limitNumber);
+		public override IGene<int> CreateNewGene(IGene<int> gene) => new LimitedNumberGene(gene, limitNumber);
 
-		public override IGene CreateNewGene(int[] baseData) => new LimitedNumberGene(baseData, limitNumber);
+		public override IGene<int> CreateNewGene(int[] baseData) => new LimitedNumberGene(baseData, limitNumber);
 
-		public override IGene CreateNewGene(object[] baseData) => new LimitedNumberGene(baseData, limitNumber);
+		public override IGene<int> CreateNewGene(object[] baseData) => new LimitedNumberGene(baseData, limitNumber);
 
 
-		public override ITypedGene<int> CreateNewTypedGene()
+		public override IGene<int> CreateNewRandumGene()
 		{
-			var ret = new LimitedNumberGene(GenoSize, limitNumber);
+			var ret = new LimitedNumberGene(GeneSize, limitNumber);
 			ret.RandumReconstruct();
 			return ret;
 		}
-
-		public override ITypedGene<int> CreateNewTypedGene(ITypedGene<int> gene) => new LimitedNumberGene(gene, limitNumber);
-
-
-		public override ITypedGene<int> CreateNewTypedGene(int[] baseData) => new LimitedNumberGene(baseData, limitNumber);
-
-
-		public override ITypedGene<int> CreateNewTypedGene(object[] baseData) => new LimitedNumberGene(baseData, limitNumber);
-
 	}
 }

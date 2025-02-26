@@ -17,24 +17,27 @@
 	/// @author 森本寛
 	/// @version 1.0 (2002/10/16)
 	/// </summary>
-	public interface IIndividualFactory
+	public interface IIndividualFactory<TBase>
 	{
-		/// <summary>
-		/// 自己遺伝子の遺伝子長を取得します
-		/// </summary>
-		public int GenoSize { get; }
+		int GeneSize { get; }
+		IGene<TBase> CreateNewGene();
 
-		public Individual CreateNewIndividual();
+		IGene<TBase> CreateNewGene(IGene<TBase> gene);
 
-		public Individual CreateNewIndividual(IGene gene);
+		IGene<TBase> CreateNewGene(TBase[] baseData);
 
-		public Individual CreateNewIndividual(object[] baseData);
+		IGene<TBase> CreateNewGene(object[] baseData);
 
-		public IGene CreateNewGene();
+		IGene<TBase> CreateNewRandumGene();
 
-		public IGene CreateNewGene(IGene gene);
 
-		public IGene CreateNewGene(object[] baseData);
+		Individual<TBase> CreateNewIndividual(IGene<TBase> gene);
+
+		Individual<TBase> CreateNewIndividual(TBase[] baseData);
+
+		Individual<TBase> CreateNewIndividual(object[] baseData);
+
+		Individual<TBase> CreateNewRandumIndividual();
 
 	}
 }

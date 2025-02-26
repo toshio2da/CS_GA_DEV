@@ -41,6 +41,6 @@ namespace GALib.Core.Plugins
          * @return 子集合候補。この集合を用いて新しい世代を創生します。
          * @throws IllegalElementException group内にIndividualまたはその派生クラスではない要素があります。
          */
-		public List<Individual> Selection(List<Individual> group); //throws IllegalIndividualException;
+		public List<Individual<TBase>> Selection<TBase>(List<Individual<TBase>> group); //throws IllegalIndividualException;
 	}
 }

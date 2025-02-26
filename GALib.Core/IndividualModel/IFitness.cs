@@ -1,6 +1,4 @@
-﻿using GALib.Core.IndividualModel;
-
-namespace GALib.Core.Plugins
+﻿namespace GALib.Core.IndividualModel
 {
 	/**
      * <p>個体の適応度を算出するクラスのインタフェースです。</p>
@@ -23,8 +21,8 @@ namespace GALib.Core.Plugins
      * @author 森本寛
      * @version 1.0 (2002/10/17)
      */
-	public interface IFitness
-    {
+	public interface IFitness<TBase>
+	{
 
 		/// <summary>
 		/// <p>各個体の適応度を計算します。</p>
@@ -33,7 +31,7 @@ namespace GALib.Core.Plugins
 		/// </summary>
 		/// <param name="individual">適応度を算出する個体です。対応した遺伝子をもている必要があります。</param>
 		/// <returns></returns>
-		public double GetFitnessValue(Individual individual);
+		public double GetFitnessValue(Individual<TBase> individual);
 
 		/// <summary>
 		/// 個体の持つことの出来る最大の適応度を返します。
@@ -49,6 +47,6 @@ namespace GALib.Core.Plugins
 		/// その時は本メソッドで負の値を返してください。その場合、どの様な適応度を持った個体が現れても検索が終了することはありません。<br>
 		/// 世代数や時間のみの情報で検索を終了することになります。<br>
 		/// </remarks>
-		public double BestFitnessValue { get; }
-    }
+		public double UltimateFitnessValue { get; }
+	}
 }

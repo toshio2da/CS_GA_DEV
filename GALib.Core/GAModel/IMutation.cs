@@ -10,6 +10,6 @@ namespace GALib.Core.Plugins
 		/// </summary>
 		/// <param name="individualIterator"></param>
 		/// <param name="mutationProbability"></param>
-		void Mutation(List<Individual> individualIterator, double mutationProbability);
+		void Mutation<TBase>(List<Individual<TBase>> individualIterator, double mutationProbability);
 	}
 }

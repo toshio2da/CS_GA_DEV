@@ -2,11 +2,11 @@
 
 namespace GALib.Search
 {
-	public class GASearchResult
+	public class GASearchResult<TBase>
 	{
 		internal GASearchResult() { }
 
-		public Individual? BestIndividual { get; internal set; }
+		public Individual<TBase>? BestIndividual { get; internal set; }
 
 		public int GenerationCount { get; internal set; }
 
@@ -18,6 +18,6 @@ namespace GALib.Search
 
 		public GASearchParam SearchParam { get; internal set; }
 
-		public GASearchState LastSearchState{  get; internal set; }
+		public GASearchState<TBase> LastSearchState {  get; internal set; }
 	}
 }

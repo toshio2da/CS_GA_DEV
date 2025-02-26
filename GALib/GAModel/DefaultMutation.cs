@@ -7,15 +7,15 @@ namespace GALib.Plugins
 	public class DefaultMutation : IMutation
 	{
 
-		public void Mutation(List<Individual> individualList, double mutationProbability)
+		public void Mutation<TBase>(List<Individual<TBase>> individualList, double mutationProbability)
 		{
 
 			foreach (var individual in individualList)
 			{
-				IGene gene = individual.Gene;                   // その個体が持つ遺伝子を取得
+				IGene<TBase> gene = individual.Gene;                   // その個体が持つ遺伝子を取得
 
 				//------ 各塩基に対して行う ------//
-				for (int geneIndex = 0; geneIndex < gene.GenoSize; geneIndex++)
+				for (int geneIndex = 0; geneIndex < gene.GeneSize; geneIndex++)
 				{
 
 					//------ 確率のサイコロを振る ------//

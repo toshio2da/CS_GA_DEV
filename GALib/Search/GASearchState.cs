@@ -2,14 +2,14 @@
 
 namespace GALib.Search
 {
-	public class GASearchState
+	public class GASearchState<TBase>
 	{
 		internal GASearchState() { }
 
 
-		public IIndividualGroup SuperiorIndividuals { get; internal set; }
+		public IIndividualGroup<TBase> SuperiorIndividuals { get; internal set; }
 
-		public Individual BestIndividual => this.SuperiorIndividuals.GetBestIndividual();
+		public Individual<TBase>? BestIndividual => this.SuperiorIndividuals.GetBestIndividual();
 
 		public int GenerationCount { get; set; } = 0;
 

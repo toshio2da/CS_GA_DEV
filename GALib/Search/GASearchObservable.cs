@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GALib.Search
 {
-	public class GASearchObservable : IGASearchObservable
+	public class GASearchObservable<TBase> : IGASearchObservable<TBase>
 	{
 		//購読されたIObserver<int>のリスト
-		private List<IObserver<GASearchEventArgument>> _observers = new List<IObserver<GASearchEventArgument>>();
+		private List<IObserver<GASearchEventArgument<TBase>>> _observers = new List<IObserver<GASearchEventArgument<TBase>>>();
 
-		public IDisposable Subscribe(IObserver<GASearchEventArgument> observer)
+		public IDisposable Subscribe(IObserver<GASearchEventArgument<TBase>> observer)
 		{
 			if (!_observers.Contains(observer))
 				_observers.Add(observer);
@@ -21,9 +22,9 @@ namespace GALib.Search
 		}
 
 
-		public void SendNext(GASearchEventTypes type, GASearchState state)
+		public void SendNext(GASearchEventTypes type, GASearchState<TBase> state)
 		{
-			var args = new GASearchEventArgument(type, state);
+			GASearchEventArgument<TBase> args = new GASearchEventArgument<TBase>(type, state);
 			foreach (var observer in _observers)
 			{
 				observer.OnNext(args);
@@ -46,16 +47,16 @@ namespace GALib.Search
 			}
 		}
 
-
+		
 		//購読解除用内部クラス
 		private class Unsubscriber : IDisposable
 		{
 			//発行先リスト
-			private List<IObserver<GASearchEventArgument>> _observers;
+			private List<IObserver<GASearchEventArgument<TBase>>> _observers;
 			//DisposeされたときにRemoveするIObserver<int>
-			private IObserver<GASearchEventArgument> _observer;
+			private IObserver<GASearchEventArgument<TBase>> _observer;
 
-			public Unsubscriber(List<IObserver<GASearchEventArgument>> observers, IObserver<GASearchEventArgument> observer)
+			public Unsubscriber(List<IObserver<GASearchEventArgument<TBase>>> observers, IObserver<GASearchEventArgument<TBase>> observer)
 			{
 				_observers = observers;
 				_observer = observer;

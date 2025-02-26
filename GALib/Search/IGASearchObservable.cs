@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GALib.Search
 {
-	public interface IGASearchObservable : IObservable<GASearchEventArgument>
+	public interface IGASearchObservable<TBase> : IObservable<GASearchEventArgument<TBase>>
 	{
-		void SendNext(GASearchEventTypes type, GASearchState state);
+		void SendNext(GASearchEventTypes type, GASearchState<TBase> state);
 
 		void SendError(Exception ex);
 

@@ -1,22 +1,24 @@
 ﻿using GALib.Core.IndividualModel;
 
+using System.Security.Cryptography;
+
 namespace GALib.Core.Utils
 {
 	public static class DataTools
 	{
 
-		public static (Individual son, Individual daughter) Crossover(IIndividualFactory individualFactory, Individual father, Individual mother, params int[] splitIndexes)
+		public static (Individual<TBase> son, Individual<TBase> daughter) Crossover<TBase>(IIndividualFactory<TBase> individualFactory, Individual<TBase> father, Individual<TBase> mother, params int[] splitIndexes)
 		{
 			//重複の除去とソート
 			int[] _splitIndexes = splitIndexes.Distinct().OrderBy(e => e).ToArray();
 
-			int geneSize = father.Gene.GenoSize;
+			int geneSize = father.Gene.GeneSize;
 			if (_splitIndexes.Length <= 0 || _splitIndexes.Length > geneSize)
 			{
 				throw new Exception($"サイズ{geneSize}の遺伝子は{_splitIndexes}に分割できません");
 			}
 
-			List<object[]> fatherGeneList = ArraySplits(father.Gene.GetBase<object>(), _splitIndexes);
+			List<TBase[]> fatherGeneList = ArraySplits<TBase>(father.Gene.GetBase(), _splitIndexes);
 
 			//Debug.WriteLine("=====================================");
 			//Debug.WriteLine("Fathers");
@@ -25,7 +27,7 @@ namespace GALib.Core.Utils
 			//	Debug.WriteLine(string.Join("\t", item.Select(e => Convert.ToString(e))));
 			//}
 
-			List<object[]> motherGeneList = ArraySplits(mother.Gene.GetBase<object>(), _splitIndexes);
+			List<TBase[]> motherGeneList = ArraySplits<TBase>(mother.Gene.GetBase(), _splitIndexes);
 
 			//Debug.WriteLine("=====================================");
 			//Debug.WriteLine("Mothers");
@@ -58,7 +60,7 @@ namespace GALib.Core.Utils
 
 
 			//戻り値タプル
-			(Individual son, Individual daughter) ret = (individualFactory.CreateNewIndividual(childGenArray[0]), individualFactory.CreateNewIndividual(childGenArray[1]));
+			(Individual<TBase> son, Individual<TBase> daughter) ret = (individualFactory.CreateNewIndividual(childGenArray[0]), individualFactory.CreateNewIndividual(childGenArray[1]));
 
 			return ret;
 		}
@@ -98,6 +100,49 @@ namespace GALib.Core.Utils
 
 
 			(object[] take, object[] rest) ret = (new object[takeLength], new object[restLength]);
+
+			Array.Copy(source, startIndex, ret.take, 0, takeLength);
+			if (restLength > 0)
+			{
+				Array.Copy(source, startIndex + takeLength, ret.rest, 0, restLength);
+			}
+
+			return ret;
+		}
+
+		public static List<TBase[]> ArraySplits<TBase>(TBase[] source, params int[] splitIndexes)
+		{
+			List<TBase[]> result = new List<TBase[]>(splitIndexes.Length + 1);
+			ArraySplits<TBase>(result, source, 0, splitIndexes);
+			return result;
+		}
+
+		public static void ArraySplits<TBase>(List<TBase[]> result, TBase[] source, int sourceIndex, params int[] splitIndexes)
+		{
+			int curretnIndex = splitIndexes[result.Count];
+			var buf = ArrayMid(source, sourceIndex, curretnIndex);
+			result.Add(buf.take);
+			if (buf.rest.Length > 0)
+			{
+				if (result.Count >= splitIndexes.Length)
+				{
+					result.Add(buf.rest);
+				}
+				else
+				{
+					ArraySplits(result, source, sourceIndex + buf.take.Length, splitIndexes);
+				}
+			}
+		}
+
+		public static (TBase[] take, TBase[] rest) ArrayMid<TBase>(TBase[] source, int startIndex, int endIndex)
+		{
+			int takeLength = endIndex - startIndex + 1;
+			int restLength = source.Length - (endIndex + 1);
+			if (restLength <= 0) restLength = 0;
+
+
+			(TBase[] take, TBase[] rest) ret = (new TBase[takeLength], new TBase[restLength]);
 
 			Array.Copy(source, startIndex, ret.take, 0, takeLength);
 			if (restLength > 0)

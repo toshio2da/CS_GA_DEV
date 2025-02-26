@@ -16,14 +16,14 @@ namespace GALib.Core.GAModel
 	{
 		private DefaultGAModel gaModel = null!;
 
-		public static GAModelBuilder GetBuilder(IIndividualFactory individualFactory, IFitness fitnessAlgorithm)
+		public static GAModelBuilder GetBuilder()
 		{
-			return new GAModelBuilder(individualFactory, fitnessAlgorithm);
+			return new GAModelBuilder();
 		}
 
-		private GAModelBuilder(IIndividualFactory individualFactory, IFitness fitnessAlgorithm)
+		private GAModelBuilder()
 		{
-			this.gaModel = new DefaultGAModel(individualFactory, fitnessAlgorithm);
+			this.gaModel = new DefaultGAModel();
 		}
 
 		public DefaultGAModel DefaultGAModel => this.gaModel;
@@ -46,30 +46,6 @@ namespace GALib.Core.GAModel
 		}
 
 		#region プラグイン
-		public GAModelBuilder SetIndividualFactory(IIndividualFactory individualFactory)
-		{
-			gaModel.IndividualFactory = individualFactory;
-			return this;
-		}
-
-		public GAModelBuilder SetIndividualFactory(GAModelInfo gAModelInfo)
-		{
-			gaModel.IndividualFactory = GetGAModelInstance<IIndividualFactory>(gAModelInfo);
-			return this;
-		}
-
-		public GAModelBuilder SetFitnessAlgorithm(IFitness FitnessAlgorithm)
-		{
-			gaModel.FitnessAlgorithm = FitnessAlgorithm;
-			return this;
-		}
-
-		public GAModelBuilder SetFitnessAlgorithm(GAModelInfo gAModelInfo)
-		{
-			gaModel.FitnessAlgorithm = GetGAModelInstance<IFitness>(gAModelInfo);
-			return this;
-		}
-
 		public GAModelBuilder SetSelectionAlgorithm(ISelection selectionAlgorithm)
 		{
 			gaModel.SelectionAlgorithm = selectionAlgorithm;

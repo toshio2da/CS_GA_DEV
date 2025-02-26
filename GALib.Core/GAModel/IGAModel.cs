@@ -57,24 +57,24 @@ namespace GALib.Core.GAModel
 		/// </remarks>
 		public double InverseProbability { get; }
 
-		/// <summary>
-		/// 使用する個体のモデルを実装するクラスのインスタンスを返します
-		/// </summary>
-		/// <remarks>
-		/// 個体モデルは個体の遺伝子長、塩基配列などを決定します。<br>
-		/// 個体モデルは適応度計算アルゴリズムと相互に関係しますが、他のアルゴリズムとは独立ですので、柔軟な設計を行うことができます。
-		/// </remarks>
-		public IIndividualFactory IndividualFactory { get; }
+		///// <summary>
+		///// 使用する個体のモデルを実装するクラスのインスタンスを返します
+		///// </summary>
+		///// <remarks>
+		///// 個体モデルは個体の遺伝子長、塩基配列などを決定します。<br>
+		///// 個体モデルは適応度計算アルゴリズムと相互に関係しますが、他のアルゴリズムとは独立ですので、柔軟な設計を行うことができます。
+		///// </remarks>
+		//public IIndividualFactory IndividualFactory { get; }
 
-		/// <summary>
-		/// 使用する適応度計算アルゴリズムを実装するクラスのインスタンスを取得します
-		/// </summary>
-		/// <remarks>
-		/// GeneticAlgorithmクラスはこのメソッドで返されたクラスのアルゴリズムを使用することになります。<br>
-		/// 適応度の計算法は問題によって異なります。<br>
-		/// 適応度の計算クラスは取り扱う個体の遺伝子の塩基タイプと対応している必要があります。<br>
-		/// </remarks>
-		public IFitness FitnessAlgorithm { get; }
+		///// <summary>
+		///// 使用する適応度計算アルゴリズムを実装するクラスのインスタンスを取得します
+		///// </summary>
+		///// <remarks>
+		///// GeneticAlgorithmクラスはこのメソッドで返されたクラスのアルゴリズムを使用することになります。<br>
+		///// 適応度の計算法は問題によって異なります。<br>
+		///// 適応度の計算クラスは取り扱う個体の遺伝子の塩基タイプと対応している必要があります。<br>
+		///// </remarks>
+		//public IFitness FitnessAlgorithm { get; }
 
 		/// <summary>
 		/// <p>使用する淘汰アルゴリズムを実装するクラスのインスタンスを返します。</p>

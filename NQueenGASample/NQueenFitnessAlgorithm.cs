@@ -1,5 +1,4 @@
 ﻿using GALib.Core.IndividualModel;
-using GALib.Core.Plugins;
 using GALib.Core.Utils;
 
 namespace jp.co.tmdgroup.nqueengasample
@@ -20,13 +19,19 @@ namespace jp.co.tmdgroup.nqueengasample
 	 * @author 森本寛
 	 * @version 1.0
 	 */
-	public class NQueenFitnessAlgorithm : IFitness
+	public class NQueenFitnessAlgorithm : IFitness<int>
 	{
 
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
 		public NQueenFitnessAlgorithm() { }
+
+
+		public double GetFitnessValue<TBase>(Individual<TBase> individual)
+		{
+			return GetFitnessValue(individual);
+		}
 
 		/// <summary>
 		/// N-Queen問題における個体の適応度の計算を行います。
@@ -40,13 +45,13 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// </remarks>
 		/// <param name="individual">適応度を算出する個体</param>
 		/// <returns>算出された適応度</returns>
-		public double GetFitnessValue(Individual individual)
+		public double GetFitnessValue(Individual<int> individual)
 		{
 
 			//------ 遺伝子情報の組み替え。致死遺伝子の削除 ------//
-			int[] gene = DataTools.CreateUniqElementArray(individual.Gene.GetBase<int>());
+			int[] gene = DataTools.CreateUniqElementArray(individual.Gene.GetBase());
 			//int[] gene = (int[])individual.Gene.GetBase();
-			int fitnessValue = (int)this.BestFitnessValue;              // 適応度を保持
+			int fitnessValue = (int)this.UltimateFitnessValue;              // 適応度を保持
 
 
 			//------ 各塩基を順に調査 ------//
@@ -79,6 +84,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			return fitnessValue;                                                    // 算出した適応度を返す
 		}
 
+
 		/// <summary>
 		/// N-Queen問題における個体の最大適応度(究極の個体)を返します。
 		/// </summary>
@@ -87,6 +93,6 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// よってInteger.MAX_VALUEが最大適応度として返されます。<br>
 		/// </remarks>
 		/// <returns>N-Queen問題における個体の最大適応度</returns>
-		public double BestFitnessValue => (double)1000000;
+		public double UltimateFitnessValue => (double)1000000;
 	}
 }

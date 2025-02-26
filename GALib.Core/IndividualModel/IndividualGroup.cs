@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GALib.Core.IndividualModel
 {
-	public abstract class IndividualGroup : IIndividualGroup
+	public abstract class IndividualGroup<TBase> : IIndividualGroup<TBase>
 	{
-		public static IIndividualGroup CreateInstance(OrderTypes orderType)
+		public static IIndividualGroup<TBase> CreateInstance(OrderTypes orderType)
 		{
-			IIndividualGroup ret = null!;
+			IIndividualGroup<TBase> ret = null!;
 			switch (orderType)
 			{
 				case OrderTypes.DESC:
@@ -31,19 +32,19 @@ namespace GALib.Core.IndividualModel
 
 		public OrderTypes OrderType { get; private set; }
 
-		public List<Individual> Individuals { get; private set; } = [];
+		public List<Individual<TBase>> Individuals { get; private set; } = [];
 
-		public void AddIndividual(Individual individual)
+		public void AddIndividual(Individual<TBase> individual)
 		{
 			Individuals.Add(individual);
 		}
 
-		public void AddIndividuals(IEnumerable<Individual> individuals)
+		public void AddIndividuals(IEnumerable<Individual<TBase>> individuals)
 		{
 			Individuals.AddRange(individuals);
 		}
 
-		public Individual GetIndividual(int index)
+		public Individual<TBase> GetIndividual(int index)
 		{
 			return Individuals[index];
 		}
@@ -53,7 +54,7 @@ namespace GALib.Core.IndividualModel
 			Individuals.Clear();
 		}
 
-		public Individual? GetBestIndividual()
+		public Individual<TBase>? GetBestIndividual()
 		{
 			double bestFitnessValue = GetBestFitnessValue();
 			return Individuals.Where(e => e.FitnessValue == bestFitnessValue).FirstOrDefault();
@@ -61,14 +62,14 @@ namespace GALib.Core.IndividualModel
 
 		public abstract double GetBestFitnessValue();
 
-		public abstract IOrderedEnumerable<Individual> GetOrderedEnumerable();
+		public abstract IOrderedEnumerable<Individual<TBase>> GetOrderedEnumerable();
 
 		public void InnerSort()
 		{
 			Individuals = GetOrderedEnumerable().ToList();
 		}
 
-		public IEnumerator<Individual> GetEnumerator()
+		public IEnumerator<Individual<TBase>> GetEnumerator()
 		{
 			return Individuals.GetEnumerator();
 		}
@@ -78,31 +79,31 @@ namespace GALib.Core.IndividualModel
 			return Individuals.GetEnumerator();
 		}
 
-		private class AscIndividualsGroup : IndividualGroup
+		private class AscIndividualsGroup : IndividualGroup<TBase>
 		{
 			public AscIndividualsGroup() : base(OrderTypes.ASC) { }
 
 			public override double GetBestFitnessValue()
 			{
-				return Individuals.Min(e => e.FitnessValue);
+				return Individuals.Min(e => e.FitnessValue ?? double.MaxValue);
 			}
 
-			public override IOrderedEnumerable<Individual> GetOrderedEnumerable()
+			public override IOrderedEnumerable<Individual<TBase>> GetOrderedEnumerable()
 			{
 				return Individuals.OrderBy(e => e.FitnessValue);
 			}
 		}
 
-		private class DescIndividualsGroup : IndividualGroup
+		private class DescIndividualsGroup : IndividualGroup<TBase>
 		{
 			public DescIndividualsGroup() : base(OrderTypes.DESC) { }
 
 			public override double GetBestFitnessValue()
 			{
-				return Individuals.Max(e => e.FitnessValue);
+				return Individuals.Max(e => e.FitnessValue ?? double.MinValue);
 			}
 
-			public override IOrderedEnumerable<Individual> GetOrderedEnumerable()
+			public override IOrderedEnumerable<Individual<TBase>> GetOrderedEnumerable()
 			{
 				return Individuals.OrderByDescending(e => e.FitnessValue);
 			}

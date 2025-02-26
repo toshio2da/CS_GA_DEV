@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GALib.Search
 {
-	public abstract class AbstractGASearchObserver : IObserver<GASearchEventArgument>
+	public abstract class AbstractGASearchObserver<TBase> : IObserver<GASearchEventArgument<TBase>>
 	{
 
-		public virtual void OnNext(GASearchEventArgument args)
+		public virtual void OnNext(GASearchEventArgument<TBase> args)
 		{
 			switch (args.Type)
 			{
@@ -31,11 +32,11 @@ namespace GALib.Search
 			}
 		}
 
-		public virtual void OnSearchStart(GASearchState state) { }
-		public virtual void OnGenerationChanged(GASearchState state) { }
-		public virtual void OnSearchEnd(GASearchState state) { }
-		public virtual void OnUltimateSearched(GASearchState state) { }
-		public virtual void OnUserCancel(GASearchState state) { }
+		public virtual void OnSearchStart(GASearchState<TBase> state) { }
+		public virtual void OnGenerationChanged(GASearchState<TBase> state) { }
+		public virtual void OnSearchEnd(GASearchState<TBase> state) { }
+		public virtual void OnUltimateSearched(GASearchState<TBase> state) { }
+		public virtual void OnUserCancel	(GASearchState<TBase> state) { }
 
 		public virtual void OnCompleted() { }
 		public virtual void OnError(Exception error) { }

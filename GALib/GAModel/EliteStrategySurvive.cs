@@ -43,7 +43,7 @@ namespace GALib.Plugins
 			GenerationGap = generationGap;
 		}
 
-		public List<Individual> Survive(List<Individual> survivors)
+		public List<Individual<TBase>> Survive<TBase>(List<Individual<TBase>> survivors)
 		{
 			//ソートを行う
 			survivors = survivors.OrderByDescending(e => e.FitnessValue).ToList();
@@ -51,7 +51,7 @@ namespace GALib.Plugins
 			// 世代間ギャップによって決められた数だけ順に抽出
 			int eliteNumber = (int)(survivors.Count * (1.0 - GenerationGap));  // 生き残るエリートの数を計算
 
-			List<Individual> elites = [.. survivors.GetRange(0, eliteNumber)];
+			List<Individual<TBase>> elites = [.. survivors.GetRange(0, eliteNumber)];
 			return elites;
 		}
 	}
