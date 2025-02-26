@@ -103,7 +103,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			this.FromForm(this.gaParam);
 
 			#region GAModelBuilder を使用した場合
-			////GAModelをビルド
+			//GAModelをビルド
 			//IGAModel gaModel = GAModelBuilder.GetBuilder()
 			//.SetSelectionAlgorithm(new TournamentSelection(this.gaParam.TournamentSize))  // トーナメント方式。トーナメントサイズはデフォルトの2.
 			//.SetSurviveAlgorithm(new EliteStrategySurvive(this.gaParam.GenerationGap))   // エリート戦略による生存方式を採用
@@ -119,7 +119,9 @@ namespace jp.co.tmdgroup.nqueengasample
 			#endregion
 
 			#region GAModelをクラスで定義した場合
-			IGAModel gaModel = new NQueenGAModel();
+			NQueenGAModel gaModel = new NQueenGAModel();
+			gaModel.MutationProbability = this.gaParam.MutationProbability;
+			gaModel.InverseProbability = 0;
 			#endregion
 
 			//IndividualModelを作成
