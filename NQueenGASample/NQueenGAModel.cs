@@ -50,10 +50,10 @@ namespace jp.co.tmdgroup.nqueengasample
 		/// ヘルパコンストラクタ
 		/// </summary>
 		/// <param name="N">次数</param>
-		public NQueenGAModel() : base()
+		public NQueenGAModel(int tournamentSize, double generationGap) : base()
 		{
-			this.SelectionAlgorithm = new TournamentSelection(2);      // トーナメント方式。トーナメントサイズはデフォルトの2.
-			this.SurviveAlgorithm = new EliteStrategySurvive(0.95);      // エリート戦略による生存方式を採用。
+			this.SelectionAlgorithm = new TournamentSelection(tournamentSize);      // トーナメント方式。トーナメントサイズはデフォルトの2.
+			this.SurviveAlgorithm = new EliteStrategySurvive(generationGap);      // エリート戦略による生存方式を採用。
 			this.CrossoverAlgorithm = new OnePointCrossover();
 			this.MutationAlgorithm = new DefaultMutation();
 			this.InverseAlgorithm = new DefaultInverse();

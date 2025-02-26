@@ -119,7 +119,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			#endregion
 
 			#region GAModelをクラスで定義した場合
-			NQueenGAModel gaModel = new NQueenGAModel();
+			NQueenGAModel gaModel = new NQueenGAModel(this.gaParam.TournamentSize, this.gaParam.GenerationGap);
 			gaModel.MutationProbability = this.gaParam.MutationProbability;
 			gaModel.InverseProbability = 0;
 			#endregion
@@ -139,7 +139,7 @@ namespace jp.co.tmdgroup.nqueengasample
 			GASearchParam searchParam = new GASearchParam();
 			searchParam.IndividualCount = this.gaParam.QueenCnt;
 			searchParam.MaxGenerationCount = this.gaParam.MaxGenerationCnt;
-			
+
 			//検索開始
 			var gaSearchResult = await task.SearchAsync(searchParam);
 
@@ -214,5 +214,9 @@ namespace jp.co.tmdgroup.nqueengasample
 
 		}
 
+		private void numQueenCnt_ValueChanged(object sender, EventArgs e)
+		{
+			this.numIndividualCnt.Value = (decimal)Math.Pow(Convert.ToDouble(numQueenCnt.Value), 2);
+		}
 	}
 }
